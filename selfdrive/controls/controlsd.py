@@ -501,7 +501,6 @@ class Controls:
     # opkr
     output_scale = lat_plan.outputScale
     if not self.live_sr:
-      angle_diff = abs(anglesteer_desire) - abs(anglesteer_current)
       if abs(output_scale) >= self.CP.steerMaxV[0] and CS.vEgo > 8 and not CS.steeringPressed:
         self.new_steerRatio_prev = interp(CS.steeringAngleDeg, self.steer_angle_range, self.steerRatio_range)
         if self.new_steerRatio_prev > self.new_steerRatio:
