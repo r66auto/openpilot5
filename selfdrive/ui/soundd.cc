@@ -22,8 +22,8 @@ public:
       {AudibleAlert::CHIME_ENGAGE, "../assets/sounds/engaged.wav", false},
       {AudibleAlert::CHIME_WARNING1, "../assets/sounds/warning_1.wav", false},
       {AudibleAlert::CHIME_WARNING2, "../assets/sounds/warning_2.wav", false},
-      {AudibleAlert::CHIME_WARNING2_REPEAT, "../assets/sounds/warning_2.wav", true},
-      {AudibleAlert::CHIME_WARNING_REPEAT, "../assets/sounds/warning_repeat.wav", true},
+      {AudibleAlert::CHIME_WARNING2_REPEAT, "../assets/sounds/warning_2.wav", false},
+      {AudibleAlert::CHIME_WARNING_REPEAT, "../assets/sounds/warning_repeat.wav", false},
       {AudibleAlert::CHIME_ERROR, "../assets/sounds/error.wav", false},
       {AudibleAlert::CHIME_PROMPT, "../assets/sounds/error.wav", false}
     };
@@ -47,8 +47,20 @@ private slots:
     sm->update(100);
     if (sm->updated("carState")) {
       // scale volume with speed
-      volume = util::map_val((*sm)["carState"].getCarState().getVEgo(), 0.f, 20.f,
-                             Hardware::MIN_VOLUME, Hardware::MAX_VOLUME);
+      if (QUIState::ui_state.scene.scr.nVolumeBoost < 1) {
+        volume = 0.0;
+      } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
+        volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+      } else {
+        volume = util::map_val(sm["carState"].getCarState().getVEgo(), 0.f, 20.f,
+                            Hardware::MIN_VOLUME, Hardware::MAX_VOLUME);
+      }
+    } else {
+      if (QUIState::ui_state.scene.scr.nVolumeBoost < 0) {
+        volume = 0.0;
+      } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 0) {
+        volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+      }
     }
     if (sm->updated("controlsState")) {
       const cereal::ControlsState::Reader &cs = (*sm)["controlsState"].getControlsState();

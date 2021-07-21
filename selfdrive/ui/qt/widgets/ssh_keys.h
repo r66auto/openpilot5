@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QPushButton>
+#include <QSoundEffect> // opkr
 
 #include "selfdrive/hardware/hw.h"
 #include "selfdrive/ui/qt/widgets/controls.h"
@@ -546,8 +547,10 @@ private:
   QPushButton btnminus;
   QLabel label;
   Params params;
+  QSoundEffect effect;
   
   void refresh();
+  void playsound();
 };
 
 class BrightnessControl : public AbstractControl {

@@ -6,7 +6,6 @@
 #include <QProcess> // opkr
 #include <QAction> // opkr
 #include <QMenu> // opkr
-#include <QSoundEffect> // opkr
 
 #include "selfdrive/common/params.h"
 #include "selfdrive/ui/qt/api.h"
@@ -482,16 +481,8 @@ VolumeControl::VolumeControl() : AbstractControl("EON 볼륨 조절(%)", "EON의
     QString values = QString::number(value);
     QUIState::ui_state.scene.scr.nVolumeBoost = value;
     params.put("OpkrUIVolumeBoost", values.toStdString());
+    playsound();
     refresh();
-    // QSoundEffect effect1;
-    // effect1.setSource(QUrl::fromLocalFile("/data/openpilot/selfdrive/assets/sounds/warning_1.wav"));
-    // if (value > 0 ) {
-    //   effect1.setVolume(value * 0.01);
-    //   effect1.play();
-    // } else if (value == 0) {
-    //   effect1.setVolume(0.5);
-    //   effect1.play();
-    // }
   });
   
   QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
@@ -504,16 +495,8 @@ VolumeControl::VolumeControl() : AbstractControl("EON 볼륨 조절(%)", "EON의
     QString values = QString::number(value);
     QUIState::ui_state.scene.scr.nVolumeBoost = value;
     params.put("OpkrUIVolumeBoost", values.toStdString());
+    playsound();
     refresh();
-    // QSoundEffect effect1;
-    // effect1.setSource(QUrl::fromLocalFile("/data/openpilot/selfdrive/assets/sounds/warning_1.wav"));
-    // if (value > 0 ) {
-    //   effect1.setVolume(value * 0.01);
-    //   effect1.play();
-    // } else if (value == 0) {
-    //   effect1.setVolume(0.5);
-    //   effect1.play();
-    // }
   });
   refresh();
 }
@@ -529,6 +512,18 @@ void VolumeControl::refresh() {
   }
   btnminus.setText("－");
   btnplus.setText("＋");
+}
+
+void VolumeControl::playsound() {
+  auto str = QString::fromStdString(params.get("OpkrUIVolumeBoost"));
+  float value = str.toFloat();
+  effect.setSource(QUrl::fromLocalFile("/data/openpilot/selfdrive/assets/sounds/warning_1.wav"));
+  if (value > 1 ) {
+    effect.setVolume(value * 0.01);
+  } else if (str == "0") {
+    effect.setVolume(0.5);
+  }
+  effect.play();
 }
 
 BrightnessControl::BrightnessControl() : AbstractControl("EON 밝기 조절(%)", "EON화면의 밝기를 조절합니다.", "../assets/offroad/icon_shell.png") {
