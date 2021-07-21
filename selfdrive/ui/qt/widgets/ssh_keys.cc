@@ -506,7 +506,7 @@ void VolumeControl::refresh() {
   QString option = QString::fromStdString(params.get("OpkrUIVolumeBoost"));
   if (option == "0") {
     label.setText(QString::fromStdString("기본값"));
-  } else if (option == "-10") {
+  } else if (option == "-5") {
     label.setText(QString::fromStdString("음소거"));
   } else {
     label.setText(QString::fromStdString(params.get("OpkrUIVolumeBoost")));
