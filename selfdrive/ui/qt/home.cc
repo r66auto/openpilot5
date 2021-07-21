@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QVBoxLayout>
 #include <QProcess> // opkr
+#include <QSoundEffect> // opkr
 
 #include "selfdrive/common/params.h"
 #include "selfdrive/ui/qt/util.h"
