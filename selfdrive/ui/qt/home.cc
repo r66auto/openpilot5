@@ -80,6 +80,7 @@ void HomeWindow::mousePressEvent(QMouseEvent* e) {
       volume1 = 0.0f;
     } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
       volume1 = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+    }
     effect1.setVolume(volume1);
     effect1.play();
     QProcess::execute("am start --activity-task-on-home com.opkr.maphack/com.opkr.maphack.MainActivity");
@@ -97,6 +98,7 @@ void HomeWindow::mousePressEvent(QMouseEvent* e) {
       volume2 = 0.0f;
     } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
       volume2 = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+    }
     effect2.setVolume(volume2);
     effect2.play();
     QUIState::ui_state.scene.map_is_running = !QUIState::ui_state.scene.map_is_running;
@@ -125,6 +127,7 @@ void HomeWindow::mousePressEvent(QMouseEvent* e) {
       volume3 = 0.0f;
     } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
       volume3 = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+    }
     effect3.setVolume(volume3);
     effect3.play();
     QProcess::execute("am start --activity-task-on-home com.mnsoft.mappyobn/com.mnsoft.mappy.MainActivity");

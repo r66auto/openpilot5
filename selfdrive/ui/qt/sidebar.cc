@@ -79,6 +79,7 @@ void Sidebar::mousePressEvent(QMouseEvent *event) {
       volume = 0.0f;
     } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
       volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+    }
     effect.setVolume(volume);
     effect.play();
     QProcess::execute("am start --activity-task-on-home com.opkr.maphack/com.opkr.maphack.MainActivity");
