@@ -6,7 +6,8 @@
 #include "selfdrive/common/util.h"
 #include "selfdrive/hardware/hw.h"
 #include "selfdrive/ui/qt/util.h"
-#include "selfdrive/common/params.h"
+#include "selfdrive/ui/qt/widgets/input.h" // opkr
+#include "selfdrive/common/params.h" // opkr
 
 #include <QProcess>
 #include <QSoundEffect>
@@ -68,7 +69,7 @@ void Sidebar::mousePressEvent(QMouseEvent *event) {
       if (apks_enable) {
         QProcess::execute("/data/openpilot/run_mixplorer.sh");
       } else {
-        if (ConfirmationDialog::alert("믹스플로러를 실행하기 위해서는 사용자설정에서 Apks 사용을 활성화해야 합니다", this)) {}
+        if (ConfirmationDialog::alert("믹스플로러를 실행하기 위해서는 사용자설정에서 Apks 사용을 활성화해야 합니다(활성화 후 재부팅 필요)", this)) {}
       }
     }
     return;
