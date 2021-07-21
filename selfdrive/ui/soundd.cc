@@ -50,7 +50,7 @@ private slots:
       if (QUIState::ui_state.scene.scr.nVolumeBoost < 1) {
         volume = 0.0f;
       } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
-        volume = QUIState::ui_state.scene.scr.nVolumeBoost.toFloat() * 0.01;
+        volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
       } else {
         volume = util::map_val((*sm)["carState"].getCarState().getVEgo(), 0.f, 20.f,
                               Hardware::MIN_VOLUME, Hardware::MAX_VOLUME);
@@ -59,7 +59,7 @@ private slots:
       if (QUIState::ui_state.scene.scr.nVolumeBoost < 1) {
         volume = 0.0;
       } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
-        volume = QUIState::ui_state.scene.scr.nVolumeBoost.toFloat() * 0.01;
+        volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
       }
     }
     if (sm->updated("controlsState")) {
