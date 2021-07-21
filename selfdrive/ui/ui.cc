@@ -16,8 +16,8 @@
 #include "selfdrive/ui/qt/qt_window.h"
 #include "dashcam.h"
 
-#define BACKLIGHT_DT 0.25
-#define BACKLIGHT_TS 2.00
+#define BACKLIGHT_DT 0.05
+#define BACKLIGHT_TS 10.00
 #define BACKLIGHT_OFFROAD 75
 
 
@@ -332,7 +332,7 @@ static void update_params(UIState *s) {
     scene.end_to_end = Params().getBool("EndToEndToggle");
   }
   //opkr navi on boot
-  if (!scene.navi_on_boot && (frame - scene.started_frame > 2*UI_FREQ)) {
+  if (!scene.navi_on_boot && (frame - scene.started_frame > 3*UI_FREQ)) {
     if (Params().getBool("OpkrRunNaviOnBoot") && Params().getBool("ControlsReady") && (Params().get("CarParams").size() > 0)) {
       scene.navi_on_boot = true;
       scene.map_is_running = true;
@@ -344,7 +344,7 @@ static void update_params(UIState *s) {
       scene.navi_on_boot = true;
     }
   }
-  if (!scene.move_to_background && (frame - scene.started_frame > 7*UI_FREQ)) {
+  if (!scene.move_to_background && (frame - scene.started_frame > 8*UI_FREQ)) {
     if (Params().getBool("OpkrRunNaviOnBoot") && Params().getBool("OpkrMapEnable") && Params().getBool("ControlsReady") && (Params().get("CarParams").size() > 0)) {
       scene.move_to_background = true;
       scene.map_on_top = false;

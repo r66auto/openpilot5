@@ -41,6 +41,8 @@
 #define COLOR_YELLOW_ALPHA(x) nvgRGBA(218, 202, 37, x)
 #define COLOR_GREY nvgRGBA(191, 191, 191, 1)
 
+typedef cereal::CarControl::HUDControl::AudibleAlert AudibleAlert;
+
 // TODO: this is also hardcoded in common/transformations/camera.py
 // TODO: choose based on frame input size
 const float y_offset = Hardware::TICI() ? 150.0 : 0.0;
@@ -56,6 +58,26 @@ typedef struct Rect {
     return px >= x && px < (x + w) && py >= y && py < (y + h);
   }
 } Rect;
+
+typedef struct Alert {
+  QString text1;
+  QString text2;
+  QString type;
+  cereal::ControlsState::AlertSize size;
+  AudibleAlert sound;
+  bool equal(Alert a2) {
+    return text1 == a2.text1 && text2 == a2.text2 && type == a2.type;
+  }
+} Alert;
+
+const Alert CONTROLS_WAITING_ALERT = {"openpilot Unavailable", "Waiting for controls to start", 
+                                      "controlsWaiting", cereal::ControlsState::AlertSize::MID,
+                                      AudibleAlert::NONE};
+
+const Alert CONTROLS_UNRESPONSIVE_ALERT = {"TAKE CONTROL IMMEDIATELY", "Controls Unresponsive",
+                                           "controlsUnresponsive", cereal::ControlsState::AlertSize::FULL,
+                                           AudibleAlert::CHIME_WARNING_REPEAT};
+const int CONTROLS_TIMEOUT = 5;
 
 const int bdr_s = 15;
 const int header_h = 420;

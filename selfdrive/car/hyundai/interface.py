@@ -236,7 +236,7 @@ class CarInterface(CarInterfaceBase):
 
     ret.enableBsm = 0x58b in fingerprint[0]
 
-    ret.startAccel = 0.2
+    ret.startAccel = 0.1
 
     ret.standStill = False
     ret.vCruisekph = 0

@@ -27,18 +27,18 @@ AbstractAlert::AbstractAlert(bool hasRebootBtn, QWidget *parent) : QFrame(parent
   QPushButton *dismiss_btn = new QPushButton("해제");
   dismiss_btn->setFixedSize(400, 125);
   footer_layout->addWidget(dismiss_btn, 0, Qt::AlignBottom | Qt::AlignLeft);
-  QObject::connect(dismiss_btn, &QPushButton::released, this, &AbstractAlert::dismiss);
+  QObject::connect(dismiss_btn, &QPushButton::clicked, this, &AbstractAlert::dismiss);
 
   if (hasRebootBtn) {
     QPushButton *rebootBtn = new QPushButton("업데이트 및 재시작");
     rebootBtn->setFixedSize(600, 125);
     footer_layout->addWidget(rebootBtn, 0, Qt::AlignBottom | Qt::AlignRight);
-    QObject::connect(rebootBtn, &QPushButton::released, [=]() { Hardware::reboot(); });
+    QObject::connect(rebootBtn, &QPushButton::clicked, [=]() { Hardware::reboot(); });
   } else {
     QPushButton *recheckBtn = new QPushButton("재등록 시도");
     recheckBtn->setFixedSize(600, 125);
     footer_layout->addWidget(recheckBtn, 0, Qt::AlignBottom | Qt::AlignRight);
-    QObject::connect(recheckBtn, &QPushButton::released, [=]() {
+    QObject::connect(recheckBtn, &QPushButton::clicked, [=]() {
       Params().remove("DongleId");
       QTimer::singleShot(1000, []() {
         Hardware::reboot();
