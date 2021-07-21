@@ -6,6 +6,7 @@
 #include "selfdrive/common/util.h"
 #include "selfdrive/hardware/hw.h"
 #include "selfdrive/ui/qt/util.h"
+#include "selfdrive/common/params.h"
 
 #include <QProcess>
 #include <QSoundEffect>
@@ -63,7 +64,12 @@ void Sidebar::mousePressEvent(QMouseEvent *event) {
       QUIState::ui_state.scene.homebtn_count = QUIState::ui_state.scene.homebtn_count + 1;
     if (QUIState::ui_state.scene.homebtn_count > 2) {
       QUIState::ui_state.scene.homebtn_count = 0;
-      QProcess::execute("/data/openpilot/run_mixplorer.sh");
+      bool apks_enable = Params().getBool("OpkrApksEnable");
+      if (apks_enable) {
+        QProcess::execute("/data/openpilot/run_mixplorer.sh");
+      } else {
+        if (ConfirmationDialog::alert("믹스플로러를 실행하기 위해서는 사용자설정에서 Apks 사용을 활성화해야 합니다", this)) {}
+      }
     }
     return;
   }
