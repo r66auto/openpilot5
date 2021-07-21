@@ -474,9 +474,9 @@ VolumeControl::VolumeControl() : AbstractControl("EON 볼륨 조절(%)", "EON의
   QObject::connect(&btnminus, &QPushButton::clicked, [=]() {
     auto str = QString::fromStdString(params.get("OpkrUIVolumeBoost"));
     int value = str.toInt();
-    value = value - 10;
-    if (value <= -10 ) {
-      value = -10;
+    value = value - 5;
+    if (value <= -5 ) {
+      value = -5;
     }
     QString values = QString::number(value);
     QUIState::ui_state.scene.scr.nVolumeBoost = value;
@@ -488,7 +488,7 @@ VolumeControl::VolumeControl() : AbstractControl("EON 볼륨 조절(%)", "EON의
   QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
     auto str = QString::fromStdString(params.get("OpkrUIVolumeBoost"));
     int value = str.toInt();
-    value = value + 10;
+    value = value + 5;
     if (value >= 100 ) {
       value = 100;
     }
@@ -519,10 +519,11 @@ void VolumeControl::playsound() {
   effect.setSource(QUrl::fromLocalFile("/data/openpilot/selfdrive/assets/sounds/warning_1.wav"));
   if (value > 1 ) {
     effect.setVolume(value * 0.01);
+    effect.play();
   } else if (value >= 0) {
     effect.setVolume(0.5);
+    effect.play();
   }
-  effect.play();
 }
 
 BrightnessControl::BrightnessControl() : AbstractControl("EON 밝기 조절(%)", "EON화면의 밝기를 조절합니다.", "../assets/offroad/icon_shell.png") {
