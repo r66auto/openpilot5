@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QVBoxLayout>
 #include <QProcess> // opkr
+#include <QSoundEffect> // opkr
 
 #include "selfdrive/common/params.h"
 #include "selfdrive/ui/qt/util.h"
@@ -74,7 +75,13 @@ void HomeWindow::mousePressEvent(QMouseEvent* e) {
     effect1.setSource(QUrl::fromLocalFile("/data/openpilot/selfdrive/assets/sounds/warning_1.wav"));
     //effect1.setLoopCount(1);
     //effect1.setLoopCount(QSoundEffect::Infinite);
-    //effect1.setVolume(0.1);
+    float volume1 = 0.5f;
+    if (QUIState::ui_state.scene.scr.nVolumeBoost < 0) {
+      volume1 = 0.0f;
+    } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
+      volume1 = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+    }
+    effect1.setVolume(volume1);
     effect1.play();
     QProcess::execute("am start --activity-task-on-home com.opkr.maphack/com.opkr.maphack.MainActivity");
     QUIState::ui_state.scene.map_on_top = false;
@@ -84,9 +91,15 @@ void HomeWindow::mousePressEvent(QMouseEvent* e) {
   if (QUIState::ui_state.scene.apks_enabled && QUIState::ui_state.scene.started && !sidebar->isVisible() && !QUIState::ui_state.scene.map_on_top && map_btn.ptInRect(e->x(), e->y())) {
     QSoundEffect effect2;
     effect2.setSource(QUrl::fromLocalFile("/data/openpilot/selfdrive/assets/sounds/warning_1.wav"));
-    //effect2.setLoopCount(1);
-    //effect2.setLoopCount(QSoundEffect::Infinite);
-    //effect2.setVolume(0.1);
+    //effect1.setLoopCount(1);
+    //effect1.setLoopCount(QSoundEffect::Infinite);
+    float volume2 = 0.5f;
+    if (QUIState::ui_state.scene.scr.nVolumeBoost < 0) {
+      volume2 = 0.0f;
+    } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
+      volume2 = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+    }
+    effect2.setVolume(volume2);
     effect2.play();
     QUIState::ui_state.scene.map_is_running = !QUIState::ui_state.scene.map_is_running;
     if (QUIState::ui_state.scene.map_is_running) {
@@ -109,7 +122,13 @@ void HomeWindow::mousePressEvent(QMouseEvent* e) {
     effect3.setSource(QUrl::fromLocalFile("/data/openpilot/selfdrive/assets/sounds/warning_1.wav"));
     //effect1.setLoopCount(1);
     //effect1.setLoopCount(QSoundEffect::Infinite);
-    //effect1.setVolume(0.1);
+    float volume3 = 0.5f;
+    if (QUIState::ui_state.scene.scr.nVolumeBoost < 0) {
+      volume3 = 0.0f;
+    } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
+      volume3 = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+    }
+    effect3.setVolume(volume3);
     effect3.play();
     QProcess::execute("am start --activity-task-on-home com.mnsoft.mappyobn/com.mnsoft.mappy.MainActivity");
     QUIState::ui_state.scene.map_on_top = true;
@@ -194,13 +213,13 @@ OffroadHome::OffroadHome(QWidget* parent) : QFrame(parent) {
   update_notif = new QPushButton("UPDATE");
   update_notif->setVisible(false);
   update_notif->setStyleSheet("background-color: #364DEF;");
-  QObject::connect(update_notif, &QPushButton::released, [=]() { center_layout->setCurrentIndex(1); });
+  QObject::connect(update_notif, &QPushButton::clicked, [=]() { center_layout->setCurrentIndex(1); });
   header_layout->addWidget(update_notif, 0, Qt::AlignHCenter | Qt::AlignRight);
 
   alert_notif = new QPushButton();
   alert_notif->setVisible(false);
   alert_notif->setStyleSheet("background-color: #E22C2C;");
-  QObject::connect(alert_notif, &QPushButton::released, [=] { center_layout->setCurrentIndex(2); });
+  QObject::connect(alert_notif, &QPushButton::clicked, [=] { center_layout->setCurrentIndex(2); });
   header_layout->addWidget(alert_notif, 0, Qt::AlignHCenter | Qt::AlignRight);
 
   header_layout->addWidget(new QLabel(getBrandVersion()), 0, Qt::AlignHCenter | Qt::AlignRight);

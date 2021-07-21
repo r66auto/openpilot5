@@ -6,6 +6,8 @@
 #include "selfdrive/common/util.h"
 #include "selfdrive/hardware/hw.h"
 #include "selfdrive/ui/qt/util.h"
+#include "selfdrive/ui/qt/widgets/input.h" // opkr
+#include "selfdrive/common/params.h" // opkr
 
 #include <QProcess>
 #include <QSoundEffect>
@@ -63,7 +65,12 @@ void Sidebar::mousePressEvent(QMouseEvent *event) {
       QUIState::ui_state.scene.homebtn_count = QUIState::ui_state.scene.homebtn_count + 1;
     if (QUIState::ui_state.scene.homebtn_count > 2) {
       QUIState::ui_state.scene.homebtn_count = 0;
-      QProcess::execute("/data/openpilot/run_mixplorer.sh");
+      bool apks_enable = Params().getBool("OpkrApksEnable");
+      if (apks_enable) {
+        QProcess::execute("/data/openpilot/run_mixplorer.sh");
+      } else {
+        if (ConfirmationDialog::alert("믹스플로러를 실행하기 위해서는 사용자설정에서 Apks 사용을 활성화해야 합니다(활성화 후 재부팅 필요)", this)) {}
+      }
     }
     return;
   }
@@ -74,6 +81,13 @@ void Sidebar::mousePressEvent(QMouseEvent *event) {
     //effect.setLoopCount(1);
     //effect.setLoopCount(QSoundEffect::Infinite);
     //effect.setVolume(0.1);
+    float volume = 0.5f;
+    if (QUIState::ui_state.scene.scr.nVolumeBoost < 0) {
+      volume = 0.0f;
+    } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
+      volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+    }
+    effect.setVolume(volume);
     effect.play();
     QProcess::execute("am start --activity-task-on-home com.opkr.maphack/com.opkr.maphack.MainActivity");
     QUIState::ui_state.scene.map_on_top = false;
