@@ -90,7 +90,7 @@ private slots:
       if (alert.sound != AudibleAlert::NONE) {
         auto &[sound, loops] = sounds[alert.sound];
         sound.setLoopCount(loops);
-        volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+        if (QUIState::ui_state.scene.scr.nVolumeBoost != 0) volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
         sound.setVolume(volume);
         sound.play();
       }
