@@ -446,6 +446,7 @@ void ForceShutdown::refresh() {
 
 VolumeControl::VolumeControl() : AbstractControl("EON 볼륨 조절(%)", "EON의 볼륨을 조절합니다. 안드로이드 기본값/수동설정", "../assets/offroad/icon_shell.png") {
 
+  effect.setSource(QUrl::fromLocalFile("/data/openpilot/selfdrive/assets/sounds/warning_1.wav"));
   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   label.setStyleSheet("color: #e0e879");
   hlayout->addWidget(&label);
@@ -516,7 +517,6 @@ void VolumeControl::refresh() {
 
 void VolumeControl::playsound() {
   float value = QUIState::ui_state.scene.scr.nVolumeBoost;
-  effect.setSource(QUrl::fromLocalFile("/data/openpilot/selfdrive/assets/sounds/warning_1.wav"));
   if (value > 1 ) {
     effect.setVolume(value * 0.01);
     effect.play();
