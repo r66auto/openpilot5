@@ -98,7 +98,7 @@ private slots:
 
 private:
   Alert alert;
-  float volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+  float volume = Hardware::MIN_VOLUME;
   std::map<AudibleAlert, std::pair<QSoundEffect, int>> sounds;
   SubMaster *sm;
 };
