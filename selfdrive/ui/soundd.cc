@@ -47,7 +47,7 @@ private slots:
     sm->update(100);
     if (sm->updated("carState")) {
       // scale volume with speed
-      if (QUIState::ui_state.scene.scr.nVolumeBoost < 1) {
+      if (QUIState::ui_state.scene.scr.nVolumeBoost < 0) {
         volume = 0.0f;
       } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
         volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
@@ -56,7 +56,7 @@ private slots:
                               Hardware::MIN_VOLUME, Hardware::MAX_VOLUME);
       }
     } else {
-      if (QUIState::ui_state.scene.scr.nVolumeBoost < 1) {
+      if (QUIState::ui_state.scene.scr.nVolumeBoost < 0) {
         volume = 0.0;
       } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
         volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;

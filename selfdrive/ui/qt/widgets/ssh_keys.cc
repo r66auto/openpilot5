@@ -515,12 +515,12 @@ void VolumeControl::refresh() {
 }
 
 void VolumeControl::playsound() {
-  auto str = QString::fromStdString(params.get("OpkrUIVolumeBoost"));
+  auto str = QUIState::ui_state.scene.scr.nVolumeBoost;
   float value = str.toFloat();
   effect.setSource(QUrl::fromLocalFile("/data/openpilot/selfdrive/assets/sounds/warning_1.wav"));
   if (value > 1 ) {
     effect.setVolume(value * 0.01);
-  } else if (str == "0") {
+  } else if (str == 0) {
     effect.setVolume(0.5);
   }
   effect.play();
