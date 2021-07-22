@@ -328,9 +328,9 @@ static void update_state(UIState *s) {
 static void update_params(UIState *s) {
   const uint64_t frame = s->sm->frame;
   UIScene &scene = s->scene;
-  if (frame % (20*UI_FREQ) == 0) {
-    scene.is_OpenpilotViewEnabled = Params().getBool("IsOpenpilotViewEnabled");
-  }
+  // if (frame % (5*UI_FREQ) == 0) {
+  //   scene.is_metric = Params().getBool("IsMetric");
+  // }
   //opkr navi on boot
   if (!scene.navi_on_boot && (frame - scene.started_frame > 3*UI_FREQ)) {
     if (Params().getBool("OpkrRunNaviOnBoot") && Params().getBool("ControlsReady") && (Params().get("CarParams").size() > 0)) {
