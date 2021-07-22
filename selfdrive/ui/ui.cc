@@ -54,10 +54,6 @@ static void ui_init_vision(UIState *s) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_B, GL_RED);
   }
   assert(glGetError() == GL_NO_ERROR);
-  s->scene.recording = false;
-  s->scene.touched = false;
-  s->scene.setbtn_count = 0;
-  s->scene.homebtn_count = 0;
 }
 
 static int get_path_length_idx(const cereal::ModelDataV2::XYZTData::Reader &line, const float path_height) {
@@ -236,8 +232,11 @@ static void update_state(UIState *s) {
   if (sm.updated("deviceState")) {
     scene.deviceState = sm["deviceState"].getDeviceState();
     s->scene.cpuPerc = scene.deviceState.getCpuUsagePercent();
-    s->scene.cpuTemp = scene.deviceState.getCpuTempC()[0];
+    s->scene.cpuTemp = (scene.deviceState.getCpuTempC()[0] + scene.deviceState.getCpuTempC()[1] + scene.deviceState.getCpuTempC()[2] + scene.deviceState.getCpuTempC()[3])/4;
+    s->scene.batTemp = scene.deviceState.getBatteryTempC();
+    s->scene.ambientTemp = scene.deviceState.getAmbientTempC();
     s->scene.fanSpeed = scene.deviceState.getFanSpeedPercentDesired();
+    s->scene.batPercent = scene.deviceState.getBatteryPercent();
   }
   if (sm.updated("pandaState")) {
     auto pandaState = sm["pandaState"].getPandaState();
@@ -332,11 +331,9 @@ static void update_state(UIState *s) {
 static void update_params(UIState *s) {
   const uint64_t frame = s->sm->frame;
   UIScene &scene = s->scene;
-  if (frame % (10*UI_FREQ) == 0) {
+  if (frame % (5*UI_FREQ) == 0) {
     scene.is_metric = Params().getBool("IsMetric");
     scene.is_OpenpilotViewEnabled = Params().getBool("IsOpenpilotViewEnabled");
-    scene.driving_record = Params().getBool("OpkrDrivingRecord");
-    scene.end_to_end = Params().getBool("EndToEndToggle");
   }
   //opkr navi on boot
   if (!scene.navi_on_boot && (frame - scene.started_frame > 3*UI_FREQ)) {
@@ -417,6 +414,8 @@ static void update_status(UIState *s) {
       } else {
         s->vipc_client = s->vipc_client_rear;
       }
+      s->scene.end_to_end = Params().getBool("EndToEndToggle");
+      s->scene.driving_record = Params().getBool("OpkrDrivingRecord");
       s->nDebugUi1 = Params().getBool("DebugUi1");
       s->nDebugUi2 = Params().getBool("DebugUi2");
       s->scene.forceGearD = Params().getBool("JustDoGearD");
@@ -433,14 +432,6 @@ static void update_status(UIState *s) {
       s->scene.comma_stock_ui = Params().getBool("CommaStockUI");
       s->scene.apks_enabled = Params().getBool("OpkrApksEnable");
       s->scene.batt_less = Params().getBool("OpkrBattLess");
-      Params().put("OpkrSpeedBump", "0", 1);
-      Params().put("OpkrMapEnable", "0", 1);
-      //opkr navi on boot
-      s->scene.map_on_top = false;
-      s->scene.map_on_overlay = false;
-      s->scene.map_is_running = false;
-      s->scene.move_to_background = false;
-      s->scene.navi_on_boot = false;
     } else {
       s->vipc_client->connected = false;
     }
@@ -479,8 +470,8 @@ void QUIState::update() {
   update_sockets(&ui_state);
   update_state(&ui_state);
   update_status(&ui_state);
-  update_vision(&ui_state);
   dashcam(&ui_state);
+  update_vision(&ui_state);
 
   if (ui_state.scene.started != started_prev) {
     started_prev = ui_state.scene.started;
@@ -523,7 +514,6 @@ void Device::setAwake(bool on, bool reset) {
   if (reset) {
     awake_timeout = 30 * UI_FREQ;
     scene.scr.nTime = scene.scr.autoScreenOff * 60 * UI_FREQ;
-   // printf("Device::setAwake=%d \n", scene.scr.nTime);
   }
 }
 
@@ -539,10 +529,6 @@ void Device::updateBrightness(const UIState &s) {
   if (!awake) {
     brightness = 0;
   }
-  else if( s.scene.scr.brightness )  // atom
-  {
-    brightness = 255 * (s.scene.scr.brightness * 0.002);
-  }
 
   if (brightness != last_brightness) {
     std::thread{Hardware::set_brightness, brightness}.detach();
@@ -557,7 +543,7 @@ void Device::updateWakefulness(const UIState &s) {
   if( !s.scene.scr.autoScreenOff || !s.scene.ignition )
   {
     should_wake = s.scene.started || s.scene.ignition;
-    if (!should_wake ) {
+    if (!should_wake) {
       // tap detection while display is off
       bool accel_trigger = abs(s.scene.accel_sensor - accel_prev) > 0.2;
       bool gyro_trigger = abs(s.scene.gyro_sensor - gyro_prev) > 0.15;
@@ -567,7 +553,6 @@ void Device::updateWakefulness(const UIState &s) {
     }
   }
 
- // printf("updateWakefulness started = %d  ignition=%d \n", s.scene.started, s.scene.ignition );  
   ScreenAwake();
   setAwake(awake_timeout, should_wake);
 }
@@ -576,34 +561,29 @@ void Device::updateWakefulness(const UIState &s) {
 //  atom
 void Device::ScreenAwake() 
 {
-  UIState &s = QUIState::ui_state;  
-  const bool draw_alerts = s.scene.started;
-  const float speed = s.scene.car_state.getVEgo();
+  UIScene  &scene = QUIState::ui_state.scene;
+  const bool draw_alerts = scene.started;
+  const float speed = scene.car_state.getVEgo();
 
-  if( s.scene.scr.nTime > 0 )
+  if( scene.scr.nTime > 0 )
   {
     awake_timeout = 30 * UI_FREQ;
-    s.scene.scr.nTime--;
+    scene.scr.nTime--;
   }
-  else if(s.scene.ignition && (speed < 1))
+  else if( scene.ignition && (speed < 1))
   {
     awake_timeout = 30 * UI_FREQ;
   }
-  else if( s.scene.scr.autoScreenOff && s.scene.scr.nTime == 0)
+  else if( scene.scr.autoScreenOff && scene.scr.nTime == 0)
   {
    // awake = false;
   }
 
-  int  cur_key = s.scene.scr.awake;
-  if (draw_alerts && s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE) 
+  int  cur_key = scene.scr.awake;
+  if (draw_alerts && scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE) 
   {
       cur_key += 1;
   }
-
-  // static int  time_disp = 0;
-  // time_disp++;
-  //if( (time_disp % (2*UI_FREQ)) == 0 )
-   //   printf("ScreenAwake awake = %d draw_alerts = %d  scr.nTime=%d  time=%d\n", cur_key, draw_alerts, s.scene.scr.nTime, time_disp );  
 
   static int old_key;
   if( cur_key != old_key )
