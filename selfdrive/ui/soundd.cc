@@ -80,10 +80,10 @@ private slots:
       if (alert.sound != AudibleAlert::NONE) {
         auto &[sound, loops] = sounds[alert.sound];
         sound.setLoopCount(loops);
-        if (volume2 < -0.03) {
+        if ((std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01) < -0.03) {
           sound.setVolume(0.0);
-        } else if (volume2 > 0.03){
-          sound.setVolume(volume2);
+        } else if ((std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01) > 0.03) {
+          sound.setVolume(std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01);
         } else {
           sound.setVolume(volume);
         }
