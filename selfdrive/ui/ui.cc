@@ -509,11 +509,11 @@ void Device::updateBrightness(const UIState &s) {
   } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE) {
     sleep_time = s.scene.scr.autoScreenOff * 60 * UI_FREQ;
   } else if (sleep_time > 0.1) {
-    sleep_time = std::max(sleep_time - 1, 0);
+    sleep_time--;
   }
 
   int brightness = brightness_filter.update(clipped_brightness);
-  if (!awake || (sleep_time == 0 && s.scene.scr.autoScreenOff != 0)) {
+  if (!awake || (sleep_time <= 0 && s.scene.scr.autoScreenOff != 0)) {
     brightness = 0;
   }
 
