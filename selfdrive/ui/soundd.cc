@@ -85,7 +85,7 @@ private slots:
         } else if (volume2 > 0.03){
           sound.setVolume(volume2);
         } else {
-          sound.setVolume(volume));
+          sound.setVolume(volume);
         }
         sound.play();
       }
