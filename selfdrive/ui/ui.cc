@@ -328,10 +328,8 @@ static void update_state(UIState *s) {
 static void update_params(UIState *s) {
   const uint64_t frame = s->sm->frame;
   UIScene &scene = s->scene;
-  if (frame % (15*UI_FREQ) == 0) {
-    scene.is_metric = Params().getBool("IsMetric");
+  if (frame % (20*UI_FREQ) == 0) {
     scene.is_OpenpilotViewEnabled = Params().getBool("IsOpenpilotViewEnabled");
-    scene.end_to_end = Params().getBool("EndToEndToggle");
   }
   //opkr navi on boot
   if (!scene.navi_on_boot && (frame - scene.started_frame > 3*UI_FREQ)) {
@@ -408,6 +406,8 @@ static void update_status(UIState *s) {
       } else {
         s->vipc_client = s->vipc_client_rear;
       }
+      s->scene.is_metric = Params().getBool("IsMetric");
+      s->scene.end_to_end = Params().getBool("EndToEndToggle");
       s->scene.driving_record = Params().getBool("OpkrDrivingRecord");
       s->nDebugUi1 = Params().getBool("DebugUi1");
       s->nDebugUi2 = Params().getBool("DebugUi2");
