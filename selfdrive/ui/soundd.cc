@@ -55,6 +55,7 @@ private slots:
         volume = util::map_val((*sm)["carState"].getCarState().getVEgo(), 0.f, 20.f,
                               Hardware::MIN_VOLUME, Hardware::MAX_VOLUME);
       }
+    }
     if (sm->updated("controlsState")) {
       const cereal::ControlsState::Reader &cs = (*sm)["controlsState"].getControlsState();
       setAlert({QString::fromStdString(cs.getAlertText1()),
