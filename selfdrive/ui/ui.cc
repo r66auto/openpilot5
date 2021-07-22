@@ -328,7 +328,7 @@ static void update_state(UIState *s) {
 static void update_params(UIState *s) {
   const uint64_t frame = s->sm->frame;
   UIScene &scene = s->scene;
-  if (frame % (10*UI_FREQ) == 0) {
+  if (frame % (5*UI_FREQ) == 0) {
     scene.is_OpenpilotViewEnabled = Params().getBool("IsOpenpilotViewEnabled");
     scene.end_to_end = Params().getBool("EndToEndToggle");
   }
