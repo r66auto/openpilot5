@@ -503,16 +503,17 @@ void Device::updateBrightness(const UIState &s) {
   float brightness_b = 10;
   float brightness_m = 0.1;
   float clipped_brightness = std::min(100.0f, (s.scene.light_sensor * brightness_m) + brightness_b);
+  float sleep_time = s.scene.scr.autoScreenOff * 60 * UI_FREQ;
   if (!s.scene.started) {
     clipped_brightness = BACKLIGHT_OFFROAD;
   } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE) {
-    s.scene.scr.nTime = s.scene.scr.autoScreenOff * 60 * UI_FREQ;
-  } else if (s.scene.scr.nTime > 0.1) {
-    s.scene.scr.nTime = std::max(s.scene.scr.nTime - 1, 0);
+    sleep_time = s.scene.scr.autoScreenOff * 60 * UI_FREQ;
+  } else if (sleep_time > 0.1) {
+    sleep_time = std::max(sleep_time - 1, 0);
   }
 
   int brightness = brightness_filter.update(clipped_brightness);
-  if (!awake || (s.scene.scr.nTime == 0 && s.scene.scr.autoScreenOff != 0)) {
+  if (!awake || (sleep_time == 0 && s.scene.scr.autoScreenOff != 0)) {
     brightness = 0;
   }
 
