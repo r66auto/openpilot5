@@ -9,11 +9,13 @@
 
 #include "selfdrive/common/util.h"
 #include "selfdrive/hardware/base.h"
+#include "selfdrive/common/params.h"
 
 class HardwareEon : public HardwareNone {
 public:
   static constexpr float MAX_VOLUME = 1.0;
   static constexpr float MIN_VOLUME = 0.5;
+  static constexpr float VAR_VOLUME = std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01;
 
   static bool EON() { return true; }
   static std::string get_os_version() {
