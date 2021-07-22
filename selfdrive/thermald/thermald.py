@@ -472,7 +472,7 @@ def thermald_thread():
          started_seen and opkrAutoShutdown and (sec_since_boot() - off_ts) > opkrAutoShutdown and not os.path.isfile(pandaflash_ongoing):
         os.system('LD_LIBRARY_PATH="" svc power shutdown')
 
-      if (count % int(30. / DT_TRML)) == 0:
+      if (count % int(1. / DT_TRML)) == 0:
         if int(params.get("OpkrForceShutdown", encoding="utf8")) != 0 and not started_seen and msg.deviceState.batteryStatus == "Discharging":
           shutdown_option = int(params.get("OpkrForceShutdown", encoding="utf8"))
           if shutdown_option == 1:
