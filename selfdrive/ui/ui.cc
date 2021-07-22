@@ -421,10 +421,7 @@ static void update_status(UIState *s) {
       s->scene.comma_stock_ui = Params().getBool("CommaStockUI");
       s->scene.apks_enabled = Params().getBool("OpkrApksEnable");
       s->scene.batt_less = Params().getBool("OpkrBattLess");
-      s->scene.recording = false;
-      s->scene.touched = false;
-      s->scene.setbtn_count = 0;
-      s->scene.homebtn_count = 0;
+
       //opkr navi on boot
       s->scene.map_on_top = false;
       s->scene.map_on_overlay = false;
