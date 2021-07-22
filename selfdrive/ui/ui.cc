@@ -328,7 +328,8 @@ static void update_state(UIState *s) {
 static void update_params(UIState *s) {
   const uint64_t frame = s->sm->frame;
   UIScene &scene = s->scene;
-  if (frame % (5*UI_FREQ) == 0) {
+  if (frame % (15*UI_FREQ) == 0) {
+    scene.is_metric = Params().getBool("IsMetric");
     scene.is_OpenpilotViewEnabled = Params().getBool("IsOpenpilotViewEnabled");
     scene.end_to_end = Params().getBool("EndToEndToggle");
   }
@@ -394,10 +395,6 @@ static void update_status(UIState *s) {
       s->status = STATUS_DISENGAGED;
       s->scene.started_frame = s->sm->frame;
 
-      s->scene.is_metric = Params().getBool("IsMetric");
-      s->scene.is_OpenpilotViewEnabled = Params().getBool("IsOpenpilotViewEnabled");
-      s->scene.driving_record = Params().getBool("OpkrDrivingRecord");
-      s->scene.end_to_end = Params().getBool("EndToEndToggle");
       s->wide_camera = Hardware::TICI() ? Params().getBool("EnableWideCamera") : false;
 
       // Update intrinsics matrix after possible wide camera toggle change
@@ -411,6 +408,7 @@ static void update_status(UIState *s) {
       } else {
         s->vipc_client = s->vipc_client_rear;
       }
+      s->scene.driving_record = Params().getBool("OpkrDrivingRecord");
       s->nDebugUi1 = Params().getBool("DebugUi1");
       s->nDebugUi2 = Params().getBool("DebugUi2");
       s->scene.forceGearD = Params().getBool("JustDoGearD");
