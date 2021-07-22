@@ -229,7 +229,7 @@ static void update_state(UIState *s) {
   if (sm.updated("deviceState")) {
     scene.deviceState = sm["deviceState"].getDeviceState();
     s->scene.cpuPerc = scene.deviceState.getCpuUsagePercent();
-    s->scene.cpuTemp = (scene.deviceState.getCpuTempC()[0] + scene.deviceState.getCpuTempC()[1] + scene.deviceState.getCpuTempC()[2] + scene.deviceState.getCpuTempC()[3]) / 4
+    s->scene.cpuTemp = (scene.deviceState.getCpuTempC()[0] + scene.deviceState.getCpuTempC()[1] + scene.deviceState.getCpuTempC()[2] + scene.deviceState.getCpuTempC()[3])/4;
     s->scene.batTemp = scene.deviceState.getBatteryTempC();
     s->scene.ambientTemp = scene.deviceState.getAmbientTempC();
     s->scene.fanSpeed = scene.deviceState.getFanSpeedPercentDesired();

@@ -103,6 +103,7 @@ private slots:
 
 private:
   Alert alert;
+  float volume = Hardware::MIN_VOLUME;
   std::map<AudibleAlert, std::pair<QSoundEffect, int>> sounds;
   SubMaster *sm;
 };
@@ -112,6 +113,5 @@ int main(int argc, char **argv) {
 
   QApplication a(argc, argv);
   Sound sound;
-  float volume = Hardware::MIN_VOLUME;
   return a.exec();
 }
