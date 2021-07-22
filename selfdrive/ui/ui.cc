@@ -229,8 +229,11 @@ static void update_state(UIState *s) {
   if (sm.updated("deviceState")) {
     scene.deviceState = sm["deviceState"].getDeviceState();
     s->scene.cpuPerc = scene.deviceState.getCpuUsagePercent();
-    s->scene.cpuTemp = scene.deviceState.getCpuTempC()[0];
+    s->scene.cpuTemp = (scene.deviceState.getCpuTempC()[0] + scene.deviceState.getCpuTempC()[1] + scene.deviceState.getCpuTempC()[2] + scene.deviceState.getCpuTempC()[3]) / 4
+    s->scene.batTemp = scene.deviceState.getBatteryTempC();
+    s->scene.ambientTemp = scene.deviceState.getAmbientTempC();
     s->scene.fanSpeed = scene.deviceState.getFanSpeedPercentDesired();
+    s->scene.batPercent = scene.deviceState.getBatteryPercent();
   }
   if (sm.updated("pandaState")) {
     auto pandaState = sm["pandaState"].getPandaState();
@@ -326,9 +329,7 @@ static void update_params(UIState *s) {
   const uint64_t frame = s->sm->frame;
   UIScene &scene = s->scene;
   if (frame % (10*UI_FREQ) == 0) {
-    scene.is_metric = Params().getBool("IsMetric");
     scene.is_OpenpilotViewEnabled = Params().getBool("IsOpenpilotViewEnabled");
-    scene.driving_record = Params().getBool("OpkrDrivingRecord");
     scene.end_to_end = Params().getBool("EndToEndToggle");
   }
   //opkr navi on boot
@@ -393,6 +394,10 @@ static void update_status(UIState *s) {
       s->status = STATUS_DISENGAGED;
       s->scene.started_frame = s->sm->frame;
 
+      s->scene.is_metric = Params().getBool("IsMetric");
+      s->scene.is_OpenpilotViewEnabled = Params().getBool("IsOpenpilotViewEnabled");
+      s->scene.driving_record = Params().getBool("OpkrDrivingRecord");
+      s->scene.end_to_end = Params().getBool("EndToEndToggle");
       s->wide_camera = Hardware::TICI() ? Params().getBool("EnableWideCamera") : false;
 
       // Update intrinsics matrix after possible wide camera toggle change
@@ -471,7 +476,7 @@ void QUIState::update() {
   update_vision(&ui_state);
   dashcam(&ui_state);
 
-  if (ui_state.scene.started != started_prev) {
+  if (ui_state.scene.started != started_prev || ui_state.sm->frame == 1) {
     started_prev = ui_state.scene.started;
     emit offroadTransition(!ui_state.scene.started);
 

@@ -75,9 +75,9 @@ void HomeWindow::mousePressEvent(QMouseEvent* e) {
     effect1.setSource(QUrl::fromLocalFile("/data/openpilot/selfdrive/assets/sounds/warning_1.wav"));
     //effect1.setLoopCount(1);
     //effect1.setLoopCount(QSoundEffect::Infinite);
-    float volume1 = 0.5f;
+    float volume1 = 0.5;
     if (QUIState::ui_state.scene.scr.nVolumeBoost < 0) {
-      volume1 = 0.0f;
+      volume1 = 0.0;
     } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
       volume1 = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
     }
@@ -93,9 +93,9 @@ void HomeWindow::mousePressEvent(QMouseEvent* e) {
     effect2.setSource(QUrl::fromLocalFile("/data/openpilot/selfdrive/assets/sounds/warning_1.wav"));
     //effect1.setLoopCount(1);
     //effect1.setLoopCount(QSoundEffect::Infinite);
-    float volume2 = 0.5f;
+    float volume2 = 0.5;
     if (QUIState::ui_state.scene.scr.nVolumeBoost < 0) {
-      volume2 = 0.0f;
+      volume2 = 0.0;
     } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
       volume2 = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
     }
@@ -122,9 +122,9 @@ void HomeWindow::mousePressEvent(QMouseEvent* e) {
     effect3.setSource(QUrl::fromLocalFile("/data/openpilot/selfdrive/assets/sounds/warning_1.wav"));
     //effect1.setLoopCount(1);
     //effect1.setLoopCount(QSoundEffect::Infinite);
-    float volume3 = 0.5f;
+    float volume3 = 0.5;
     if (QUIState::ui_state.scene.scr.nVolumeBoost < 0) {
-      volume3 = 0.0f;
+      volume3 = 0.0;
     } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
       volume3 = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
     }

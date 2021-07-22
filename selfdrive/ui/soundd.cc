@@ -90,7 +90,11 @@ private slots:
       if (alert.sound != AudibleAlert::NONE) {
         auto &[sound, loops] = sounds[alert.sound];
         sound.setLoopCount(loops);
-        if (QUIState::ui_state.scene.scr.nVolumeBoost != 0) volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+        if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
+          volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
+        } else if (QUIState::ui_state.scene.scr.nVolumeBoost < 0) {
+          volume = 0.0;
+        }
         sound.setVolume(volume);
         sound.play();
       }
@@ -99,7 +103,6 @@ private slots:
 
 private:
   Alert alert;
-  float volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
   std::map<AudibleAlert, std::pair<QSoundEffect, int>> sounds;
   SubMaster *sm;
 };
@@ -109,5 +112,6 @@ int main(int argc, char **argv) {
 
   QApplication a(argc, argv);
   Sound sound;
+  float volume = Hardware::MIN_VOLUME;
   return a.exec();
 }

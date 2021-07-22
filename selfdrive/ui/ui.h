@@ -138,6 +138,9 @@ typedef struct UIScene {
 
   int cpuPerc;
   float cpuTemp;
+  float batTemp;
+  float ambientTemp;
+  float batPercent;
   bool rightblindspot;
   bool leftblindspot;
   bool leftBlinker;
