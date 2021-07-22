@@ -55,13 +55,6 @@ private slots:
         volume = util::map_val((*sm)["carState"].getCarState().getVEgo(), 0.f, 20.f,
                               Hardware::MIN_VOLUME, Hardware::MAX_VOLUME);
       }
-    } else {
-      if (QUIState::ui_state.scene.scr.nVolumeBoost < 0) {
-        volume = 0.0;
-      } else if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
-        volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
-      }
-    }
     if (sm->updated("controlsState")) {
       const cereal::ControlsState::Reader &cs = (*sm)["controlsState"].getControlsState();
       setAlert({QString::fromStdString(cs.getAlertText1()),
@@ -90,11 +83,6 @@ private slots:
       if (alert.sound != AudibleAlert::NONE) {
         auto &[sound, loops] = sounds[alert.sound];
         sound.setLoopCount(loops);
-        if (QUIState::ui_state.scene.scr.nVolumeBoost > 1) {
-          volume = QUIState::ui_state.scene.scr.nVolumeBoost * 0.01;
-        } else if (QUIState::ui_state.scene.scr.nVolumeBoost < 0) {
-          volume = 0.0;
-        }
         sound.setVolume(volume);
         sound.play();
       }
