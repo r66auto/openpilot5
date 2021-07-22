@@ -112,10 +112,13 @@ typedef struct UIScene {
   cereal::PandaState::PandaType pandaType;
 
   bool brakePress;
-  bool recording;
-  bool touched;
-  bool map_on_top;
-  bool map_on_overlay;
+  bool recording = false;
+  bool touched = false;
+  bool map_on_top = false;
+  bool map_on_overlay = false;
+  bool map_is_running = false;
+  bool move_to_background = false;
+  bool navi_on_boot = false;
 
   float gpsAccuracyUblox;
   float altitudeUblox;
@@ -123,6 +126,9 @@ typedef struct UIScene {
 
   int cpuPerc;
   float cpuTemp;
+  float batTemp;
+  float ambientTemp;
+  float batPercent;
   bool rightblindspot;
   bool leftblindspot;
   bool leftBlinker;
@@ -159,18 +165,15 @@ typedef struct UIScene {
   float steerMax_V;
   int speed_lim_off;
   bool monitoring_mode;
-  int setbtn_count;
-  int homebtn_count;
+  int setbtn_count = 0;
+  int homebtn_count = 0;
   bool forceGearD;
   bool comma_stock_ui;
-  bool map_is_running;
   bool apks_enabled;
   bool is_OpenpilotViewEnabled;
   bool driving_record;
-  bool move_to_background;
   float steer_actuator_delay;
   bool batt_less;
-  bool navi_on_boot;
   int cruise_gap;
   int dynamic_tr_mode;
   float dynamic_tr_value;
@@ -210,7 +213,7 @@ typedef struct UIScene {
      int  nTime;
      int  autoScreenOff;
      int  brightness;
-     int  nVolumeBoost;
+     int  nVolumeBoost = 0;
      int  awake;
   } scr;
 
@@ -323,7 +326,7 @@ private:
   const float accel_samples = 5*UI_FREQ;
 
   bool awake;
-  int awake_timeout = 300;
+  int awake_timeout = 0;
   float accel_prev = 0;
   float gyro_prev = 0;
   float last_brightness = 0;
