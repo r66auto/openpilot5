@@ -94,7 +94,7 @@ private slots:
 
 private:
   Alert alert;
-  float volume = Hardware::MIN_VOLUME;
+  //float volume = Hardware::MIN_VOLUME;
   std::map<AudibleAlert, std::pair<QSoundEffect, int>> sounds;
   SubMaster *sm;
 };
