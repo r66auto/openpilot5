@@ -95,7 +95,6 @@ private slots:
 private:
   Alert alert;
   float volume = Hardware::MIN_VOLUME;
-  float volume2 = std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01;
   std::map<AudibleAlert, std::pair<QSoundEffect, int>> sounds;
   SubMaster *sm;
 };
