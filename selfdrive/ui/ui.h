@@ -351,7 +351,6 @@ private:
 
   void updateBrightness(const UIState &s);
   void updateWakefulness(const UIState &s);
-  void ScreenAwake();
 
 signals:
   void displayPowerChanged(bool on);

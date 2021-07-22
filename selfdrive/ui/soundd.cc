@@ -27,7 +27,12 @@ public:
       {AudibleAlert::CHIME_WARNING2_REPEAT, "../assets/sounds/warning_2.wav", false},
       {AudibleAlert::CHIME_WARNING_REPEAT, "../assets/sounds/warning_repeat.wav", false},
       {AudibleAlert::CHIME_ERROR, "../assets/sounds/error.wav", false},
-      {AudibleAlert::CHIME_PROMPT, "../assets/sounds/error.wav", false}
+      {AudibleAlert::CHIME_PROMPT, "../assets/sounds/error.wav", false},
+      {AudibleAlert::CHIME_MODE_OPENPILOT, "../assets/sounds/modeopenpilot.wav", false},
+      {AudibleAlert::CHIME_MODE_DISTCURV, "../assets/sounds/modedistcurv.wav", false},
+      {AudibleAlert::CHIME_MODE_DISTANCE, "../assets/sounds/modedistance.wav", false},
+      {AudibleAlert::CHIME_MODE_ONEWAY, "../assets/sounds/modeoneway.wav", false},
+      {AudibleAlert::CHIME_MODE_MAPONLY, "../assets/sounds/modemaponly.wav", false}
     };
     for (auto &[alert, fn, loops] : sound_list) {
       sounds[alert].first.setSource(QUrl::fromLocalFile(fn));
@@ -50,7 +55,7 @@ private slots:
     if (sm->updated("carState")) {
       // scale volume with speed
       volume = util::map_val((*sm)["carState"].getCarState().getVEgo(), 0.f, 20.f,
-                            Hardware::MIN_VOLUME, Hardware::MAX_VOLUME);
+                             Hardware::MIN_VOLUME, Hardware::MAX_VOLUME);
     }
     if (sm->updated("controlsState")) {
       const cereal::ControlsState::Reader &cs = (*sm)["controlsState"].getControlsState();
