@@ -326,6 +326,7 @@ static void update_params(UIState *s) {
   UIScene &scene = s->scene;
   if (frame % (5*UI_FREQ) == 0) {
     scene.is_metric = Params().getBool("IsMetric");
+    scene.is_OpenpilotViewEnabled = Params().getBool("IsOpenpilotViewEnabled");
   }
   //opkr navi on boot
   if (!scene.navi_on_boot && (frame - scene.started_frame > 3*UI_FREQ)) {
@@ -471,7 +472,7 @@ void QUIState::update() {
   dashcam(&ui_state);
   update_vision(&ui_state);
 
-  if (ui_state.scene.started != started_prev || ui_state.sm->frame == 1) {
+  if (ui_state.scene.started != started_prev) {
     started_prev = ui_state.scene.started;
     emit offroadTransition(!ui_state.scene.started);
 
