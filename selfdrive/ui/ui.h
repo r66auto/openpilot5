@@ -351,7 +351,7 @@ private:
   QTimer *timer;
   int sleep_time = 0;
 
-  void updateBrightness(const UIState &s);
+  void updateBrightness(UIState &s);
   void updateWakefulness(const UIState &s);
 
 signals:

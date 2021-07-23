@@ -507,14 +507,14 @@ void Device::setAwake(bool on, bool reset) {
   }
 }
 
-void Device::updateBrightness(const UIState &s) {
+void Device::updateBrightness(UIState &s) {
   float brightness_b = 10;
   float brightness_m = 0.1;
   float clipped_brightness = std::min(100.0f, (s.scene.light_sensor * brightness_m) + brightness_b);
   if (!s.scene.started) {
     clipped_brightness = BACKLIGHT_OFFROAD;
   } else if (s.scene.touched2) {
-    s->scene.touched2 = false;
+    s.scene.touched2 = false;
     sleep_time = s.scene.scr.nTime;
   } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE) {
     sleep_time = s.scene.scr.nTime;
