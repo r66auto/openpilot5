@@ -193,6 +193,7 @@ typedef struct UIScene {
   int dynamic_tr_mode;
   float dynamic_tr_value;
   bool touched2 = false;
+  float brightness_off;
 
   cereal::DeviceState::Reader deviceState;
   cereal::RadarState::LeadData::Reader lead_data[2];

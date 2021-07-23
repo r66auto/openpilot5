@@ -417,6 +417,7 @@ static void update_status(UIState *s) {
       s->scene.scr.brightness = std::stoi(Params().get("OpkrUIBrightness"));
       s->scene.scr.nVolumeBoost = std::stoi(Params().get("OpkrUIVolumeBoost"));
       s->scene.scr.autoScreenOff = std::stoi(Params().get("OpkrAutoScreenOff"));
+      s->scene.brightness_off = std::stoi(Params().get("OpkrUIBrightnessOff"));
       if (s->scene.scr.autoScreenOff > 0) {
         s->scene.scr.nTime = s->scene.scr.autoScreenOff * 60 * UI_FREQ;
       } else if (s->scene.scr.autoScreenOff == 0) {
@@ -527,9 +528,9 @@ void Device::updateBrightness(const UIState &s) {
   if (!awake) {
     brightness = 0;
   } else if (s.scene.started && sleep_time == 0 && s.scene.scr.autoScreenOff != -2) {
-    brightness = 0;
+    brightness = s.scene.brightness_off * 0.9;
   } else if( s.scene.scr.brightness ) {
-    brightness = 255 * (s.scene.scr.brightness * 0.002);
+    brightness = s.scene.scr.brightness * 0.9;
   }
 
   printf("sleep_time=%d  scr_off=%d  started=%d  brightness=%d\n", sleep_time, s.scene.scr.autoScreenOff, s.scene.started, brightness);
