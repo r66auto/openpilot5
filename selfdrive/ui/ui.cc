@@ -514,7 +514,7 @@ void Device::updateBrightness(const UIState &s) {
   float clipped_brightness = std::min(100.0f, (s.scene.light_sensor * brightness_m) + brightness_b);
   if (!s.scene.started) {
     clipped_brightness = BACKLIGHT_OFFROAD;
-  } else if (sleep_time <= 0 && s.scene.scr.autoScreenOff != -2 && s.scene.touched) {
+  } else if (sleep_time <= 0 && s.scene.scr.autoScreenOff != -2 && s.scene.touched2) {
     Params().put("Touched", "0", 1);
     sleep_time = s.scene.scr.nTime;
   } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE) {
