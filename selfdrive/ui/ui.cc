@@ -2,7 +2,6 @@
 
 #include <unistd.h>
 #include <string>  //opkr
-#include <stdlib.h> //opkr
 
 #include <cassert>
 #include <cmath>
@@ -328,6 +327,7 @@ static void update_params(UIState *s) {
   if (frame % (5*UI_FREQ) == 0) {
     scene.is_metric = Params().getBool("IsMetric");
     scene.is_OpenpilotViewEnabled = Params().getBool("IsOpenpilotViewEnabled");
+    scene.touched2 = Params().getBool("Touched");
   }
   //opkr navi on boot
   if (!scene.navi_on_boot && (frame - scene.started_frame > 3*UI_FREQ)) {
@@ -514,8 +514,8 @@ void Device::updateBrightness(const UIState &s) {
   float clipped_brightness = std::min(100.0f, (s.scene.light_sensor * brightness_m) + brightness_b);
   if (!s.scene.started) {
     clipped_brightness = BACKLIGHT_OFFROAD;
-  } else if (s.scene.scr.autoScreenOff != -2 && getenv("SO_TOUCHED") == "1") {
-    setenv("SO_TOUCHED", "0", true);
+  } else if (s.scene.scr.autoScreenOff != -2 && s.scene.touched2) {
+    Params().put("Touched", "0", 1);
     sleep_time = s.scene.scr.nTime;
   } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE) {
     sleep_time = s.scene.scr.nTime;
