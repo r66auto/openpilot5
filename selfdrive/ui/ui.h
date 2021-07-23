@@ -349,7 +349,7 @@ private:
   FirstOrderFilter brightness_filter;
 
   QTimer *timer;
-  int sleep_time = 0;
+  int sleep_time = -1;
 
   void updateBrightness(const UIState &s);
   void updateWakefulness(const UIState &s);
