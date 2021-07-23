@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QProcess> // opkr
 #include <QSoundEffect> // opkr
+#include <stdlib.h> //opkr
 
 #include "selfdrive/common/params.h"
 #include "selfdrive/ui/qt/util.h"
@@ -196,7 +197,7 @@ void HomeWindow::mousePressEvent(QMouseEvent* e) {
   QUIState::ui_state.scene.setbtn_count = 0;
   QUIState::ui_state.scene.homebtn_count = 0;
   if (QUIState::ui_state.scene.scr.autoScreenOff != -2) {
-    Params().put("Touched", "1", 1);
+    setenv("SO_TOUCHED", "1", true);
   }
 }
 

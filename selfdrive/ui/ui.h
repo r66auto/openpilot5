@@ -192,7 +192,6 @@ typedef struct UIScene {
   int cruise_gap;
   int dynamic_tr_mode;
   float dynamic_tr_value;
-  bool touched2 = false;
 
   cereal::DeviceState::Reader deviceState;
   cereal::RadarState::LeadData::Reader lead_data[2];
