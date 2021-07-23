@@ -297,11 +297,8 @@ static void update_state(UIState *s) {
 
     scene.light_sensor = std::clamp<float>((1023.0 / max_lines) * (max_lines - camera_state.getIntegLines() * gain), 0.0, 1023.0);
   }
-  if (Params().getBool("IsOpenpilotViewEnabled")) {
-    scene.started = sm["deviceState"].getDeviceState().getStarted();
-  } else {
-    scene.started = sm["deviceState"].getDeviceState().getStarted() && scene.ignition;
-  }
+  scene.started = sm["deviceState"].getDeviceState().getStarted();
+  //scene.started = sm["deviceState"].getDeviceState().getStarted() && scene.ignition;
   if (sm.updated("lateralPlan")) {
     scene.lateral_plan = sm["lateralPlan"].getLateralPlan();
     auto data = sm["lateralPlan"].getLateralPlan();
@@ -336,7 +333,7 @@ static void update_params(UIState *s) {
     scene.is_OpenpilotViewEnabled = Params().getBool("IsOpenpilotViewEnabled");
   }
   //opkr navi on boot
-  if (!scene.navi_on_boot && (frame - scene.started_frame > 3*UI_FREQ)) {
+  if (!scene.navi_on_boot && (frame - scene.started_frame > 5*UI_FREQ)) {
     if (Params().getBool("OpkrRunNaviOnBoot") && Params().getBool("ControlsReady") && (Params().get("CarParams").size() > 0)) {
       scene.navi_on_boot = true;
       scene.map_is_running = true;
@@ -348,7 +345,7 @@ static void update_params(UIState *s) {
       scene.navi_on_boot = true;
     }
   }
-  if (!scene.move_to_background && (frame - scene.started_frame > 8*UI_FREQ)) {
+  if (!scene.move_to_background && (frame - scene.started_frame > 10*UI_FREQ)) {
     if (Params().getBool("OpkrRunNaviOnBoot") && Params().getBool("OpkrMapEnable") && Params().getBool("ControlsReady") && (Params().get("CarParams").size() > 0)) {
       scene.move_to_background = true;
       scene.map_on_top = false;
