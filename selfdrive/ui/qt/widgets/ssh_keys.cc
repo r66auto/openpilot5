@@ -592,7 +592,7 @@ void BrightnessControl::refresh() {
   btnplus.setText("＋");
 }
 
-AutoScreenOff::AutoScreenOff() : AbstractControl("EON 화면 끄기(분)", "주행 시작 후 화면보호를 위해 이온화면이 꺼지는 시간을 설정합니다. 터치나 이벤트 발생시 자동으로 켜집니다.", "../assets/offroad/icon_shell.png") 
+AutoScreenOff::AutoScreenOff() : AbstractControl("EON 화면 끄기", "주행 시작 후 화면보호를 위해 이온화면이 꺼지는 시간을 설정합니다. 터치나 이벤트 발생시 자동으로 켜집니다.", "../assets/offroad/icon_shell.png") 
 {
 
   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -624,8 +624,8 @@ AutoScreenOff::AutoScreenOff() : AbstractControl("EON 화면 끄기(분)", "주�
     auto str = QString::fromStdString(params.get("OpkrAutoScreenOff"));
     int value = str.toInt();
     value = value - 1;
-    if (value <= 0 ) {
-      value = 0;
+    if (value <= -2 ) {
+      value = -2;
     }
     QUIState::ui_state.scene.scr.autoScreenOff = value;
     QString values = QString::number(value);
@@ -651,10 +651,14 @@ AutoScreenOff::AutoScreenOff() : AbstractControl("EON 화면 끄기(분)", "주�
 void AutoScreenOff::refresh() 
 {
   QString option = QString::fromStdString(params.get("OpkrAutoScreenOff"));
-  if (option == "0") {
+  if (option == "-2") {
     label.setText(QString::fromStdString("항상켜기"));
+  } else if (option == "-1") {
+    label.setText(QString::fromStdString("15초"));
+  } else if (option == "0") {
+    label.setText(QString::fromStdString("30초"));
   } else {
-    label.setText(QString::fromStdString(params.get("OpkrAutoScreenOff")));
+    label.setText(QString::fromStdString(params.get("OpkrAutoScreenOff")) + "분");
   }
   btnminus.setText("－");
   btnplus.setText("＋");

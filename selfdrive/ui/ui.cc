@@ -414,10 +414,18 @@ static void update_status(UIState *s) {
       s->scene.recording_quality = std::stoi(Params().get("RecordingQuality"));
       s->scene.speed_lim_off = std::stoi(Params().get("OpkrSpeedLimitOffset"));
       s->scene.monitoring_mode = Params().getBool("OpkrMonitoringMode");
-      s->scene.scr.autoScreenOff = std::stoi(Params().get("OpkrAutoScreenOff"));
       s->scene.scr.brightness = std::stoi(Params().get("OpkrUIBrightness"));
       s->scene.scr.nVolumeBoost = std::stoi(Params().get("OpkrUIVolumeBoost"));
-      s->scene.scr.nTime = s->scene.scr.autoScreenOff * 60 * UI_FREQ;
+      s->scene.scr.autoScreenOff = std::stoi(Params().get("OpkrAutoScreenOff"));
+      if (s->scene.scr.autoScreenOff > 0) {
+        s->scene.scr.nTime = s->scene.scr.autoScreenOff * 60 * UI_FREQ;
+      } else if (s->scene.scr.autoScreenOff == 0) {
+        s->scene.scr.nTime = 30 * UI_FREQ;
+      } else if (s->scene.scr.autoScreenOff == -1) {
+        s->scene.scr.nTime = 15 * UI_FREQ;
+      } else {
+        s->scene.scr.nTime = 0;
+      }
       s->scene.comma_stock_ui = Params().getBool("CommaStockUI");
       s->scene.apks_enabled = Params().getBool("OpkrApksEnable");
       s->scene.batt_less = Params().getBool("OpkrBattLess");
@@ -426,6 +434,14 @@ static void update_status(UIState *s) {
     }
   }
   started_prev = s->scene.started;
+  static int sleep_time = std::stoi(Params().get("OpkrAutoScreenOff")) * 60 * UI_FREQ;
+  if (std::stoi(Params().get("OpkrAutoScreenOff")) == 0) {
+    sleep_time = 30 * UI_FREQ;
+  } else if (std::stoi(Params().get("OpkrAutoScreenOff")) == -1) {
+    sleep_time = 15 * UI_FREQ;
+  } else if (std::stoi(Params().get("OpkrAutoScreenOff")) == -2) {
+    sleep_time = 0;
+  }
 }
 
 
@@ -503,9 +519,11 @@ void Device::updateBrightness(const UIState &s) {
   float brightness_b = 10;
   float brightness_m = 0.1;
   float clipped_brightness = std::min(100.0f, (s.scene.light_sensor * brightness_m) + brightness_b);
-  int sleep_time = s.scene.scr.nTime;
   if (!s.scene.started) {
     clipped_brightness = BACKLIGHT_OFFROAD;
+  } else if (s.scene.touched2) {
+    s.scene.touched2 = false;
+    sleep_time = s.scene.scr.nTime;
   } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE) {
     sleep_time = s.scene.scr.nTime;
   } else if (sleep_time > 0) {
@@ -513,7 +531,7 @@ void Device::updateBrightness(const UIState &s) {
   }
 
   int brightness = brightness_filter.update(clipped_brightness);
-  if (!awake || (sleep_time <= 0 && s.scene.scr.autoScreenOff != 0)) {
+  if (!awake || (sleep_time <= 0 && s.scene.scr.autoScreenOff != -2)) {
     brightness = 0;
   } else if( s.scene.scr.brightness ) {
     brightness = 255 * (s.scene.scr.brightness * 0.002);

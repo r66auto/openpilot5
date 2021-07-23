@@ -129,6 +129,7 @@ typedef struct UIScene {
   bool brakePress;
   bool recording = false;
   bool touched = false;
+  bool touched2 = false;
   bool map_on_top = false;
   bool map_on_overlay = false;
   bool map_is_running = false;
