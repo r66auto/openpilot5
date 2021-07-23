@@ -182,7 +182,6 @@ typedef struct UIScene {
   bool monitoring_mode;
   int setbtn_count = 0;
   int homebtn_count = 0;
-  int touchbtn_count = 0;
   bool forceGearD;
   bool comma_stock_ui;
   bool apks_enabled;

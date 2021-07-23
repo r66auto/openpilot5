@@ -424,7 +424,7 @@ static void update_status(UIState *s) {
       } else if (s->scene.scr.autoScreenOff == -1) {
         s->scene.scr.nTime = 15 * UI_FREQ;
       } else {
-        s->scene.scr.nTime = 0;
+        s->scene.scr.nTime = -1;
       }
       s->scene.comma_stock_ui = Params().getBool("CommaStockUI");
       s->scene.apks_enabled = Params().getBool("OpkrApksEnable");
@@ -515,7 +515,7 @@ void Device::updateBrightness(const UIState &s) {
     clipped_brightness = BACKLIGHT_OFFROAD;
   } else if (s.scene.scr.autoScreenOff != -2 && s.scene.touched2) {
     sleep_time = s.scene.scr.nTime;
-  } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE) {
+  } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE && s.scene.scr.autoScreenOff != -2) {
     sleep_time = s.scene.scr.nTime;
   } else if (sleep_time > 0 && s.scene.scr.autoScreenOff != -2) {
     sleep_time--;
@@ -524,11 +524,16 @@ void Device::updateBrightness(const UIState &s) {
   }
 
   int brightness = brightness_filter.update(clipped_brightness);
-  if (!awake || (sleep_time <= 0 && s.scene.scr.autoScreenOff != -2)) {
+  if (!awake) {
     brightness = 0;
+  } else if (s.scene.started && sleep_time == 0 && s.scene.scr.autoScreenOff != -2) {
+    brightness = 0;
+    emit closeSettings();
   } else if( s.scene.scr.brightness ) {
     brightness = 255 * (s.scene.scr.brightness * 0.002);
   }
+
+  printf("sleep_time=%d  scr_off=%d  started=%d  brightness=%d\n", sleep_time, s.scene.scr.autoScreenOff, s.scene.started, brightness);
 
   if (brightness != last_brightness) {
     std::thread{Hardware::set_brightness, brightness}.detach();
