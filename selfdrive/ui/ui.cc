@@ -528,12 +528,12 @@ void Device::updateBrightness(const UIState &s) {
   if (!awake) {
     brightness = 0;
   } else if (s.scene.started && sleep_time == 0 && s.scene.scr.autoScreenOff != -2) {
-    brightness = s.scene.brightness_off * 0.9;
+    brightness = s.scene.brightness_off * 0.99;
   } else if( s.scene.scr.brightness ) {
-    brightness = s.scene.scr.brightness * 0.9;
+    brightness = s.scene.scr.brightness * 0.99;
   }
 
-  printf("sleep_time=%d  scr_off=%d  started=%d  brightness=%d\n", sleep_time, s.scene.scr.autoScreenOff, s.scene.started, brightness);
+  //printf("sleep_time=%d  scr_off=%d  started=%d  brightness=%d\n", sleep_time, s.scene.scr.autoScreenOff, s.scene.started, brightness);
 
   if (brightness != last_brightness) {
     std::thread{Hardware::set_brightness, brightness}.detach();
