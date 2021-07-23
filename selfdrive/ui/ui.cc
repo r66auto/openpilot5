@@ -520,6 +520,8 @@ void Device::updateBrightness(const UIState &s) {
     sleep_time = s.scene.scr.nTime;
   } else if (sleep_time > 0) {
     sleep_time--;
+  } else if (s.scene.started) {
+    sleep_time = s.scene.scr.nTime;
   }
 
   int brightness = brightness_filter.update(clipped_brightness);
