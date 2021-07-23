@@ -319,6 +319,7 @@ public:
 signals:
   void uiUpdate(const UIState &s);
   void offroadTransition(bool offroad);
+  void closeSettings();
 
 private slots:
   void update();
