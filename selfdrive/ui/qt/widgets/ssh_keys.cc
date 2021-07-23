@@ -626,7 +626,7 @@ BrightnessOffControl::BrightnessOffControl() : AbstractControl("EON 화면 끄�
     if (value <= 0 ) {
       value = 0;
     }
-    QUIState::ui_state.scene.scr.brightness = value;
+    QUIState::ui_state.scene.brightness_off = value;
     QString values = QString::number(value);
     params.put("OpkrUIBrightnessOff", values.toStdString());
     refresh();
@@ -639,7 +639,7 @@ BrightnessOffControl::BrightnessOffControl() : AbstractControl("EON 화면 끄�
     if (value >= 100 ) {
       value = 100;
     }
-    QUIState::ui_state.scene.scr.brightness = value;
+    QUIState::ui_state.scene.brightness_off = value;
     QString values = QString::number(value);
     params.put("OpkrUIBrightnessOff", values.toStdString());
     refresh();
