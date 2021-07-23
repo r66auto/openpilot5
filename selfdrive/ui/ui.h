@@ -199,6 +199,8 @@ typedef struct UIScene {
   int cruise_gap;
   int dynamic_tr_mode;
   float dynamic_tr_value;
+  bool touched2 = false;
+  float brightness_off;
 
   cereal::DeviceState::Reader deviceState;
   cereal::RadarState::LeadData::Reader lead_data[2];
@@ -355,10 +357,10 @@ private:
   FirstOrderFilter brightness_filter;
 
   QTimer *timer;
+  int sleep_time = -1;
 
   void updateBrightness(const UIState &s);
   void updateWakefulness(const UIState &s);
-  void ScreenAwake();
 
 signals:
   void displayPowerChanged(bool on);
