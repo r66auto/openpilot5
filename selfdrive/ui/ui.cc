@@ -531,8 +531,6 @@ void Device::updateBrightness(const UIState &s) {
     brightness = 255 * (s.scene.scr.brightness * 0.002);
   }
 
-  printf("sleep_time=%d  scr_off=%d  started=%d  brightness=%d\n", sleep_time, s.scene.scr.autoScreenOff, s.scene.started, brightness);
-
   if (brightness != last_brightness) {
     std::thread{Hardware::set_brightness, brightness}.detach();
   }
