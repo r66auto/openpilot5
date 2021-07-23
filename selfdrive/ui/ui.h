@@ -349,6 +349,14 @@ private:
   FirstOrderFilter brightness_filter;
 
   QTimer *timer;
+  int sleep_time = std::stoi(Params().get("OpkrAutoScreenOff")) * 60 * UI_FREQ;
+  if (std::stoi(Params().get("OpkrAutoScreenOff")) == 0) {
+    sleep_time = 30 * UI_FREQ;
+  } else if (std::stoi(Params().get("OpkrAutoScreenOff")) == -1) {
+    sleep_time = 15 * UI_FREQ;
+  } else if (std::stoi(Params().get("OpkrAutoScreenOff")) == -2) {
+    sleep_time = 0;
+  }
 
   void updateBrightness(const UIState &s);
   void updateWakefulness(const UIState &s);

@@ -195,7 +195,7 @@ void HomeWindow::mousePressEvent(QMouseEvent* e) {
 
   QUIState::ui_state.scene.setbtn_count = 0;
   QUIState::ui_state.scene.homebtn_count = 0;
-  if (QUIState::ui_state.scene.scr.autoScreenOff != 0) {
+  if (QUIState::ui_state.scene.scr.autoScreenOff != -2) {
     QUIState::ui_state.scene.touched2 = true;
   }
 }

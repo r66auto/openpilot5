@@ -434,14 +434,6 @@ static void update_status(UIState *s) {
     }
   }
   started_prev = s->scene.started;
-  static int sleep_time = std::stoi(Params().get("OpkrAutoScreenOff")) * 60 * UI_FREQ;
-  if (std::stoi(Params().get("OpkrAutoScreenOff")) == 0) {
-    sleep_time = 30 * UI_FREQ;
-  } else if (std::stoi(Params().get("OpkrAutoScreenOff")) == -1) {
-    sleep_time = 15 * UI_FREQ;
-  } else if (std::stoi(Params().get("OpkrAutoScreenOff")) == -2) {
-    sleep_time = 0;
-  }
 }
 
 
@@ -522,7 +514,7 @@ void Device::updateBrightness(const UIState &s) {
   if (!s.scene.started) {
     clipped_brightness = BACKLIGHT_OFFROAD;
   } else if (s.scene.touched2) {
-    s.scene.touched2 = false;
+    s->scene.touched2 = false;
     sleep_time = s.scene.scr.nTime;
   } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE) {
     sleep_time = s.scene.scr.nTime;
