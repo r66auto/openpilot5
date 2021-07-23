@@ -356,7 +356,6 @@ private:
 
 signals:
   void displayPowerChanged(bool on);
-  void closeSettings();
 
 public slots:
   void setAwake(bool on, bool reset);

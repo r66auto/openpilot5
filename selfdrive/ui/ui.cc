@@ -528,7 +528,6 @@ void Device::updateBrightness(const UIState &s) {
     brightness = 0;
   } else if (s.scene.started && sleep_time == 0 && s.scene.scr.autoScreenOff != -2) {
     brightness = 0;
-    emit closeSettings();
   } else if( s.scene.scr.brightness ) {
     brightness = 255 * (s.scene.scr.brightness * 0.002);
   }
