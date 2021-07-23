@@ -319,7 +319,6 @@ public:
 signals:
   void uiUpdate(const UIState &s);
   void offroadTransition(bool offroad);
-  void closeSettings();
 
 private slots:
   void update();
@@ -357,6 +356,7 @@ private:
 
 signals:
   void displayPowerChanged(bool on);
+  void closeSettings();
 
 public slots:
   void setAwake(bool on, bool reset);
