@@ -517,7 +517,7 @@ void Device::updateBrightness(const UIState &s) {
     sleep_time = s.scene.scr.nTime;
   } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE && s.scene.scr.autoScreenOff != -2) {
     sleep_time = s.scene.scr.nTime;
-  } else if (sleep_time > 0 && s.scene.scr.autoScreenOff != -2) {
+  } else if (!QUIState::ui_state.sidebar_view && sleep_time > 0 && s.scene.scr.autoScreenOff != -2) {
     sleep_time--;
   } else if (s.scene.started && sleep_time == -1 && s.scene.scr.autoScreenOff != -2) {
     sleep_time = s.scene.scr.nTime;
