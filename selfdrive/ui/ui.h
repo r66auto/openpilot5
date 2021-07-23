@@ -352,12 +352,12 @@ private:
   int sleep_time = 0;
 
   void updateBrightness(UIState &s);
-  void updateWakefulness(const UIState &s);
+  void updateWakefulness(UIState &s);
 
 signals:
   void displayPowerChanged(bool on);
 
 public slots:
   void setAwake(bool on, bool reset);
-  void update(const UIState &s);
+  void update(UIState &s);
 };

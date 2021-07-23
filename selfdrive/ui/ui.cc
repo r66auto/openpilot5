@@ -486,7 +486,7 @@ void QUIState::update() {
 Device::Device(QObject *parent) : brightness_filter(BACKLIGHT_OFFROAD, BACKLIGHT_TS, BACKLIGHT_DT), QObject(parent) {
 }
 
-void Device::update(const UIState &s) {
+void Device::update(UIState &s) {
   updateBrightness(s);
   updateWakefulness(s);
 
@@ -539,7 +539,7 @@ void Device::updateBrightness(UIState &s) {
   last_brightness = brightness;
 }
 
-void Device::updateWakefulness(const UIState &s) {
+void Device::updateWakefulness(UIState &s) {
   awake_timeout = std::max(awake_timeout - 1, 0);
 
   bool should_wake = s.scene.started || s.scene.ignition;
