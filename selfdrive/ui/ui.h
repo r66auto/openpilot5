@@ -129,7 +129,6 @@ typedef struct UIScene {
   bool brakePress;
   bool recording = false;
   bool touched = false;
-  bool touched2 = false;
   bool map_on_top = false;
   bool map_on_overlay = false;
   bool map_is_running = false;
@@ -193,6 +192,7 @@ typedef struct UIScene {
   int cruise_gap;
   int dynamic_tr_mode;
   float dynamic_tr_value;
+  bool touched2 = false;
 
   cereal::DeviceState::Reader deviceState;
   cereal::RadarState::LeadData::Reader lead_data[2];
@@ -351,13 +351,13 @@ private:
   QTimer *timer;
   int sleep_time = 0;
 
-  void updateBrightness(UIState &s);
-  void updateWakefulness(UIState &s);
+  void updateBrightness(const UIState &s);
+  void updateWakefulness(const UIState &s);
 
 signals:
   void displayPowerChanged(bool on);
 
 public slots:
   void setAwake(bool on, bool reset);
-  void update(UIState &s);
+  void update(const UIState &s);
 };
