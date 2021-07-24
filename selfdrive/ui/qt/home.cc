@@ -266,21 +266,21 @@ void OffroadHome::hideEvent(QHideEvent *event) {
 void OffroadHome::refresh() {
   QString dayofweek = "";
   if (QDate::currentDate().dayOfWeek() == 1) {
-    dayofweek = "월요일";
+    dayofweek = "Monday";
   } else if (QDate::currentDate().dayOfWeek() == 2) {
-    dayofweek = "화요일";
+    dayofweek = "Tuesday";
   } else if (QDate::currentDate().dayOfWeek() == 3) {
-    dayofweek = "수요일";
+    dayofweek = "Wednesday";
   } else if (QDate::currentDate().dayOfWeek() == 4) {
-    dayofweek = "목요일";
+    dayofweek = "Thursday";
   } else if (QDate::currentDate().dayOfWeek() == 5) {
-    dayofweek = "금요일";
+    dayofweek = "Friday";
   } else if (QDate::currentDate().dayOfWeek() == 6) {
-    dayofweek = "토요일";
+    dayofweek = "Saturday";
   } else if (QDate::currentDate().dayOfWeek() == 7) {
-    dayofweek = "일요일";
+    dayofweek = "Sunday";
   }
-  date->setText(QDateTime::currentDateTime().toString("yyyy년 M월 d일 " + dayofweek));
+  date->setText(QDateTime::currentDateTime().toString("dddd, MMMM d " + dayofweek));
 
   bool updateAvailable = update_widget->refresh();
   int alerts = alerts_widget->refresh();
@@ -299,6 +299,6 @@ void OffroadHome::refresh() {
   update_notif->setVisible(updateAvailable);
   alert_notif->setVisible(alerts);
   if (alerts) {
-    alert_notif->setText(QString::number(alerts) + " 경고" + (alerts > 1 ? "S" : ""));
+    alert_notif->setText(QString::number(alerts) + " caution" + (alerts > 1 ? "S" : ""));
   }
 }

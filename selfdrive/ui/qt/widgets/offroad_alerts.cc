@@ -24,18 +24,18 @@ AbstractAlert::AbstractAlert(bool hasRebootBtn, QWidget *parent) : QFrame(parent
   QHBoxLayout *footer_layout = new QHBoxLayout();
   main_layout->addLayout(footer_layout);
 
-  QPushButton *dismiss_btn = new QPushButton("해제");
+  QPushButton *dismiss_btn = new QPushButton("DISMISS");
   dismiss_btn->setFixedSize(400, 125);
   footer_layout->addWidget(dismiss_btn, 0, Qt::AlignBottom | Qt::AlignLeft);
   QObject::connect(dismiss_btn, &QPushButton::released, this, &AbstractAlert::dismiss);
 
   if (hasRebootBtn) {
-    QPushButton *rebootBtn = new QPushButton("업데이트 및 재시작");
+    QPushButton *rebootBtn = new QPushButton("Update and Reboot");
     rebootBtn->setFixedSize(600, 125);
     footer_layout->addWidget(rebootBtn, 0, Qt::AlignBottom | Qt::AlignRight);
     QObject::connect(rebootBtn, &QPushButton::released, [=]() { Hardware::reboot(); });
   } else {
-    QPushButton *recheckBtn = new QPushButton("재등록 시도");
+    QPushButton *recheckBtn = new QPushButton("Re-Enroll");
     recheckBtn->setFixedSize(600, 125);
     footer_layout->addWidget(recheckBtn, 0, Qt::AlignBottom | Qt::AlignRight);
     QObject::connect(recheckBtn, &QPushButton::released, [=]() {
