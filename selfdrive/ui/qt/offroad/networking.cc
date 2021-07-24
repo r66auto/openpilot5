@@ -81,6 +81,7 @@ void Networking::connectToNetwork(const Network &n) {
     wifi->activateWifiConnection(n.ssid);
   } else if (n.security_type == SecurityType::OPEN) {
     wifi->connect(n);
+    wifiWidget->refresh();    
   } else if (n.security_type == SecurityType::WPA) {
     QString pass = InputDialog::getText(n.ssid + "의 패스워드를 입력하세요", 8);
     if (!pass.isEmpty()) {
