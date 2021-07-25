@@ -22,7 +22,7 @@ from selfdrive.loggerd.config import get_available_percent
 from selfdrive.pandad import get_expected_signature
 from selfdrive.swaglog import cloudlog
 from selfdrive.thermald.power_monitoring import PowerMonitoring
-from selfdrive.version import get_git_branch, terms_version, training_version
+from selfdrive.version import tested_branch, terms_version, training_version
 
 FW_SIGNATURE = get_expected_signature()
 
@@ -111,7 +111,7 @@ def handle_fan_eon(max_cpu_temp, bat_temp, fan_speed, ignition):
 
   if bat_temp < _BAT_TEMP_THRESHOLD:
     # no max fan speed unless battery is hot
-    fan_speed = min(fan_speed, _FAN_SPEEDS[-2]) # _FAN_SPEEDS[-2] is 32768
+    fan_speed = min(fan_speed, _FAN_SPEEDS[-2])
 
   set_eon_fan(fan_speed // 16384)
 
@@ -156,7 +156,6 @@ def thermald_thread():
   started_seen = False
   thermal_status = ThermalStatus.green
   usb_power = True
-  current_branch = get_git_branch()
 
   network_type = NetworkType.none
   network_strength = NetworkStrength.unknown

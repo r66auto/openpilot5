@@ -50,7 +50,7 @@ if __name__ == "__main__":
   if PREBUILT:
     with Spinner() as s:
       # opkr
-      s.update("OPENPILOT Quick Booting...")
+      s.update("Quick Booting...")
       time.sleep(7.0)
   else:
     with Spinner() as s:

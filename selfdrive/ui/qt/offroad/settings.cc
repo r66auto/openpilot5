@@ -76,17 +76,6 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                    "../assets/offroad/icon_road.png",
                                    this));
 
-  if (Hardware::TICI()) {
-    toggles.append(new ParamControl("EnableWideCamera",
-                                    "Enable use of Wide Angle Camera",
-                                    "Use wide angle camera for driving and ui.",
-                                    "../assets/offroad/icon_openpilot.png",
-                                    this));
-    QObject::connect(toggles.back(), &ToggleControl::toggleFlipped, [=](bool state) {
-      Params().remove("CalibrationParams");
-    });
-  }
-
 #ifdef ENABLE_MAPS
   toggles.append(new ParamControl("NavSettingTime24h",
                                   "Show ETA in 24h format",
@@ -294,7 +283,7 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   power_layout->setSpacing(50);
 
   QPushButton *reboot_btn = new QPushButton("재시작");
-  reboot_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #393939;");
+  reboot_btn->setStyleSheet("height: 120px;border-radius: 15px; background-color: #393939;");
   power_layout->addWidget(reboot_btn);
   QObject::connect(reboot_btn, &QPushButton::clicked, [=]() {
     if (ConfirmationDialog::confirm("재시작하시겠습니까?", this)) {
@@ -303,7 +292,7 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   });
 
   QPushButton *poweroff_btn = new QPushButton("전원끄기");
-  poweroff_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #E22C2C;");
+  poweroff_btn->setStyleSheet("height: 120px;border-radius: 15px; background-color: #E22C2C;");
   power_layout->addWidget(poweroff_btn);
   QObject::connect(poweroff_btn, &QPushButton::clicked, [=]() {
     if (ConfirmationDialog::confirm("전원을 끄시겠습니까?", this)) {
