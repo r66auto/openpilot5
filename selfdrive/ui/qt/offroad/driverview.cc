@@ -112,17 +112,20 @@ void DriverViewScene::paintEvent(QPaintEvent* event) {
     p.setPen(QColor(0xff, 0xff, 0xff));
     p.setRenderHint(QPainter::TextAntialiasing);
     configFont(p, "Open Sans", 50, "Regular");
-    p.drawText(1200, 50, "faceProb: " + QString::number(driver_state.getFaceProb()));
-    p.drawText(1200, 100, "leftEyeProb: " + QString::number(driver_state.getLeftEyeProb()));
-    p.drawText(1200, 150, "rightEyeProb: " + QString::number(driver_state.getRightEyeProb()));
-    p.drawText(1200, 200, "leftBlinkProb: " + QString::number(driver_state.getLeftBlinkProb()));
-    p.drawText(1200, 250, "rightBlinkProb: " + QString::number(driver_state.getRightBlinkProb()));
-    p.drawText(1200, 300, "sunglassesProb: " + QString::number(driver_state.getSunglassesProb()));
-    p.drawText(1200, 350, "poorVision: " + QString::number(driver_state.getPoorVision()));
-    p.drawText(1200, 400, "partialFace: " + QString::number(driver_state.getPartialFace()));
-    p.drawText(1200, 450, "distractedPose: " + QString::number(driver_state.getDistractedPose()));
-    p.drawText(1200, 500, "distractedEyes: " + QString::number(driver_state.getDistractedEyes()));
-    p.drawText(1200, 550, "eyesOnRoad: " + QString::number(driver_state.getEyesOnRoad()));
-    p.drawText(1200, 600, "phoneUse: " + QString::number(driver_state.getPhoneUse()));
+    p.drawText(1050, 50, "faceProb       : " + QString::number(driver_state.getFaceProb()));
+    
+    p.drawText(1050, 150, "leftEyeProb   : " + QString::number(driver_state.getLeftEyeProb()));
+    p.drawText(1050, 200, "rightEyeProb  : " + QString::number(driver_state.getRightEyeProb()));
+    p.drawText(1050, 250, "leftBlinkProb : " + QString::number(driver_state.getLeftBlinkProb()));
+    p.drawText(1050, 300, "rightBlinkProb: " + QString::number(driver_state.getRightBlinkProb()));
+    
+    p.drawText(1050, 400, "distractedPose: " + QString::number(driver_state.getDistractedPose()));
+    p.drawText(1050, 450, "distractedEyes: " + QString::number(driver_state.getDistractedEyes()));
+
+    p.drawText(1050, 550, "sunglassesProb: " + QString::number(driver_state.getSunglassesProb()));
+    p.drawText(1050, 600, "poorVision    : " + QString::number(driver_state.getPoorVision()));
+    p.drawText(1050, 650, "partialFace   : " + QString::number(driver_state.getPartialFace()));
+    p.drawText(1050, 700, "eyesOnRoad    : " + QString::number(driver_state.getEyesOnRoad()));
+    p.drawText(1050, 750, "phoneUse      : " + QString::number(driver_state.getPhoneUse()));
   }
 }
