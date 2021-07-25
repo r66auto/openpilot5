@@ -112,7 +112,6 @@ void DriverViewScene::paintEvent(QPaintEvent* event) {
     p.setPen(QColor(0xff, 0xff, 0xff));
     p.setRenderHint(QPainter::TextAntialiasing);
     configFont(p, "Open Sans", 50, "Regular");
-    p.drawText(1000, 30, driver_state.getFaceProb().c_str());
-    return;
+    p.drawText(1000, 30, QString::number(driver_state.getFaceProb()););
   }
 }
