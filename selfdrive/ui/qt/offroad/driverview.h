@@ -13,6 +13,9 @@ class DriverViewScene : public QWidget {
 public:
   explicit DriverViewScene(QWidget *parent);
 
+signals:
+  void done();
+
 public slots:
   void frameUpdated();
 
@@ -37,12 +40,6 @@ class DriverViewWindow : public QWidget {
 
 public:
   explicit DriverViewWindow(QWidget *parent);
-
-signals:
-  void done();
-
-protected:
-  void mousePressEvent(QMouseEvent* e) override;
 
 private:
   CameraViewWidget *cameraView;
