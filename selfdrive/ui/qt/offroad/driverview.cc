@@ -106,4 +106,13 @@ void DriverViewScene::paintEvent(QPaintEvent* event) {
   p.setPen(Qt::NoPen);
   p.setOpacity(face_detected ? 1.0 : 0.3);
   p.drawImage(img_x, img_y, face);
+  
+  // opkr
+  if (frame_updated) {
+    p.setPen(QColor(0xff, 0xff, 0xff));
+    p.setRenderHint(QPainter::TextAntialiasing);
+    configFont(p, "Open Sans", 50, "Regular");
+    p.drawText(1000, 30, driver_state.getFaceProb().c_str());
+    return;
+  }
 }
