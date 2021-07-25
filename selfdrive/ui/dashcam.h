@@ -213,7 +213,7 @@ static void screen_draw_button(UIState *s) {
   if (s->vipc_client->connected || s->scene.is_OpenpilotViewEnabled) {
     int btn_w = 140;
     int btn_h = 140;
-    int btn_x = s->viz_rect.x + s->viz_rect.w - btn_w - 35;
+    int btn_x = s->fb_w - btn_w - 35;
     int btn_y = 1080 - btn_h - 35;
     int btn_xc = btn_x + (btn_w/2);
     int btn_yc = btn_y + (btn_h/2);
