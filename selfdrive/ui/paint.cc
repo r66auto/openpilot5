@@ -402,11 +402,11 @@ static void ui_draw_debug(UIState *s)
     nvgFontSize(s->vg, 40);
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
     if (scene.lateralControlMethod == 0) {
-      ui_print(s, ui_viz_rx_center, ui_viz_ry+310, "PID");
+      ui_print(s, ui_viz_rx_center, ui_viz_ry+290, "PID");
     } else if (scene.lateralControlMethod == 1) {
-      ui_print(s, ui_viz_rx_center, ui_viz_ry+310, "INDI");
+      ui_print(s, ui_viz_rx_center, ui_viz_ry+290, "INDI");
     } else if (scene.lateralControlMethod == 2) {
-      ui_print(s, ui_viz_rx_center, ui_viz_ry+310, "LQR");
+      ui_print(s, ui_viz_rx_center, ui_viz_ry+290, "LQR");
     }
   }
 }
@@ -425,7 +425,7 @@ static void ui_draw_gear( UIState *s )
 {
   UIScene &scene = s->scene;  
   NVGcolor nColor = COLOR_WHITE;
-  int x_pos = s->fb_w - 90 + bdr_s;
+  int x_pos = s->fb_w - (90 + bdr_s);
   int y_pos = bdr_s + 140;
   int  ngetGearShifter = int(scene.getGearShifter);
   //int  x_pos = 1795;
@@ -614,7 +614,7 @@ static void ui_draw_vision_speed(UIState *s) {
 
 static void ui_draw_vision_event(UIState *s) {
   const int viz_event_w = 220;
-  const int viz_event_x = s->fb_w - viz_event_w + bdr_s;
+  const int viz_event_x = s->fb_w - (viz_event_w + bdr_s);
   const int viz_event_y = bdr_s;
 
   if (s->scene.limitSpeedCamera > 29 && !s->scene.comma_stock_ui) {
