@@ -60,6 +60,6 @@ private:
   Sidebar *sidebar;
   OffroadHome *home;
   OnroadWindow *onroad;
-  DriverViewScene *driver_view;
+  DriverViewWindow *driver_view;
   QStackedLayout *slayout;
 };

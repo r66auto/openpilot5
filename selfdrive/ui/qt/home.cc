@@ -37,8 +37,8 @@ HomeWindow::HomeWindow(QWidget* parent) : QWidget(parent) {
   QObject::connect(this, &HomeWindow::update, onroad, &OnroadWindow::updateStateSignal);
   QObject::connect(this, &HomeWindow::offroadTransitionSignal, onroad, &OnroadWindow::offroadTransitionSignal);
 
-  driver_view = new DriverViewScene(this);
-  connect(driver_view, &DriverViewScene::done, [=] {
+  driver_view = new DriverViewWindow(this);
+  connect(driver_view, &DriverViewWindow::done, [=] {
     showDriverView(false);
   });
   slayout->addWidget(driver_view);
