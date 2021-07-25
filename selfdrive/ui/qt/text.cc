@@ -37,18 +37,18 @@ int main(int argc, char *argv[]) {
   QPushButton *btn2 = new QPushButton();
   btn->setText("Git Pull");
   btn2->setText("MixPlorer");
-  QObject::connect(btn, &QPushButton::released, [=]() {
+  QObject::connect(btn, &QPushButton::clicked, [=]() {
     QProcess::execute("/data/openpilot/gitpull.sh");
     //Hardware::reboot();
   });
-  QObject::connect(btn2, &QPushButton::released, [=]() {
+  QObject::connect(btn2, &QPushButton::clicked, [=]() {
     QProcess::execute("/data/openpilot/run_mixplorer.sh");
     btn2->setEnabled(false);
   });
   main_layout->addWidget(btn2, 0, 0, Qt::AlignLeft | Qt::AlignBottom);
 #else
   btn->setText("Exit");
-  QObject::connect(btn, &QPushButton::released, &a, &QApplication::quit);
+  QObject::connect(btn, &QPushButton::clicked, &a, &QApplication::quit);
 #endif
   main_layout->addWidget(btn, 0, 0, Qt::AlignRight | Qt::AlignBottom);
 

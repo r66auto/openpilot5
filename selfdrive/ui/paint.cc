@@ -114,12 +114,12 @@ static void draw_lead(UIState *s, const cereal::RadarState::LeadData::Reader &le
   y = std::fmin(s->viz_rect.bottom() - sz * .6, y);
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
 
-  if (s->scene.radarDistance < 149) {
-    draw_chevron(s, x, y, sz, nvgRGBA(201, 34, 49, fillAlpha), COLOR_YELLOW);
-    ui_draw_text(s, x, y + sz/1.5f, "R", 20 * 2.5, COLOR_WHITE, "sans-bold"); //neokii
-  } else {
-    draw_chevron(s, x, y, sz, nvgRGBA(165, 255, 135, fillAlpha), COLOR_GREEN);
-    ui_draw_text(s, x, y + sz/1.5f, "C", 20 * 2.5, COLOR_BLACK, "sans-bold"); //hoya
+  if (s->scene.radarDistance < 149) {                                         //radar가 인식되면
+    draw_chevron(s, x, y, sz, nvgRGBA(201, 34, 49, fillAlpha), COLOR_ORANGE); //orange ==> red
+    ui_draw_text(s, x, y + sz/1.5f, "R", 20 * 2.5, COLOR_WHITE, "sans-bold"); 
+  } else {                                                                                 //camera가 인식되면
+    draw_chevron(s, x, y, sz, nvgRGBA(150, 0, 200, fillAlpha), nvgRGBA(0, 150, 200, 200)); //oceanblue ==> purple
+    ui_draw_text(s, x, y + sz/1.5f, "C", 20 * 2.5, COLOR_WHITE, "sans-bold"); 
   }
 }
 

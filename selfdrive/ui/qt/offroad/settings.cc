@@ -142,11 +142,11 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
 
   auto dcamBtn = new ButtonControl("운전자 영상", "미리보기",
                                         "운전자 모니터링 카메라를 미리 보고 장치 장착 위치를 최적화하여 최상의 운전자 모니터링 환경을 제공하십시오. (차량이 꺼져 있어야 합니다.)");
-  connect(dcamBtn, &ButtonControl::released, [=]() { emit showDriverView(); });
+  connect(dcamBtn, &ButtonControl::clicked, [=]() { emit showDriverView(); });
 
   QString resetCalibDesc = "오픈파일럿을 사용하려면 장치를 왼쪽 또는 오른쪽으로 4°, 위 또는 아래로 5° 이내에 장착해야 합니다. 오픈파일럿이 지속적으로 보정되고 있으므로 재설정할 필요가 거의 없습니다.";
   auto resetCalibBtn = new ButtonControl("캘리브레이션정보", "확인", resetCalibDesc);
-  connect(resetCalibBtn, &ButtonControl::released, [=]() {
+  connect(resetCalibBtn, &ButtonControl::clicked, [=]() {
     QString desc = "[기준값: L/R 4°및 UP/DN 5°이내]";
     std::string calib_bytes = Params().get("CalibrationParams");
     if (!calib_bytes.empty()) {
@@ -194,7 +194,7 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   ButtonControl *retrainingBtn = nullptr;
   if (!params.getBool("Passive")) {
     retrainingBtn = new ButtonControl("트레이닝가이드 보기", "다시보기", "오픈파일럿에 대한 규칙, 기능, 제한내용 등을 확인하세요.");
-    connect(retrainingBtn, &ButtonControl::released, [=]() {
+    connect(retrainingBtn, &ButtonControl::clicked, [=]() {
       if (ConfirmationDialog::confirm("트레이닝 가이드를 다시 확인하시겠습니까?", this)) {
         Params().remove("CompletedTrainingVersion");
         emit reviewTrainingGuide();
@@ -203,7 +203,7 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   }
 
   auto uninstallBtn = new ButtonControl(getBrand() + " 제거", "제거");
-  connect(uninstallBtn, &ButtonControl::released, [=]() {
+  connect(uninstallBtn, &ButtonControl::clicked, [=]() {
     if (ConfirmationDialog::confirm("제거하시겠습니까?", this)) {
       Params().putBool("DoUninstall", true);
     }
@@ -226,7 +226,7 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   QPushButton *calinit_btn = new QPushButton("캘리브레이션 리셋");
   calinit_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #393939;");
   cal_param_init_layout->addWidget(calinit_btn);
-  QObject::connect(calinit_btn, &QPushButton::released, [=]() {
+  QObject::connect(calinit_btn, &QPushButton::clicked, [=]() {
     if (ConfirmationDialog::confirm("캘리브레이션을 초기화할까요? 자동 재부팅됩니다.", this)) {
       Params().remove("CalibrationParams");
       Params().remove("LiveParameters");
@@ -239,7 +239,7 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   QPushButton *paraminit_btn = new QPushButton("파라미터 초기화");
   paraminit_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #393939;");
   cal_param_init_layout->addWidget(paraminit_btn);
-  QObject::connect(paraminit_btn, &QPushButton::released, [=]() {
+  QObject::connect(paraminit_btn, &QPushButton::clicked, [=]() {
     if (ConfirmationDialog::confirm("파라미터를 초기상태로 되돌립니다. 진행하시겠습니까?", this)) {
       QProcess::execute("/data/openpilot/init_param.sh");
     }
@@ -252,7 +252,7 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   QPushButton *presetoneload_btn = new QPushButton("프리셋1 불러오기");
   presetoneload_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #393939;");
   presetone_layout->addWidget(presetoneload_btn);
-  QObject::connect(presetoneload_btn, &QPushButton::released, [=]() {
+  QObject::connect(presetoneload_btn, &QPushButton::clicked, [=]() {
     if (ConfirmationDialog::confirm("프리셋1을 불러올까요?", this)) {
       QProcess::execute("/data/openpilot/load_preset1.sh");
     }
@@ -261,7 +261,7 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   QPushButton *presetonesave_btn = new QPushButton("프리셋1 저장하기");
   presetonesave_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #393939;");
   presetone_layout->addWidget(presetonesave_btn);
-  QObject::connect(presetonesave_btn, &QPushButton::released, [=]() {
+  QObject::connect(presetonesave_btn, &QPushButton::clicked, [=]() {
     if (ConfirmationDialog::confirm("프리셋1을 저장할까요?", this)) {
       QProcess::execute("/data/openpilot/save_preset1.sh");
     }
@@ -274,7 +274,7 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   QPushButton *presettwoload_btn = new QPushButton("프리셋2 불러오기");
   presettwoload_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #393939;");
   presettwo_layout->addWidget(presettwoload_btn);
-  QObject::connect(presettwoload_btn, &QPushButton::released, [=]() {
+  QObject::connect(presettwoload_btn, &QPushButton::clicked, [=]() {
     if (ConfirmationDialog::confirm("프리셋2을 불러올까요?", this)) {
       QProcess::execute("/data/openpilot/load_preset2.sh");
     }
@@ -283,7 +283,7 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   QPushButton *presettwosave_btn = new QPushButton("프리셋2 저장하기");
   presettwosave_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #393939;");
   presettwo_layout->addWidget(presettwosave_btn);
-  QObject::connect(presettwosave_btn, &QPushButton::released, [=]() {
+  QObject::connect(presettwosave_btn, &QPushButton::clicked, [=]() {
     if (ConfirmationDialog::confirm("프리셋2을 저장할까요?", this)) {
       QProcess::execute("/data/openpilot/save_preset2.sh");
     }
@@ -296,7 +296,7 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   QPushButton *reboot_btn = new QPushButton("재시작");
   reboot_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #393939;");
   power_layout->addWidget(reboot_btn);
-  QObject::connect(reboot_btn, &QPushButton::released, [=]() {
+  QObject::connect(reboot_btn, &QPushButton::clicked, [=]() {
     if (ConfirmationDialog::confirm("재시작하시겠습니까?", this)) {
       Hardware::reboot();
     }
@@ -305,7 +305,7 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   QPushButton *poweroff_btn = new QPushButton("전원끄기");
   poweroff_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #E22C2C;");
   power_layout->addWidget(poweroff_btn);
-  QObject::connect(poweroff_btn, &QPushButton::released, [=]() {
+  QObject::connect(poweroff_btn, &QPushButton::clicked, [=]() {
     if (ConfirmationDialog::confirm("전원을 끄시겠습니까?", this)) {
       Hardware::poweroff();
     }
@@ -331,7 +331,7 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : QWidget(parent) {
   versionLbl = new LabelControl("Version");
   lastUpdateLbl = new LabelControl("최근업데이트 확인", "", "");
   updateBtn = new ButtonControl("업데이트 체크 및 적용", "");
-  connect(updateBtn, &ButtonControl::released, [=]() {
+  connect(updateBtn, &ButtonControl::clicked, [=]() {
     if (params.getBool("IsOffroad")) {
       const QString paramsPath = QString::fromStdString(params.getParamsPath());
       fs_watch->addPath(paramsPath + "/d/LastUpdateTime");
@@ -369,7 +369,7 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : QWidget(parent) {
 
   const char* git_reset = "/data/openpilot/git_reset.sh ''";
   auto gitresetbtn = new ButtonControl("Git Reset", "실행");
-  QObject::connect(gitresetbtn, &ButtonControl::released, [=]() {
+  QObject::connect(gitresetbtn, &ButtonControl::clicked, [=]() {
     if (ConfirmationDialog::confirm("로컬변경사항을 강제 초기화 후 리모트Git의 최신 커밋내역을 적용합니다. 진행하시겠습니까?", this)){
       std::system(git_reset);
     }
@@ -380,7 +380,7 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : QWidget(parent) {
 
   const char* gitpull_cancel = "/data/openpilot/gitpull_cancel.sh ''";
   auto gitpullcanceltbtn = new ButtonControl("Git Pull 취소", "실행");
-  QObject::connect(gitpullcanceltbtn, &ButtonControl::released, [=]() {
+  QObject::connect(gitpullcanceltbtn, &ButtonControl::clicked, [=]() {
     if (ConfirmationDialog::confirm("GitPull 이전 상태로 되돌립니다. 진행하시겠습니까?", this)){
       std::system(gitpull_cancel);
     }
@@ -391,7 +391,7 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : QWidget(parent) {
 
   const char* panda_flashing = "/data/openpilot/panda_flashing.sh ''";
   auto pandaflashingtbtn = new ButtonControl("판다 플래싱", "실행");
-  QObject::connect(pandaflashingtbtn, &ButtonControl::released, [=]() {
+  QObject::connect(pandaflashingtbtn, &ButtonControl::clicked, [=]() {
     if (ConfirmationDialog::confirm("판다플래싱 진행중에는 판다의 녹색LED가 빠르게 깜빡입니다. 절대로 장치의 전원을 끄거나 임의로 분리하지 마십시오. 진행하시겠습니까?", this)) {
       std::system(panda_flashing);
     }
@@ -444,12 +444,12 @@ QWidget * network_panel(QWidget * parent) {
   layout->addWidget(horizontal_line());
   // wifi + tethering buttons
   auto wifiBtn = new ButtonControl("WiFi 설정", "열기");
-  QObject::connect(wifiBtn, &ButtonControl::released, [=]() { HardwareEon::launch_wifi(); });
+  QObject::connect(wifiBtn, &ButtonControl::clicked, [=]() { HardwareEon::launch_wifi(); });
   layout->addWidget(wifiBtn);
   layout->addWidget(horizontal_line());
 
   auto tetheringBtn = new ButtonControl("테더링 설정", "열기");
-  QObject::connect(tetheringBtn, &ButtonControl::released, [=]() { HardwareEon::launch_tethering(); });
+  QObject::connect(tetheringBtn, &ButtonControl::clicked, [=]() { HardwareEon::launch_tethering(); });
   layout->addWidget(tetheringBtn);
   layout->addWidget(horizontal_line());
 
@@ -479,9 +479,10 @@ UserPanel::UserPanel(QWidget* parent) : QWidget(parent) {
   layout->addWidget(new AutoShutdown());
   layout->addWidget(new ForceShutdown());
   //layout->addWidget(new AutoScreenDimmingToggle());
-  layout->addWidget(new AutoScreenOff());
   layout->addWidget(new VolumeControl());
   layout->addWidget(new BrightnessControl());
+  layout->addWidget(new AutoScreenOff());
+  layout->addWidget(new BrightnessOffControl());
   layout->addWidget(new GetoffAlertToggle());
   layout->addWidget(new BatteryChargingControlToggle());
   layout->addWidget(new ChargingMin());
@@ -492,7 +493,7 @@ UserPanel::UserPanel(QWidget* parent) : QWidget(parent) {
   layout->addWidget(new RecordQuality());
   const char* record_del = "rm -f /storage/emulated/0/videos/*";
   auto recorddelbtn = new ButtonControl("녹화파일 전부 삭제", "실행");
-  QObject::connect(recorddelbtn, &ButtonControl::released, [=]() {
+  QObject::connect(recorddelbtn, &ButtonControl::clicked, [=]() {
     if (ConfirmationDialog::confirm("저장된 녹화파일을 모두 삭제합니다. 진행하시겠습니까?", this)){
       std::system(record_del);
     }
@@ -500,7 +501,7 @@ UserPanel::UserPanel(QWidget* parent) : QWidget(parent) {
   layout->addWidget(recorddelbtn);
   const char* realdata_del = "rm -rf /storage/emulated/0/realdata/*";
   auto realdatadelbtn = new ButtonControl("주행로그 전부 삭제", "실행");
-  QObject::connect(realdatadelbtn, &ButtonControl::released, [=]() {
+  QObject::connect(realdatadelbtn, &ButtonControl::clicked, [=]() {
     if (ConfirmationDialog::confirm("저장된 주행로그를 모두 삭제합니다. 진행하시겠습니까?", this)){
       std::system(realdata_del);
     }
@@ -553,7 +554,7 @@ UserPanel::UserPanel(QWidget* parent) : QWidget(parent) {
   layout->addWidget(new BattLessToggle());
   const char* cal_ok = "cp -f /data/openpilot/selfdrive/assets/addon/param/CalibrationParams /data/params/d/";
   auto calokbtn = new ButtonControl("캘리브레이션 강제 활성화", "실행");
-  QObject::connect(calokbtn, &ButtonControl::released, [=]() {
+  QObject::connect(calokbtn, &ButtonControl::clicked, [=]() {
     if (ConfirmationDialog::confirm("캘리브레이션을 강제로 설정합니다. 인게이지 확인용이니 실 주행시에는 초기화 하시기 바랍니다.", this)){
       std::system(cal_ok);
     }
@@ -574,7 +575,7 @@ UserPanel::UserPanel(QWidget* parent) : QWidget(parent) {
   layout->addWidget(new MaxRateDown());
   const char* p_edit_go = "/data/openpilot/p_edit.sh ''";
   auto peditbtn = new ButtonControl("판다값 변경 적용", "실행");
-  QObject::connect(peditbtn, &ButtonControl::released, [=]() {
+  QObject::connect(peditbtn, &ButtonControl::clicked, [=]() {
     if (ConfirmationDialog::confirm("변경된 판다값을 적용합니다. 진행하시겠습니까? 자동 재부팅됩니다.", this)){
       std::system(p_edit_go);
     }
@@ -666,7 +667,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
   close_btn->setFixedSize(200, 200);
   sidebar_layout->addSpacing(45);
   sidebar_layout->addWidget(close_btn, 0, Qt::AlignCenter);
-  QObject::connect(close_btn, &QPushButton::released, this, &SettingsWindow::closeSettings);
+  QObject::connect(close_btn, &QPushButton::clicked, this, &SettingsWindow::closeSettings);
 
   // setup panels
   DevicePanel *device = new DevicePanel(this);
@@ -685,11 +686,9 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
   sidebar_layout->addSpacing(45);
 
 #ifdef ENABLE_MAPS
-  if (!Params().get("MapboxToken").empty()) {
-    auto map_panel = new MapPanel(this);
-    panels.push_back({"Navigation", map_panel});
-    QObject::connect(map_panel, &MapPanel::closeSettings, this, &SettingsWindow::closeSettings);
-  }
+  auto map_panel = new MapPanel(this);
+  panels.push_back({"Navigation", map_panel});
+  QObject::connect(map_panel, &MapPanel::closeSettings, this, &SettingsWindow::closeSettings);
 #endif
   const int padding = panels.size() > 3 ? 18 : 28;
 
@@ -716,12 +715,13 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
     nav_btns->addButton(btn);
     sidebar_layout->addWidget(btn, 0, Qt::AlignRight);
 
-    panel->setContentsMargins(50, 25, 50, 25);
+    const int lr_margin = name != "Network" ? 50 : 0;  // Network panel handles its own margins
+    panel->setContentsMargins(lr_margin, 25, lr_margin, 25);
 
     ScrollView *panel_frame = new ScrollView(panel, this);
     panel_widget->addWidget(panel_frame);
 
-    QObject::connect(btn, &QPushButton::released, [=, w = panel_frame]() {
+    QObject::connect(btn, &QPushButton::clicked, [=, w = panel_frame]() {
       btn->setChecked(true);
       panel_widget->setCurrentWidget(w);
     });
