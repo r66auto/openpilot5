@@ -7,6 +7,7 @@
 #include "selfdrive/ui/qt/util.h"
 
 const int FACE_IMG_SIZE = 130;
+bool infill = false;
 
 DriverViewWindow::DriverViewWindow(QWidget* parent) : QWidget(parent) {
   setAttribute(Qt::WA_OpaquePaintEvent);
@@ -22,11 +23,7 @@ DriverViewWindow::DriverViewWindow(QWidget* parent) : QWidget(parent) {
   layout->setCurrentWidget(scene);
 }
 
-DriverViewScene::DriverViewScene(QWidget* parent) : sm({"driverState"}), QWidget(parent) {
-  face = QImage("../assets/img_driver_face.png").scaled(FACE_IMG_SIZE, FACE_IMG_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-}
-
-void DriverViewScene::mousePressEvent(QMouseEvent* e) {
+void DriverViewWindow::mousePressEvent(QMouseEvent* e) {
   if (d_rec_btn.ptInRect(e->x(), e->y())) {
     infill = !infill;
     if (infill) {
@@ -37,6 +34,10 @@ void DriverViewScene::mousePressEvent(QMouseEvent* e) {
     return;
   }
   emit done();
+}
+
+DriverViewScene::DriverViewScene(QWidget* parent) : sm({"driverState"}), QWidget(parent) {
+  face = QImage("../assets/img_driver_face.png").scaled(FACE_IMG_SIZE, FACE_IMG_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
 void DriverViewScene::showEvent(QShowEvent* event) {

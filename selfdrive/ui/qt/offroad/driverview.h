@@ -20,7 +20,6 @@ protected:
   void showEvent(QShowEvent *event) override;
   void hideEvent(QHideEvent *event) override;
   void paintEvent(QPaintEvent *event) override;
-  void mousePressEvent(QMouseEvent* e) override;
 
 private:
   Params params;
@@ -28,8 +27,6 @@ private:
   QImage face;
   bool is_rhd = false;
   bool frame_updated = false;
-  const Rect d_rec_btn = {1745, 905, 140, 140};
-  bool infill;
 };
 
 class DriverViewWindow : public QWidget {
@@ -48,4 +45,5 @@ private:
   CameraViewWidget *cameraView;
   DriverViewScene *scene;
   QStackedLayout *layout;
+  const Rect d_rec_btn = {1745, 905, 140, 140};
 };
