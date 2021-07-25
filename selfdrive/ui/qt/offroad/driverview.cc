@@ -1,6 +1,7 @@
 #include "selfdrive/ui/qt/offroad/driverview.h"
 
 #include <QPainter>
+#include <QProcess>
 
 #include "selfdrive/ui/qt/qt_window.h"
 #include "selfdrive/ui/qt/util.h"
@@ -21,10 +22,6 @@ DriverViewWindow::DriverViewWindow(QWidget* parent) : QWidget(parent) {
   layout->setCurrentWidget(scene);
 }
 
-void DriverViewWindow::mousePressEvent(QMouseEvent* e) {
-  emit done();
-}
-
 DriverViewScene::DriverViewScene(QWidget* parent) : sm({"driverState"}), QWidget(parent) {
   face = QImage("../assets/img_driver_face.png").scaled(FACE_IMG_SIZE, FACE_IMG_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
@@ -32,7 +29,14 @@ DriverViewScene::DriverViewScene(QWidget* parent) : sm({"driverState"}), QWidget
 void DriverViewScene::mousePressEvent(QMouseEvent* e) {
   if (d_rec_btn.ptInRect(e->x(), e->y())) {
     infill = !infill;
+    if (infill) {
+      QProcess::execute("screenrecord --size 960x540 --bit-rate 3000000 /storage/emulated/0/videos/drv_mon_preview.mp4&");
+    } else {
+      QProcess::execute("killall -SIGINT screenrecord");
+    }
+    return;
   }
+  emit done();
 }
 
 void DriverViewScene::showEvent(QShowEvent* event) {
