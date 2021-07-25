@@ -29,6 +29,12 @@ DriverViewScene::DriverViewScene(QWidget* parent) : sm({"driverState"}), QWidget
   face = QImage("../assets/img_driver_face.png").scaled(FACE_IMG_SIZE, FACE_IMG_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
+void DriverViewScene::mousePressEvent(QMouseEvent* e) {
+  if (d_rec_btn.ptInRect(e->x(), e->y())) {
+    infill = !infill;
+  }
+}
+
 void DriverViewScene::showEvent(QShowEvent* event) {
   frame_updated = false;
   is_rhd = params.getBool("IsRHD");
@@ -110,6 +116,7 @@ void DriverViewScene::paintEvent(QPaintEvent* event) {
   // opkr
   if (frame_updated) {
     p.setPen(QColor(0xff, 0xff, 0xff));
+    p.setOpacity(1.0);
     p.setRenderHint(QPainter::TextAntialiasing);
     configFont(p, "Open Sans", 50, "Regular");
     p.drawText(1050, 50, "faceProb:  " + QString::number(driver_state.getFaceProb(), 'f', 2));
@@ -127,5 +134,12 @@ void DriverViewScene::paintEvent(QPaintEvent* event) {
     p.drawText(1050, 650, "partialFace:  " + QString::number(driver_state.getPartialFace(), 'f', 2));
     p.drawText(1050, 700, "eyesOnRoad:  " + QString::number(driver_state.getEyesOnRoad(), 'f', 2));
     p.drawText(1050, 750, "phoneUse:  " + QString::number(driver_state.getPhoneUse(), 'f', 2));
+
+    QRect rec = {1745, 905, 140, 140};
+    p.setBrush(Qt::NoBrush);
+    if (infill) p.setBrush(Qt::red);
+    p.setPen(Qt::white);
+    p.drawEllipse(rec);
+    p.drawText(rec, Qt::AlignCenter, QString("REC"));
   }
 }
