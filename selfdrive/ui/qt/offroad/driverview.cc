@@ -126,6 +126,6 @@ void DriverViewScene::paintEvent(QPaintEvent* event) {
     p.drawText(1050, 600, "poorVision:  " + QString::number(driver_state.getPoorVision()));
     p.drawText(1050, 650, "partialFace:  " + QString::number(driver_state.getPartialFace()));
     p.drawText(1050, 700, "eyesOnRoad:  " + QString::number(driver_state.getEyesOnRoad()));
-    p.drawText(1050, 750, "phoneUse:  " + qDebug() << QString::number(driver_state.getPhoneUse(), 'f', 2));
+    p.drawText(1050, 750, "phoneUse:  " + QString::number(driver_state.getPhoneUse(), 'f', 2));
   }
 }
