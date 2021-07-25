@@ -27,7 +27,7 @@ void DriverViewWindow::mousePressEvent(QMouseEvent* e) {
   if (d_rec_btn.ptInRect(e->x(), e->y())) {
     infill = !infill;
     if (infill) {
-      QProcess::execute("screenrecord --size 960x540 --bit-rate 3000000 /storage/emulated/0/videos/drv_mon_preview.mp4");
+      QProcess::execute("screenrecord --size 960x540 --bit-rate 3000000 /storage/emulated/0/videos/drv_mon_preview.mp4 &");
     } else {
       QProcess::execute("killall -SIGINT screenrecord");
     }
