@@ -472,8 +472,8 @@ static void ui_draw_vision_scc_gap(UIState *s) {
   int gap = car_state.getCruiseGapSet();
 
   const int radius = 85;
-  const int center_x = s->viz_rect.x + radius + (bdr_s);
-  const int center_y = s->viz_rect.bottom() - 1.60 * footer_h + ((footer_h - radius) / 2);  
+  const int center_x = radius + bdr_s;
+  const int center_y = s->fb_h - 1.60 * footer_h + ((footer_h - radius) / 2);  
 
   float lead_car_dist_img_alpha = gap > 0 ? 0.6f : 0.3f;
   float lead_car_dist_bg_alpha = gap > 0 ? 0.0f : 0.0f;
@@ -491,8 +491,8 @@ static void ui_draw_vision_brake(UIState *s) {
   const UIScene *scene = &s->scene;
 
   const int radius = 85;
-  const int center_x = s->viz_rect.x + radius + bdr_s + radius*2 + 20;
-  const int center_y = s->viz_rect.bottom() - footer_h + ((footer_h - radius) / 2);
+  const int center_x = radius + bdr_s + radius*2 + 20;
+  const int center_y = s->fb_h - footer_h + ((footer_h - radius) / 2);
 
   bool brake_valid = scene->car_state.getBrakeLights();
   float brake_img_alpha = brake_valid ? 1.0f : 0.15f;
@@ -508,8 +508,8 @@ static void ui_draw_vision_autohold(UIState *s) {
     return;
 
   const int radius = 85;
-  const int center_x = s->viz_rect.x + radius + bdr_s + (radius*2 + 20) * 2;
-  const int center_y = s->viz_rect.bottom() - footer_h + ((footer_h - radius) / 2);
+  const int center_x = radius + bdr_s + (radius*2 + 20) * 2;
+  const int center_y = s->fb_h - footer_h + ((footer_h - radius) / 2);
 
   float brake_img_alpha = autohold > 0 ? 1.0f : 0.15f;
   float brake_bg_alpha = autohold > 0 ? 0.3f : 0.1f;
@@ -642,20 +642,20 @@ static void ui_draw_vision_cameradist(UIState *s) {    // from 목사탕님 & Ne
     color = COLOR_RED;
     ui_draw_rect(s->vg, rect, color, 10, 0.);
     //const std::string cameradist_str = std::to_string((int)std::nearbyint(cameradist));
-    ui_draw_text(s, rect.centerX() - 20, int(s->viz_rect.y + (bdr_s))+260, str, 42 * 2.0, COLOR_WHITE, "sans-bold");
-    ui_draw_text(s, rect.centerX() + 65, int(s->viz_rect.y + (bdr_s))+265, "km", 30 * 1.6, COLOR_WHITE, "sans-semibold");
+    ui_draw_text(s, rect.centerX() - 20, int(bdr_s)+260, str, 42 * 2.0, COLOR_WHITE, "sans-bold");
+    ui_draw_text(s, rect.centerX() + 65, int(bdr_s)+265, "km", 30 * 1.6, COLOR_WHITE, "sans-semibold");
   } else if (s->scene.limitSpeedCamera > 29){
     color = COLOR_WHITE_ALPHA(0);
     ui_draw_rect(s->vg, rect, color, 10, 0.);
     const std::string cameradist_str = std::to_string((int)std::nearbyint(cameradist));
-    ui_draw_text(s, rect.centerX() - 15, int(s->viz_rect.y + (bdr_s))+260, cameradist_str.c_str(), 40 * 2.0, COLOR_WHITE, "sans-bold");
-    ui_draw_text(s, rect.centerX() + 65, int(s->viz_rect.y + (bdr_s))+265, "m", 30 * 1.6, COLOR_WHITE, "sans-semibold");
+    ui_draw_text(s, rect.centerX() - 15, int(bdr_s)+260, cameradist_str.c_str(), 40 * 2.0, COLOR_WHITE, "sans-bold");
+    ui_draw_text(s, rect.centerX() + 65, int(bdr_s)+265, "m", 30 * 1.6, COLOR_WHITE, "sans-semibold");
   } else {
     color = COLOR_WHITE_ALPHA(0);
     ui_draw_rect(s->vg, rect, color, 10, 0.);
     const std::string cameradist_str = std::to_string((int)std::nearbyint(cameradist));
-    ui_draw_text(s, rect.centerX() - 15, int(s->viz_rect.y + (bdr_s))+260, cameradist_str.c_str(), 36 * 2.0, COLOR_WHITE_ALPHA(0), "sans-semibold");
-    ui_draw_text(s, rect.centerX() + 65, int(s->viz_rect.y + (bdr_s))+260, "m", 26 * 1.6, COLOR_WHITE_ALPHA(0), "sans-semibold");
+    ui_draw_text(s, rect.centerX() - 15, int(bdr_s)+260, cameradist_str.c_str(), 36 * 2.0, COLOR_WHITE_ALPHA(0), "sans-semibold");
+    ui_draw_text(s, rect.centerX() + 65, int(bdr_s)+260, "m", 26 * 1.6, COLOR_WHITE_ALPHA(0), "sans-semibold");
   } 
 }
 
