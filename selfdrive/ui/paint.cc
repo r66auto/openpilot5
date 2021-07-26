@@ -1279,10 +1279,9 @@ static void ui_draw_vision(UIState *s) {
     }
     // Set Speed, Current Speed, Status/Events
     ui_draw_vision_header(s);
-    if ((*s->sm)["controlsState"].getControlsState().getAlertSize() == cereal::ControlsState::AlertSize::NONE) {
+    if ((*s->sm)["controlsState"].getControlsState().getAlertSize() == cereal::ControlsState::AlertSize::NONE && !s->scene.comma_stock_ui) {
       ui_draw_vision_footer(s);
-      if (!s->scene.comma_stock_ui) {
-        ui_draw_vision_car(s);
+      ui_draw_vision_car(s);
       }
     }
   //}
