@@ -51,11 +51,11 @@ if __name__ == "__main__":
     with Spinner() as s:
       # opkr
       s.update("OPENPILOT")
-      time.sleep(1.5)
+      time.sleep(2.5)
       s.update("For Your Comfort")
-      time.sleep(1.5)
+      time.sleep(2.5)
       s.update("Now Booting...")
-      time.sleep(4.0)
+      time.sleep(2.5)
   else:
     with Spinner() as s:
       s.update("Spinner text")
