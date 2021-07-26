@@ -1,11 +1,13 @@
 #include "selfdrive/ui/qt/offroad/driverview.h"
 
 #include <QPainter>
+#include <QProcess>
 
 #include "selfdrive/ui/qt/qt_window.h"
 #include "selfdrive/ui/qt/util.h"
 
 const int FACE_IMG_SIZE = 130;
+bool infill = false;
 
 DriverViewWindow::DriverViewWindow(QWidget* parent) : QWidget(parent) {
   setAttribute(Qt::WA_OpaquePaintEvent);
@@ -22,6 +24,15 @@ DriverViewWindow::DriverViewWindow(QWidget* parent) : QWidget(parent) {
 }
 
 void DriverViewWindow::mousePressEvent(QMouseEvent* e) {
+  if (d_rec_btn.ptInRect(e->x(), e->y())) {
+    infill = !infill;
+    if (infill) {
+      system(qPrintable("screenrecord --size 960x540 --bit-rate 3000000 /storage/emulated/0/videos/drv_mon_preview.mp4&"));
+    } else {
+      QProcess::execute("killall -SIGINT screenrecord");
+    }
+    return;
+  }
   emit done();
 }
 
@@ -53,7 +64,7 @@ void DriverViewScene::paintEvent(QPaintEvent* event) {
     p.setPen(QColor(0xff, 0xff, 0xff));
     p.setRenderHint(QPainter::TextAntialiasing);
     configFont(p, "Inter", 100, "Bold");
-    p.drawText(geometry(), Qt::AlignCenter, "카메라 구동 중");
+    p.drawText(geometry(), Qt::AlignCenter, "카메라 구동 중...");
     return;
   }
 
@@ -106,4 +117,34 @@ void DriverViewScene::paintEvent(QPaintEvent* event) {
   p.setPen(Qt::NoPen);
   p.setOpacity(face_detected ? 1.0 : 0.3);
   p.drawImage(img_x, img_y, face);
+  
+  // opkr
+  if (frame_updated) {
+    p.setPen(QColor(0xff, 0xff, 0xff));
+    p.setOpacity(1.0);
+    p.setRenderHint(QPainter::TextAntialiasing);
+    configFont(p, "Open Sans", 50, "Regular");
+    p.drawText(1050, 50, "faceProb:  " + QString::number(driver_state.getFaceProb(), 'f', 2));
+    
+    p.drawText(1050, 150, "leftEyeProb:  " + QString::number(driver_state.getLeftEyeProb(), 'f', 2));
+    p.drawText(1050, 200, "rightEyeProb:  " + QString::number(driver_state.getRightEyeProb(), 'f', 2));
+    p.drawText(1050, 250, "leftBlinkProb:  " + QString::number(driver_state.getLeftBlinkProb(), 'f', 2));
+    p.drawText(1050, 300, "rightBlinkProb:  " + QString::number(driver_state.getRightBlinkProb(), 'f', 2));
+    
+    p.drawText(1050, 400, "distractedPose:  " + QString::number(driver_state.getDistractedPose(), 'f', 2));
+    p.drawText(1050, 450, "distractedEyes:  " + QString::number(driver_state.getDistractedEyes(), 'f', 2));
+
+    p.drawText(1050, 550, "sunglassesProb:  " + QString::number(driver_state.getSunglassesProb(), 'f', 2));
+    p.drawText(1050, 600, "poorVision:  " + QString::number(driver_state.getPoorVision(), 'f', 2));
+    p.drawText(1050, 650, "partialFace:  " + QString::number(driver_state.getPartialFace(), 'f', 2));
+    p.drawText(1050, 700, "eyesOnRoad:  " + QString::number(driver_state.getEyesOnRoad(), 'f', 2));
+    p.drawText(1050, 750, "phoneUse:  " + QString::number(driver_state.getPhoneUse(), 'f', 2));
+
+    QRect rec = {1745, 905, 140, 140};
+    p.setBrush(Qt::NoBrush);
+    if (infill) p.setBrush(Qt::red);
+    p.setPen(Qt::white);
+    p.drawEllipse(rec);
+    p.drawText(rec, Qt::AlignCenter, QString("REC"));
+  }
 }
