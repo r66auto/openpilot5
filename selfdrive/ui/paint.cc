@@ -1272,7 +1272,6 @@ static void ui_draw_vision_footer(UIState *s) {
 
 static void ui_draw_vision(UIState *s) {
   const UIScene *scene = &s->scene;
-  //if (!scene->driver_view) {
     // Draw augmented elements
     if (scene->world_objects_visible) {
       ui_draw_world(s);
@@ -1282,9 +1281,7 @@ static void ui_draw_vision(UIState *s) {
     if ((*s->sm)["controlsState"].getControlsState().getAlertSize() == cereal::ControlsState::AlertSize::NONE && !s->scene.comma_stock_ui) {
       ui_draw_vision_footer(s);
       ui_draw_vision_car(s);
-      }
     }
-  //}
 }
 
 void ui_draw(UIState *s, int w, int h) {
