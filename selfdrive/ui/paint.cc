@@ -112,6 +112,7 @@ static void draw_lead(UIState *s, const cereal::RadarState::LeadData::Reader &le
   float sz = std::clamp((25 * 30) / (d_rel / 3 + 30), 15.0f, 30.0f) * 2.35;
   x = std::clamp(x, 0.f, s->fb_w - sz / 2);
   y = std::fmin(s->fb_h - sz * .6, y);
+  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
 
   if (s->scene.radarDistance < 149) {                                         //radar가 인식되면
     draw_chevron(s, x, y, sz, nvgRGBA(201, 34, 49, fillAlpha), COLOR_ORANGE); //orange ==> red
@@ -374,15 +375,15 @@ static void ui_draw_debug(UIState *s)
 {
   UIScene &scene = s->scene;
 
-  int ui_viz_rx = bdr_s + 192;
-  int ui_viz_ry = bdr_s+28;
+  int ui_viz_rx = bdr_s + 190;
+  int ui_viz_ry = bdr_s + 25;
   int ui_viz_rx_center = s->fb_w/2;
   
-  nvgTextAlign(s->vg, NVG_ALIGN_LEFT | NVG_ALIGN_BASELINE);
+  nvgTextAlign(s->vg, NVG_ALIGN_LEFT | NVG_ALIGN_MIDDLE);
 
   if (s->nDebugUi1) {
-    ui_draw_text(s, 30, 1030, scene.alertTextMsg1.c_str(), 50, COLOR_WHITE_ALPHA(200), "sans-bold");
-    ui_draw_text(s, 30, 1070, scene.alertTextMsg2.c_str(), 50, COLOR_WHITE_ALPHA(200), "sans-semibold");
+    ui_draw_text(s, 30, 1010-bdr_s, scene.alertTextMsg1.c_str(), 50, COLOR_WHITE_ALPHA(200), "sans-semibold");
+    ui_draw_text(s, 30, 1050-bdr_s, scene.alertTextMsg2.c_str(), 50, COLOR_WHITE_ALPHA(200), "sans-semibold");
   }
 
   
@@ -405,11 +406,11 @@ static void ui_draw_debug(UIState *s)
     ui_print(s, ui_viz_rx, ui_viz_ry+550, "%.2f|%.2f", scene.lateralPlan.lProb, scene.lateralPlan.rProb);
     //ui_print(s, ui_viz_rx, ui_viz_ry+600, "A:%.5f", scene.accel_sensor2);
     if (s->scene.map_is_running) {
-      if (s->scene.liveMapData.opkrspeedsign) ui_print(s, ui_viz_rx, ui_viz_ry+600, "S:%.0f", scene.liveMapData.opkrspeedsign);
-      if (s->scene.liveMapData.opkrspeedlimit) ui_print(s, ui_viz_rx, ui_viz_ry+650, "S:%.0f", scene.liveMapData.opkrspeedlimit);
-      if (s->scene.liveMapData.opkrspeedlimitdist) ui_print(s, ui_viz_rx, ui_viz_ry+700, "D:%.0f", scene.liveMapData.opkrspeedlimitdist);
-      if (s->scene.liveMapData.opkrturninfo) ui_print(s, ui_viz_rx, ui_viz_ry+750, "T:%.0f", scene.liveMapData.opkrturninfo);
-      if (s->scene.liveMapData.opkrdisttoturn) ui_print(s, ui_viz_rx, ui_viz_ry+800, "D:%.0f", scene.liveMapData.opkrdisttoturn);
+      if (s->scene.liveMapData.opkrspeedsign) ui_print(s, ui_viz_rx, ui_viz_ry+600, "SS:%.0f", scene.liveMapData.opkrspeedsign);
+      if (s->scene.liveMapData.opkrspeedlimit) ui_print(s, ui_viz_rx, ui_viz_ry+650, "SL:%.0f", scene.liveMapData.opkrspeedlimit);
+      if (s->scene.liveMapData.opkrspeedlimitdist) ui_print(s, ui_viz_rx, ui_viz_ry+700, "DS:%.0f", scene.liveMapData.opkrspeedlimitdist);
+      if (s->scene.liveMapData.opkrturninfo) ui_print(s, ui_viz_rx, ui_viz_ry+750, "TI:%.0f", scene.liveMapData.opkrturninfo);
+      if (s->scene.liveMapData.opkrdisttoturn) ui_print(s, ui_viz_rx, ui_viz_ry+800, "DT:%.0f", scene.liveMapData.opkrdisttoturn);
     }
     nvgFontSize(s->vg, 40);
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
