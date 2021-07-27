@@ -30,7 +30,6 @@ int main() {
   long  nDelta = 0;
   long  nLastTime = 0, nDelta2 = 0;
   long  nDelta_nsec = 0;
-  long  nDelta_nsec2 = 0;
   bool  sBump = false;
   long  tv_nsec;
   float tv_nsec2;
@@ -90,7 +89,7 @@ int main() {
 
       // code based from atom
       nDelta_nsec = tv_nsec - res.tv_nsec;
-      nDelta = entry.tv_sec - res.tv_sec;
+      //nDelta = entry.tv_sec - res.tv_sec;
 
       if( strcmp( entry.tag, "opkrspddist" ) == 0 )
       {
