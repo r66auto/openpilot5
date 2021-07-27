@@ -1439,7 +1439,9 @@ public:
 
 private:
   QPushButton btn;
+  QPushButton btn2;
   Params params;
   
   void refresh();
+  void refresh2();
 };
