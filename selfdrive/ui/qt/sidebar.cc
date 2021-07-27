@@ -125,7 +125,7 @@ void Sidebar::updateState(const UIState &s) {
     pandaStatus = warning_color;
     pandaStr = "VEHICLE CONNECTED\nSEARCHING FOR GPS";
   } else if (s.scene.satelliteCount > 0) {
-  	pandaStr = QString("VEHICLE CONNECTED\nSAT : %1").arg(s.scene.satelliteCount);
+  	pandaStr = QString("VEHICLE\nONLINE\nSAT : %1").arg(s.scene.satelliteCount);
   }
   setProperty("pandaStr", pandaStr);
   setProperty("pandaStatus", pandaStatus);
