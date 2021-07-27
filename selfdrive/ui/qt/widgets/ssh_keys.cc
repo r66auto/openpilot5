@@ -1294,7 +1294,7 @@ void VariableCruiseProfile::refresh() {
   btnplus.setText("▶");
 }
 
-CruisemodeSelInit::CruisemodeSelInit() : AbstractControl("Cruise Start Mode Settings", "?Set the cruise start mode. Opa mode/between vehicle+curve/intervehicle only/one way 1 lane/map deceleration only Opa mode: button speed control is not used, inter-vehicle+curve: button speed control is used in the inter-vehicle distance and curve section, inter-vehicle only: button deceleration is used at inter-vehicle distance 1 lane one way: lower the camera offset in the one-lane section and set it to the right to drive, map deceleration Only: use t-map deceleration only?", "../assets/offroad/icon_shell.png") {
+CruisemodeSelInit::CruisemodeSelInit() : AbstractControl("Cruise Start Mode Settings", "Set the cruise start mode. openpilot mode/between vehicle+curve/intervehicle only/one way 1 lane/map deceleration only\nopenpilot mode: button speed control is not used\nfollow vehicle+curve: button speed control is used in the follow vehicle distance and curve section\ninter-vehicle only: button deceleration is used at inter-vehicle distance\n1 lane one way: lower the camera offset in the one-lane section and set it to the right to drive\nmap deceleration Only: use t-map deceleration only", "../assets/offroad/icon_shell.png") {
 
   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   label.setStyleSheet("color: #e0e879");
