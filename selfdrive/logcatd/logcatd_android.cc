@@ -27,7 +27,6 @@ typedef struct LiveMapDataResult {
 
 int main() {
   setpriority(PRIO_PROCESS, 0, -15);
-  long  nDelta = 0;
   long  nLastTime = 0, nDelta2 = 0;
   long  nDelta_nsec = 0;
   bool  sBump = false;
@@ -183,7 +182,7 @@ int main() {
 
 
     */  
-      printf("tv_nsec = [%ld] tv_nsec2 = [%f]\n", tv_nsec, tv_nsec2);
+      // printf("tv_nsec = [%ld] tv_nsec2 = [%f]\n", tv_nsec, tv_nsec2);
       // if( opkr )
       // {
       // printf("logcat ID(%d) - PID=%d tag=%d.[%s] \n", log_msg.id(), entry.pid,  entry.tid, entry.tag);
