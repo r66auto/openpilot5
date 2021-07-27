@@ -1346,7 +1346,7 @@ struct LiveMapData {
   roadCurvature @3 :Float32;
   turnInfo @4 :Float32;
   distanceToTurn @5 :Float32;
-  ts @6 :Float32;
+  ts @6 :UInt64;
 
   mapValid @7 :Bool;
   mapEnable @8 :Bool;

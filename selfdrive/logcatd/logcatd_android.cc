@@ -181,7 +181,7 @@ int main() {
 
 
     */  
-      printf("tv_nsec = [%ld] tv_nsec2 = [%ld]\n", tv_nsec, tv_nsec2);
+      printf("tv_nsec = [%ld] tv_nsec2 = [%f]\n", tv_nsec, tv_nsec2);
       // if( opkr )
       // {
       // printf("logcat ID(%d) - PID=%d tag=%d.[%s] \n", log_msg.id(), entry.pid,  entry.tid, entry.tag);
