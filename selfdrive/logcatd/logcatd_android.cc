@@ -127,8 +127,6 @@ int main() {
       }
       else if( nDelta_nsec > 5000 )
       {
-        res.tv_sec = entry.tv_sec;
-        res.tv_nsec = tv_nsec;
         if (res.safetySign == 197 && res.speedLimitDistance < 100) {
           res.speedLimitDistance = 0;
           res.speedLimit = 0;
@@ -138,7 +136,7 @@ int main() {
         {
           res.safetySign = 0;
         }
-        else if (res.safetySign != 0 && res.speedLimitDistance < 50 && res.speedLimitDistance > 0)
+        else if (res.safetySign != 0 && res.safetySign != 124 && res.speedLimitDistance < 50 && res.speedLimitDistance > 0)
         {
           res.speedLimitDistance = 0;
           res.speedLimit = 0;
@@ -146,6 +144,8 @@ int main() {
         }
         else if( nDelta_nsec > 10000 )
         {
+          res.tv_sec = entry.tv_sec;
+          res.tv_nsec = tv_nsec;
           res.speedLimitDistance = 0;
           res.speedLimit = 0;
           res.safetySign = 0;
