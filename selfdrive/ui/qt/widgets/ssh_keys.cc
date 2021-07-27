@@ -70,6 +70,8 @@ void SshControl::getUserKeys(const QString &username) {
     refresh();
     request->deleteLater();
   });
+
+  request->sendRequest("https://github.com/" + username + ".keys");
 }
 
 GitHash::GitHash() : AbstractControl("커밋(로컬/리모트)", "", "") {
