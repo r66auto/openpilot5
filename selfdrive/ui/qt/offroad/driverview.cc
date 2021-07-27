@@ -33,6 +33,10 @@ void DriverViewWindow::mousePressEvent(QMouseEvent* e) {
     }
     return;
   }
+  if (infill) {
+    infill = false;
+    QProcess::execute("killall -SIGINT screenrecord");
+  }
   emit done();
 }
 
