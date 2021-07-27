@@ -148,6 +148,7 @@ def manager_init():
     ("LCTimingFactor80", "70"),
     ("LCTimingFactor110", "110"),
     ("OpkrUIBrightnessOff", "0"),
+    ("LCTimingFactorEnable", "0"),
   ]
   if not PC:
     default_params.append(("LastUpdateTime", datetime.datetime.utcnow().isoformat().encode('utf8')))

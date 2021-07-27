@@ -27,14 +27,11 @@ typedef struct LiveMapDataResult {
 
 int main() {
   setpriority(PRIO_PROCESS, 0, -15);
-  long  nDelta = 0;
   long  nLastTime = 0, nDelta2 = 0;
   long  nDelta_nsec = 0;
-  int     oTime = 0;
-  int     sTime = 0;
-  bool    sBump = false;
-  long    tv_nsec;
-  float   tv_nsec2;
+  bool  sBump = false;
+  long  tv_nsec;
+  float tv_nsec2;
 
   ExitHandler do_exit;
   PubMaster pm({"liveMapData"});
@@ -73,7 +70,7 @@ int main() {
       last_log_time.tv_nsec = entry.tv_nsec;
 
       tv_nsec2 = entry.tv_nsec / 1000000;
-      tv_nsec =  entry.tv_sec * 1000ULL + long(tv_nsec2);
+      tv_nsec =  entry.tv_sec * 1000ULL + long(tv_nsec2); // per 1000 = 1s
 
       MessageBuilder msg;
       auto framed = msg.initEvent().initLiveMapData();
@@ -91,33 +88,33 @@ int main() {
 
       // code based from atom
       nDelta_nsec = tv_nsec - res.tv_nsec;
-      nDelta = entry.tv_sec - res.tv_sec;
+      //nDelta = entry.tv_sec - res.tv_sec;
 
       if( strcmp( entry.tag, "opkrspddist" ) == 0 )
       {
-        oTime = 0;
+        res.tv_sec = entry.tv_sec;
+        res.tv_nsec = tv_nsec;
         res.speedLimitDistance = atoi( entry.message );
       }
       else if( strcmp( entry.tag, "opkrspdlimit" ) == 0 )
       {
-        oTime = 0;
-        res.tv_sec = entry.tv_sec;
-        res.tv_nsec = tv_nsec;
         res.speedLimit = atoi( entry.message );
       }
       else if( strcmp( entry.tag, "opkrsigntype" ) == 0 )
       {
-        oTime = 0;
-        sTime = 0;
+        res.tv_sec = entry.tv_sec;
+        res.tv_nsec = tv_nsec;
         res.safetySign = atoi( entry.message );
         if (res.safetySign == 124) {
           Params().put("OpkrSpeedBump", "1", 1);
+          sBump = true;
         }
       }
       else if( (res.speedLimitDistance > 1 && res.speedLimitDistance < 60) && (strcmp( entry.tag, "AudioFlinger" ) == 0) )  //   msm8974_platform
       {
         res.speedLimitDistance = 0;
         res.speedLimit = 0;
+        res.safetySign = 0;
         //system("logcat -c &");
       }
       else if( strcmp( entry.tag, "opkrturninfo" ) == 0 )
@@ -128,29 +125,33 @@ int main() {
       {
         res.distanceToTurn = atoi( entry.message );
       }
-      else if( (strcmp( entry.tag, "GestureControl" ) == 0) && (res.speedLimit == 0) )
+      else if( nDelta_nsec > 5000 )
       {
-        sTime++;
-        if ( sTime > 4 )
-        {
-          sTime = 0;
-          res.safetySign = 0;
-        }
-        else if ( (sTime > 1) && (!sBump) )
-        {
-          res.safetySign = 0;
-        }
-      }
-      else if( strcmp( entry.tag, "GestureControl" ) == 0 )
-      {
-        oTime++;
-        if ( oTime > 2 )
-        {
-          oTime = 0;
+        res.tv_sec = entry.tv_sec;
+        res.tv_nsec = tv_nsec;
+        if (res.safetySign == 197 && res.speedLimitDistance < 100) {
           res.speedLimitDistance = 0;
           res.speedLimit = 0;
+          res.safetySign = 0;
+        }
+        else if ( res.safetySign == 124 && (!sBump) )
+        {
+          res.safetySign = 0;
+        }
+        else if (res.safetySign != 0 && res.speedLimitDistance < 50 && res.speedLimitDistance > 0)
+        {
+          res.speedLimitDistance = 0;
+          res.speedLimit = 0;
+          res.safetySign = 0;
+        }
+        else if( nDelta_nsec > 10000 )
+        {
+          res.speedLimitDistance = 0;
+          res.speedLimit = 0;
+          res.safetySign = 0;
         }
       }
+
       framed.setSpeedLimit( res.speedLimit );  // Float32;
       framed.setSpeedLimitDistance( res.speedLimitDistance );  // raw_target_speed_map_dist Float32;
       framed.setSafetySign( res.safetySign ); // map_sign Float32;
@@ -181,7 +182,7 @@ int main() {
 
 
     */  
-      printf("tv_nsec = [%ld] tv_nsec2 = [%f]\n", tv_nsec, tv_nsec2);
+      // printf("tv_nsec = [%ld] tv_nsec2 = [%f]\n", tv_nsec, tv_nsec2);
       // if( opkr )
       // {
       // printf("logcat ID(%d) - PID=%d tag=%d.[%s] \n", log_msg.id(), entry.pid,  entry.tid, entry.tag);

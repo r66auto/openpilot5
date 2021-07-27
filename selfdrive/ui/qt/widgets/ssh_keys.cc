@@ -4375,7 +4375,7 @@ void LCTimingFactor::refresh4() {
   btn4.setText("↕");
 }
 
-LCTimingFactorUD::LCTimingFactorUD() : AbstractControl("차선변경 타이밍(속도(km/h): 정도값)", "차선변경 시 해당 속도별 차선변경 타이밍을 조절합니다. 빠른 차선변경을 원할경우 값을 높이고 느린 차선변경을 원할경우 값을 낮추세요.", "../assets/offroad/icon_shell.png") {
+LCTimingFactorUD::LCTimingFactorUD() : AbstractControl("차선변경 타이밍(km/h: 정도값)", "차선변경 시 해당 속도별 차선변경 타이밍을 조절합니다. 빠른 차선변경을 원할경우 값을 높이고 느린 차선변경을 원할경우 값을 낮추세요.", "../assets/offroad/icon_shell.png") {
 
   btn.setStyleSheet(R"(
     padding: 0;
@@ -4386,7 +4386,27 @@ LCTimingFactorUD::LCTimingFactorUD() : AbstractControl("차선변경 타이밍(�
     background-color: #393939;
   )");
   btn.setFixedSize(125, 100);
+  btn2.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btn2.setFixedSize(150, 100);
+  hlayout->addWidget(&btn2);
   hlayout->addWidget(&btn);
+
+  QObject::connect(&btn2, &QPushButton::clicked, [=]() {
+    bool stat = params.getBool("LCTimingFactorEnable");
+    if (stat) {
+      params.putBool("LCTimingFactorEnable", false);
+    } else {
+      params.putBool("LCTimingFactorEnable", true);
+    }
+    refresh2();
+  });
 
   QObject::connect(&btn, &QPushButton::clicked, [=]() {
     auto str = QString::fromStdString(params.get("LCTimingFactorUD"));
@@ -4400,6 +4420,7 @@ LCTimingFactorUD::LCTimingFactorUD() : AbstractControl("차선변경 타이밍(�
     refresh();
   });
   refresh();
+  refresh2();
 }
 
 void LCTimingFactorUD::refresh() {
@@ -4408,5 +4429,30 @@ void LCTimingFactorUD::refresh() {
     btn.setText("↑");
   } else {
     btn.setText("↓");
+  }
+}
+
+void LCTimingFactorUD::refresh2() {
+  bool param = params.getBool("LCTimingFactorEnable");
+  if (param) {
+    btn2.setText("사용중");
+    btn2.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #00A12E;
+    )");
+  } else {
+    btn2.setText("미사용");
+    btn2.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
   }
 }

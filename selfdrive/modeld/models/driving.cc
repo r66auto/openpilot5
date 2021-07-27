@@ -171,7 +171,7 @@ void fill_lead_v3(cereal::ModelDataV2::LeadDataV3::Builder lead, const float *le
     y_stds_arr[i] = exp(data[LEAD_MHP_VALS + i*LEAD_PRED_DIM+1]);
     v_stds_arr[i] = exp(data[LEAD_MHP_VALS + i*LEAD_PRED_DIM+2]);
     a_stds_arr[i] = exp(data[LEAD_MHP_VALS + i*LEAD_PRED_DIM+3]);
-  }  
+  }
   lead.setT(t);
   lead.setX(x_arr);
   lead.setY(y_arr);
