@@ -151,13 +151,13 @@ int main() {
           res.speedLimit = 0;
         }
       }
-      framed.setTs( res.tv_sec );
       framed.setSpeedLimit( res.speedLimit );  // Float32;
       framed.setSpeedLimitDistance( res.speedLimitDistance );  // raw_target_speed_map_dist Float32;
       framed.setSafetySign( res.safetySign ); // map_sign Float32;
       // framed.setRoadCurvature( res.roadCurvature ); // road_curvature Float32;
       framed.setTurnInfo( res.turnInfo );  // Float32;
       framed.setDistanceToTurn( res.distanceToTurn );  // Float32;
+      framed.setTs( res.tv_sec );
       framed.setMapEnable( res.mapEnable );
       framed.setMapValid( res.mapValid );
 

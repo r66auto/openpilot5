@@ -1346,8 +1346,10 @@ struct LiveMapData {
   roadCurvature @3 :Float32;
   turnInfo @4 :Float32;
   distanceToTurn @5 :Float32;
-  mapValid @6 :Bool;
-  mapEnable @7 :Bool;
+  ts @6 :Float32;
+
+  mapValid @7 :Bool;
+  mapEnable @8 :Bool;
 }
 
 struct CameraOdometry {
