@@ -339,6 +339,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"LCTimingFactor80", PERSISTENT},
     {"LCTimingFactor110", PERSISTENT},
     {"OpkrUIBrightnessOff", PERSISTENT},
+    {"LCTimingFactorEnable", PERSISTENT},
 };
 
 } // namespace

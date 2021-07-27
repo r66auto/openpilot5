@@ -67,6 +67,7 @@ class LateralPlanner():
     self.lane_change_direction = LaneChangeDirection.none
     self.lane_change_timer = 0.0
     self.lane_change_ll_prob = 1.0
+    self.keep_pulse_timer = 0.0
     self.prev_one_blinker = False
     self.desire = log.LateralPlan.Desire.none
 
@@ -79,7 +80,8 @@ class LateralPlanner():
     self.lane_change_adjust = [float(Decimal(Params().get("LCTimingFactor30", encoding="utf8")) * Decimal('0.01')), float(Decimal(Params().get("LCTimingFactor60", encoding="utf8")) * Decimal('0.01')),
      float(Decimal(Params().get("LCTimingFactor80", encoding="utf8")) * Decimal('0.01')), float(Decimal(Params().get("LCTimingFactor110", encoding="utf8")) * Decimal('0.01'))]
     self.lane_change_adjust_vel = [30*CV.KPH_TO_MS, 60*CV.KPH_TO_MS, 80*CV.KPH_TO_MS, 110*CV.KPH_TO_MS]
-    self.lane_change_adjust_new = 0.0
+    self.lane_change_adjust_new = 2
+    self.lane_change_adjust_enable = Params().get_bool("LCTimingFactorEnable")
 
     self.standstill_elapsed_time = 0.0
     self.v_cruise_kph = 0
@@ -155,14 +157,13 @@ class LateralPlanner():
       blindspot_detected = ((sm['carState'].leftBlindspot and self.lane_change_direction == LaneChangeDirection.left) or
                             (sm['carState'].rightBlindspot and self.lane_change_direction == LaneChangeDirection.right))
 
-      lane_change_prob = self.LP.l_lane_change_prob + self.LP.r_lane_change_prob
-
       # LaneChangeState.off
       if self.lane_change_state == LaneChangeState.off and one_blinker and not self.prev_one_blinker and not below_lane_change_speed:
         self.lane_change_state = LaneChangeState.preLaneChange
         self.lane_change_ll_prob = 1.0
         self.lane_change_wait_timer = 0
-        self.lane_change_adjust_new = interp(v_ego, self.lane_change_adjust_vel, self.lane_change_adjust)
+        if self.lane_change_adjust_enable:
+          self.lane_change_adjust_new = interp(v_ego, self.lane_change_adjust_vel, self.lane_change_adjust)
 
       # LaneChangeState.preLaneChange
       elif self.lane_change_state == LaneChangeState.preLaneChange:
@@ -178,6 +179,7 @@ class LateralPlanner():
         self.lane_change_ll_prob = max(self.lane_change_ll_prob - self.lane_change_adjust_new*DT_MDL, 0.0)
 
         # 98% certainty
+        lane_change_prob = self.LP.l_lane_change_prob + self.LP.r_lane_change_prob
         if lane_change_prob < 0.02 and self.lane_change_ll_prob < 0.01:
           self.lane_change_state = LaneChangeState.laneChangeFinishing
 
@@ -198,6 +200,16 @@ class LateralPlanner():
     self.prev_one_blinker = one_blinker
 
     self.desire = DESIRES[self.lane_change_direction][self.lane_change_state]
+
+    # Send keep pulse once per second during LaneChangeStart.preLaneChange
+    if self.lane_change_state in [LaneChangeState.off, LaneChangeState.laneChangeStarting]:
+      self.keep_pulse_timer = 0.0
+    elif self.lane_change_state == LaneChangeState.preLaneChange:
+      self.keep_pulse_timer += DT_MDL
+      if self.keep_pulse_timer > 1.0:
+        self.keep_pulse_timer = 0.0
+      elif self.desire in [log.LateralPlan.Desire.keepLeft, log.LateralPlan.Desire.keepRight]:
+        self.desire = log.LateralPlan.Desire.none
 
     # Turn off lanes during lane change
     if self.desire == log.LateralPlan.Desire.laneChangeRight or self.desire == log.LateralPlan.Desire.laneChangeLeft:

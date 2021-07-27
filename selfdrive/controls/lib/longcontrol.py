@@ -78,10 +78,10 @@ class LongControl():
     self.candidate = candidate
     self.long_log = Params().get_bool("LongLogDisplay")
 
-    self.vRel_prev = 0
-    self.decel_damping = 1.0
-    self.decel_damping2 = 1.0
-    self.damping_timer = 0
+    # self.vRel_prev = 0
+    # self.decel_damping = 1.0
+    # self.decel_damping2 = 1.0
+    # self.damping_timer = 0
 
   def reset(self, v_pid):
     """Reset PID controller and change setpoint"""
@@ -145,17 +145,17 @@ class LongControl():
       deadzone = interp(v_ego_pid, CP.longitudinalTuning.deadzoneBP, CP.longitudinalTuning.deadzoneV)
 
       # opkr
-      if self.vRel_prev != vRel and vRel <= 0 and CS.vEgo > 13. and self.damping_timer == 0: # decel mitigation for a while
-        if (vRel - self.vRel_prev)*3.6 < -4:
-          self.damping_timer = 45
-          self.decel_damping2 = interp(abs((vRel - self.vRel_prev)*3.6), [0, 10], [1, 0.1])
-        self.vRel_prev = vRel
-      elif self.damping_timer > 0:
-        self.damping_timer -= 1
-        self.decel_damping = interp(self.damping_timer, [0, 45], [1, self.decel_damping2])
+      # if self.vRel_prev != vRel and vRel <= 0 and CS.vEgo > 13. and self.damping_timer == 0: # decel mitigation for a while
+      #   if (vRel - self.vRel_prev)*3.6 < -4:
+      #     self.damping_timer = 45
+      #     self.decel_damping2 = interp(abs((vRel - self.vRel_prev)*3.6), [0, 10], [1, 0.1])
+      #   self.vRel_prev = vRel
+      # elif self.damping_timer > 0:
+      #   self.damping_timer -= 1
+      #   self.decel_damping = interp(self.damping_timer, [0, 45], [1, self.decel_damping2])
 
       output_gb = self.pid.update(self.v_pid, v_ego_pid, speed=v_ego_pid, deadzone=deadzone, feedforward=a_target, freeze_integrator=prevent_overshoot)
-      output_gb *= self.decel_damping
+      # output_gb *= self.decel_damping
 
       if prevent_overshoot or CS.brakeHold:
         output_gb = min(output_gb, 0.0)
@@ -178,7 +178,7 @@ class LongControl():
     elif self.long_control_state == LongCtrlState.starting:
       factor = 1
       if long_plan.hasLead:
-        factor = interp(dRel,[0.0,2.0,3.0,4.0,5.0], [0.0,0.5,1,500.0,1000.0])
+        factor = interp(dRel,[0.0,2.0,3.0,4.0,5.0], [0.0,0.5,1,250.0,500.0])
       if output_gb < -0.2:
         output_gb += CP.startingBrakeRate / RATE * factor
       self.reset(CS.vEgo)
