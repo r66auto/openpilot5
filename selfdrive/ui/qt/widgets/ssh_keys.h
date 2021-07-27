@@ -399,7 +399,7 @@ class ComIssueToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  ComIssueToggle() : ToggleControl("Turn Off Notification of Communication\nError Between Processes", "Turn on this option to turn off the interprocess communication error alarm when using White Panda.", "../assets/offroad/icon_shell.png", Params().getBool("ComIssueGone")) {
+  ComIssueToggle() : ToggleControl("Turn Off Notification of Communication\nError Between Processes", "Turn on this option to turn off the interprocess\ncommunication error alarm when using White Panda.", "../assets/offroad/icon_shell.png", Params().getBool("ComIssueGone")) {
     QObject::connect(this, &ComIssueToggle::toggleFlipped, [=](int state) {
       char value = state ? '1' : '0';
       Params().put("ComIssueGone", &value, 1);

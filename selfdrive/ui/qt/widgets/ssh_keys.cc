@@ -4322,7 +4322,7 @@ void LCTimingFactor::refresh4() {
   btn4.setText("↕");
 }
 
-LCTimingFactorUD::LCTimingFactorUD() : AbstractControl("Lane change timing (speed (km/h): precision value)", "Adjusts the lane change timing for each speed. Increase the value for a quick lane change, and lower the value for a slow lane change.", "../assets/offroad/icon_shell.png") {
+LCTimingFactorUD::LCTimingFactorUD() : AbstractControl("Lane change timing\n(speed (km/h): precision value)", "Adjusts the lane change timing for each speed. Increase the value for a quick lane change, and lower the value for a slow lane change.", "../assets/offroad/icon_shell.png") {
 
   btn.setStyleSheet(R"(
     padding: 0;
