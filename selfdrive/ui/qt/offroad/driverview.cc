@@ -147,7 +147,7 @@ void DriverViewScene::paintEvent(QPaintEvent* event) {
     QRect rec = {1745, 905, 140, 140};
     p.setBrush(Qt::NoBrush);
     if (infill) p.setBrush(Qt::red);
-    p.setPen(Qt::white);
+    p.setPen(QPen(Qt::white, 2));
     p.drawEllipse(rec);
     p.drawText(rec, Qt::AlignCenter, QString("REC"));
   }
