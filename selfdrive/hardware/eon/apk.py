@@ -52,8 +52,8 @@ def update_apks(show_spinner=False):
   install_apks = glob.glob(os.path.join(BASEDIR, "selfdrive/assets/addon/apk/*.apk"))
   if show_spinner:
     spinner = Spinner()
-    spinner.update("installing apks")
 
+  show_spinner = False
   for apk in install_apks:
     app = os.path.basename(apk)[:-4]
     if app not in installed:
@@ -73,6 +73,8 @@ def update_apks(show_spinner=False):
       cloudlog.info("comparing version of %s  %s vs %s" % (app, h1, h2))
 
     if h2 is None or h1 != h2:
+      show_spinner = True
+      spinner.update("installing %s" % app)
       cloudlog.info("installing %s" % app)
 
       success = install_apk(apk_path)
