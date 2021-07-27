@@ -415,11 +415,11 @@ static void ui_draw_debug(UIState *s)
     nvgFontSize(s->vg, 37);
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
     if (scene.lateralControlMethod == 0) {
-      ui_print(s, ui_viz_rx_center, ui_viz_ry+300, "PID");
+      ui_print(s, ui_viz_rx_center, ui_viz_ry+305, "PID");
     } else if (scene.lateralControlMethod == 1) {
-      ui_print(s, ui_viz_rx_center, ui_viz_ry+300, "INDI");
+      ui_print(s, ui_viz_rx_center, ui_viz_ry+305, "INDI");
     } else if (scene.lateralControlMethod == 2) {
-      ui_print(s, ui_viz_rx_center, ui_viz_ry+300, "LQR");
+      ui_print(s, ui_viz_rx_center, ui_viz_ry+305, "LQR");
     }
   }
 }

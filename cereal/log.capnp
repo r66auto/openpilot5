@@ -435,6 +435,7 @@ struct PandaState @0xa7649e2575e4591e {
     pedal @4;
     uno @5;
     dos @6;
+    red @7;
   }
 
   enum UsbPowerMode {
@@ -1345,8 +1346,10 @@ struct LiveMapData {
   roadCurvature @3 :Float32;
   turnInfo @4 :Float32;
   distanceToTurn @5 :Float32;
-  mapValid @6 :Bool;
-  mapEnable @7 :Bool;
+  ts @6 :UInt64;
+
+  mapValid @7 :Bool;
+  mapEnable @8 :Bool;
 }
 
 struct CameraOdometry {
