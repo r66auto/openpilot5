@@ -142,6 +142,8 @@ void Sidebar::updateState(const UIState &s) {
     m_battery_img = s.scene.deviceState.getBatteryStatus() == "Charging" ? 1 : 0;
     m_batteryPercent = s.scene.deviceState.getBatteryPercent();
     m_strip = s.scene.deviceState.getWifiIpAddress();
+    // opkr
+    m_strssid = s.scene.deviceState.getWifiSSID();
     repaint();
   }
 }
@@ -172,9 +174,9 @@ void Sidebar::paintEvent(QPaintEvent *event) {
   p.drawText(r, Qt::AlignHCenter, net_type);
 
   // metrics
-  drawMetric(p, "시스템온도", QString("%1°C").arg(temp_val), temp_status, 338);
-  drawMetric(p, panda_str, "", panda_status, 518);
-  drawMetric(p, "네트워크\n" + connect_str, "", connect_status, 676);
+  drawMetric(p, "시스템온도", QString("%1°C").arg(temp_val), temp_status, 378);
+  drawMetric(p, panda_str, "", panda_status, 558);
+  drawMetric(p, "네트워크\n" + connect_str, "", connect_status, 716);
 
   // atom - ip
   if( m_batteryPercent <= 1) return;
@@ -183,6 +185,13 @@ void Sidebar::paintEvent(QPaintEvent *event) {
   configFont(p, "Open Sans", 28, "Bold");
   p.setPen(Qt::yellow);
   p.drawText(r2, Qt::AlignHCenter, strip);
+
+  // opkr - ssid
+  QString strssid = m_strssid.c_str();
+  const QRect r3 = QRect(35, 340, 230, 45);
+  configFont(p, "Open Sans", 25, "Bold");
+  p.setPen(Qt::yellow);
+  p.drawText(r3, Qt::AlignHCenter, strssid);
 
   // atom - battery
   QRect  rect(160, 247, 76, 36);
