@@ -123,7 +123,7 @@ void Sidebar::updateState(const UIState &s) {
     pandaStr = "NO\nPANDA";
   } else if (s.scene.started && !sm["liveLocationKalman"].getLiveLocationKalman().getGpsOK() && s.scene.gpsAccuracyUblox != 0.00) {
     pandaStatus = warning_color;
-    pandaStr = "VEHICLE CONNECTED\nSEARCHING FOR GPS";
+    pandaStr = "VEHICLE\nCONNECTED\nSEARCHING FOR GPS";
   } else if (s.scene.satelliteCount > 0) {
   	pandaStr = QString("VEHICLE\nONLINE\nSAT : %1").arg(s.scene.satelliteCount);
   }
