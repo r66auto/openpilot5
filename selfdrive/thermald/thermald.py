@@ -295,7 +295,7 @@ def thermald_thread():
     if (count % int(10. / DT_TRML)) == 0:
       try:
         network_type = HARDWARE.get_network_type()
-        network_strength = HARDWARE.get_network_strength(network_type)
+        network_strength, wifi_ssid = HARDWARE.get_network_strength(network_type)
         network_info = HARDWARE.get_network_info()  # pylint: disable=assignment-from-none
 
         # Log modem version once
@@ -329,6 +329,7 @@ def thermald_thread():
     msg.deviceState.gpuUsagePercent = int(round(HARDWARE.get_gpu_usage_percent()))
     msg.deviceState.networkType = network_type
     msg.deviceState.networkStrength = network_strength
+    msg.deviceState.wifiSSID = wifi_ssid
     if network_info is not None:
       msg.deviceState.networkInfo = network_info
     msg.deviceState.wifiIpAddress = wifiIpAddress

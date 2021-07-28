@@ -71,10 +71,10 @@ class LatControlINDI():
       self.innerLoopGain = float(Decimal(self.params.get("InnerLoopGain", encoding="utf8")) * Decimal('0.1'))
       self.timeConstant = float(Decimal(self.params.get("TimeConstant", encoding="utf8")) * Decimal('0.1'))
       self.actuatorEffectiveness = float(Decimal(self.params.get("ActuatorEffectiveness", encoding="utf8")) * Decimal('0.1'))
-      self.RC = interp(self.speed, [0., 9.], [2.0, self.timeConstant]) 
-      self.G = interp(self.speed, [0., 9.], [3.0, self.actuatorEffectiveness])
-      self.outer_loop_gain = interp(self.speed, [0., 9.], [1.5, self.outerLoopGain])
-      self.inner_loop_gain = interp(self.speed, [0., 9.], [3.0, self.innerLoopGain])
+      self.RC = interp(self.speed, [0.], [self.timeConstant]) 
+      self.G = interp(self.speed, [0.], [self.actuatorEffectiveness])
+      self.outer_loop_gain = interp(self.speed, [0.], [self.outerLoopGain])
+      self.inner_loop_gain = interp(self.speed, [0.], [self.innerLoopGain])
         
       self.mpc_frame = 0
 

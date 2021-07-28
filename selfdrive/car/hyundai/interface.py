@@ -70,14 +70,14 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.newKfTuned = True if shane_feed_forward else False # Shane's feedforward
     elif lat_control_method == 1:
       ret.lateralTuning.init('indi')
-      ret.lateralTuning.indi.innerLoopGainBP = [0., 9.]
-      ret.lateralTuning.indi.innerLoopGainV = [3.0, InnerLoopGain] # third tune. Highest value that still gives smooth control. Effects turning into curves.
-      ret.lateralTuning.indi.outerLoopGainBP = [0., 9.]
-      ret.lateralTuning.indi.outerLoopGainV = [1.5, OuterLoopGain] # forth tune. Highest value that still gives smooth control. Effects lane centering.
-      ret.lateralTuning.indi.timeConstantBP = [0., 9.]
-      ret.lateralTuning.indi.timeConstantV = [2.0, TimeConstant] # second tune. Lowest value with smooth actuation. Avoid the noise of actuator gears thrashing.
-      ret.lateralTuning.indi.actuatorEffectivenessBP = [0., 9.]
-      ret.lateralTuning.indi.actuatorEffectivenessV = [3.0, ActuatorEffectiveness] # first tune. Lowest value without oversteering. May vary with speed.
+      ret.lateralTuning.indi.innerLoopGainBP = [0.]
+      ret.lateralTuning.indi.innerLoopGainV = [InnerLoopGain] # third tune. Highest value that still gives smooth control. Effects turning into curves.
+      ret.lateralTuning.indi.outerLoopGainBP = [0.]
+      ret.lateralTuning.indi.outerLoopGainV = [OuterLoopGain] # forth tune. Highest value that still gives smooth control. Effects lane centering.
+      ret.lateralTuning.indi.timeConstantBP = [0.]
+      ret.lateralTuning.indi.timeConstantV = [TimeConstant] # second tune. Lowest value with smooth actuation. Avoid the noise of actuator gears thrashing.
+      ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
+      ret.lateralTuning.indi.actuatorEffectivenessV = [ActuatorEffectiveness] # first tune. Lowest value without oversteering. May vary with speed.
       # lateralTuning.indi.actuatorEffectiveness
         # As effectiveness increases, actuation strength decreases
         # Too high: weak, sloppy lane centering, slow oscillation, can't follow high curvature, high steering error causes snappy corrections
