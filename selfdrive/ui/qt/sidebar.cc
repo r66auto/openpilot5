@@ -188,7 +188,7 @@ void Sidebar::paintEvent(QPaintEvent *event) {
 
   // opkr - ssid
   QString strssid = m_strssid.c_str();
-  const QRect r3 = QRect(35, 340, 230, 45);
+  const QRect r3 = QRect(35, 335, 230, 45);
   configFont(p, "Open Sans", 25, "Bold");
   p.setPen(Qt::yellow);
   p.drawText(r3, Qt::AlignHCenter, strssid);
