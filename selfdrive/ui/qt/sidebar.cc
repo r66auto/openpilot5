@@ -190,7 +190,7 @@ void Sidebar::paintEvent(QPaintEvent *event) {
   QString strssid = m_strssid.c_str();
   const QRect r3 = QRect(35, 335, 230, 45);
   configFont(p, "Open Sans", 25, "Bold");
-  p.setPen(Qt::yellow);
+  p.setPen(Qt::white);
   p.drawText(r3, Qt::AlignHCenter, strssid);
 
   // atom - battery
