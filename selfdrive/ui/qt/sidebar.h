@@ -69,4 +69,5 @@ private:
   int    m_batteryPercent = 0;
   int    m_battery_img;  
   std::string m_strip;
+  std::string m_strssid;
 };

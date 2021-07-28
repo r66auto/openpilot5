@@ -302,6 +302,8 @@ struct DeviceState @0xa4d8b5af2aa492eb {
 
   # atom
   wifiIpAddress @34 :Text;
+  # opkr
+  wifiSSID @35 :Text;
 
   fanSpeedPercentDesired @10 :UInt16;
   started @11 :Bool;

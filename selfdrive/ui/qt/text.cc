@@ -5,6 +5,9 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QProcess>
+#include <QHostAddress>
+#include <QNetworkInterface>
+#include <QAbstractSocket>
 
 #include "selfdrive/hardware/hw.h"
 #include "selfdrive/ui/qt/util.h"
@@ -35,6 +38,16 @@ int main(int argc, char *argv[]) {
   QPushButton *btn = new QPushButton();
 #ifdef __aarch64__
   QPushButton *btn2 = new QPushButton();
+  QLabel *label2 = new QLabel();
+  QString device_ip = "---";
+  const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
+  for (const QHostAddress &address: QNetworkInterface::allAddresses()) {
+    if (address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost)
+      device_ip = address.toString();
+  }
+  label2->setText(device_ip);
+  label2->setStyleSheet("color: #e0e879");
+  main_layout->addWidget(label2, 0, 0, Qt::AlignRight | Qt::AlignTop);
   btn->setText("Git Pull");
   btn2->setText("MixPlorer");
   QObject::connect(btn, &QPushButton::clicked, [=]() {
