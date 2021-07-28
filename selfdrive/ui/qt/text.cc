@@ -6,6 +6,8 @@
 #include <QWidget>
 #include <QProcess>
 #include <QHostAddress>
+#include <QNetworkInterface>
+#include <QAbstractSocket>
 
 #include "selfdrive/hardware/hw.h"
 #include "selfdrive/ui/qt/util.h"
@@ -40,10 +42,9 @@ int main(int argc, char *argv[]) {
   QString device_ip = "";
   const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
   for (const QHostAddress &address: QNetworkInterface::allAddresses()) {
-      if (address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost)
-          device_ip = address.toString();
+    if (address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost)
+      device_ip = address.toString();
   }
-
   label2->setText(device_ip);
   main_layout->addWidget(label2, 0, 0, Qt::AlignVCenter | Qt::AlignBottom);
   btn->setText("Git Pull");
