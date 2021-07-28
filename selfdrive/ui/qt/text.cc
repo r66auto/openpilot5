@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
   }
   label2->setText(device_ip);
   label2->setStyleSheet("color: #e0e879");
-  main_layout->addWidget(label2, 0, 0, Qt::AlignVCenter | Qt::AlignTop);
+  main_layout->addWidget(label2, 0, 0, Qt::AlignRight | Qt::AlignTop);
   btn->setText("Git Pull");
   btn2->setText("MixPlorer");
   QObject::connect(btn, &QPushButton::clicked, [=]() {
