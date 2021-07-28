@@ -37,8 +37,8 @@ int main(int argc, char *argv[]) {
 #ifdef __aarch64__
   QPushButton *btn2 = new QPushButton();
   QLabel *label2 = new QLabel();
-  std::string device_ip = QNetworkAddressEntry::ip();
-  label2.setText(device_ip);
+  QString device_ip = QNetworkAddressEntry::ip();
+  label2->setText(device_ip);
   main_layout->addWidget(label2, 0, 0, Qt::AlignVCenter | Qt::AlignBottom);
   btn->setText("Git Pull");
   btn2->setText("MixPlorer");
