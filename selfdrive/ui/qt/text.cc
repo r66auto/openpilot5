@@ -39,14 +39,15 @@ int main(int argc, char *argv[]) {
 #ifdef __aarch64__
   QPushButton *btn2 = new QPushButton();
   QLabel *label2 = new QLabel();
-  QString device_ip = "";
+  QString device_ip = "---";
   const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
   for (const QHostAddress &address: QNetworkInterface::allAddresses()) {
     if (address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost)
       device_ip = address.toString();
   }
   label2->setText(device_ip);
-  main_layout->addWidget(label2, 0, 0, Qt::AlignVCenter | Qt::AlignBottom);
+  label2->setStyleSheet("color: #e0e879");
+  main_layout->addWidget(label2, 0, 0, Qt::AlignVCenter | Qt::AlignTop);
   btn->setText("Git Pull");
   btn2->setText("MixPlorer");
   QObject::connect(btn, &QPushButton::clicked, [=]() {
