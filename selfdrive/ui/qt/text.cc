@@ -5,7 +5,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QProcess>
-#include <QNetworkAddressEntry>
+#include <QHostAddress>
 
 #include "selfdrive/hardware/hw.h"
 #include "selfdrive/ui/qt/util.h"
@@ -37,7 +37,13 @@ int main(int argc, char *argv[]) {
 #ifdef __aarch64__
   QPushButton *btn2 = new QPushButton();
   QLabel *label2 = new QLabel();
-  QString device_ip = QNetworkAddressEntry::ip();
+  QString device_ip = "";
+  const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
+  for (const QHostAddress &address: QNetworkInterface::allAddresses()) {
+      if (address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost)
+          device_ip = address.toString();
+  }
+
   label2->setText(device_ip);
   main_layout->addWidget(label2, 0, 0, Qt::AlignVCenter | Qt::AlignBottom);
   btn->setText("Git Pull");
