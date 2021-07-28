@@ -13,7 +13,7 @@
 #include <QSoundEffect>
 
 void Sidebar::drawMetric(QPainter &p, const QString &label, const QString &val, QColor c, int y) {
-  const QRect rect = {30, y, 240, val.isEmpty() ? (label.contains("\n") ? 124 : 100) : 148};
+  const QRect rect = {30, y, 240, val.isEmpty() ? (label.contains("\n") ? 124 : 100) : 148}
 
   p.setPen(Qt::NoPen);
   p.setBrush(QBrush(c));
