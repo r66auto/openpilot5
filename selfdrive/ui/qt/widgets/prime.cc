@@ -1,4 +1,4 @@
-#include "selfdrive/ui/qt/widgets/setup.h"
+#include "selfdrive/ui/qt/widgets/prime.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -265,20 +265,3 @@ void SetupWidget::replyFinished(const QString &response) {
     qDebug() << "JSON Parse failed on getting pairing and prime status";
     return;
   }
-
-  QJsonObject json = doc.object();
-  bool is_paired = json["is_paired"].toBool();
-  bool is_prime = json["prime"].toBool();
-
-  if (!is_paired) {
-    //mainLayout->setCurrentIndex(showQr);
-    showQr = false;
-    mainLayout->setCurrentWidget(primeAd);
-  } else if (!is_prime) {
-    showQr = false;
-    mainLayout->setCurrentWidget(primeAd);
-  } else {
-    showQr = false;
-    mainLayout->setCurrentWidget(primeUser);
-  }
-}
