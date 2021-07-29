@@ -1,4 +1,4 @@
-#include "selfdrive/ui/qt/widgets/setup.h"
+#include "selfdrive/ui/qt/widgets/prime.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -105,6 +105,12 @@ PrimeUserWidget::PrimeUserWidget(QWidget* parent) : QWidget(parent) {
       font-weight: 500;
     }
   )");
+  setStyleSheet(R"(
+    PrimeUserWidget {
+      background-color: #333333;
+      border-radius: 10px;
+    }
+  )");
 
   // set up API requests
   std::string dongleId = Params().get("DongleId");
@@ -145,6 +151,13 @@ PrimeAdWidget::PrimeAdWidget(QWidget* parent) : QWidget(parent) {
   hkg->setPixmap(hkgpix.scaledToWidth(430, Qt::SmoothTransformation));
   hkg->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
   main_layout->addWidget(hkg, 0, Qt::AlignCenter);
+
+  setStyleSheet(R"(
+    PrimeAdWidget {
+      background-color: #333333;
+      border-radius: 10px;
+    }
+  )");
 }
 
 
@@ -221,12 +234,13 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
 
   setStyleSheet(R"(
     SetupWidget {
-      background-color: #292929;
+      background-color: #333333;
+      border-radius: 10px;
     }
     * {
       font-size: 90px;
       font-weight: 500;
-      border-radius: 40px;
+      border-radius: 10px;
     }
   )");
 
@@ -264,21 +278,5 @@ void SetupWidget::replyFinished(const QString &response) {
   if (doc.isNull()) {
     qDebug() << "JSON Parse failed on getting pairing and prime status";
     return;
-  }
-
-  QJsonObject json = doc.object();
-  bool is_paired = json["is_paired"].toBool();
-  bool is_prime = json["prime"].toBool();
-
-  if (!is_paired) {
-    //mainLayout->setCurrentIndex(showQr);
-    showQr = false;
-    mainLayout->setCurrentWidget(primeAd);
-  } else if (!is_prime) {
-    showQr = false;
-    mainLayout->setCurrentWidget(primeAd);
-  } else {
-    showQr = false;
-    mainLayout->setCurrentWidget(primeUser);
   }
 }

@@ -163,6 +163,7 @@ def thermald_thread():
   modem_version = None
   registered_count = 0
   wifiIpAddress = "N/A"
+  wifi_ssid = "---"
 
   current_filter = FirstOrderFilter(0., CURRENT_TAU, DT_TRML)
   cpu_temp_filter = FirstOrderFilter(0., CPU_TEMP_TAU, DT_TRML)
@@ -494,6 +495,8 @@ def thermald_thread():
     # opkr
     prebuiltlet = params.get_bool("PutPrebuiltOn")
     if not os.path.isdir("/data/openpilot"):
+      if is_openpilot_dir:
+        os.system("cd /data/params/d; rm -f DongleId") # Delete DongleID if the Openpilot directory disappears, Seems you want to switch fork/branch.
       is_openpilot_dir = False
     elif not os.path.isfile(prebuiltfile) and prebuiltlet and is_openpilot_dir:
       os.system("cd /data/openpilot; touch prebuilt")

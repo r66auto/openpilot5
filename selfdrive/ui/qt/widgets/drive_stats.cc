@@ -16,39 +16,52 @@ static QLabel* newLabel(const QString& text, const QString &type) {
   return label;
 }
 
-DriveStats::DriveStats(QWidget* parent) : QWidget(parent) {
+DriveStats::DriveStats(QWidget* parent) : QFrame(parent) {
   metric_ = Params().getBool("IsMetric");
 
-  QGridLayout* main_layout = new QGridLayout(this);
-  main_layout->setMargin(0);
+  QVBoxLayout* main_layout = new QVBoxLayout(this);
+  main_layout->setContentsMargins(50, 50, 50, 60);
 
   auto add_stats_layouts = [=](const QString &title, StatsLabels& labels) {
-    int row = main_layout->rowCount();
-    main_layout->addWidget(newLabel(title, "title"), row++, 0, 1, 3);
+    QGridLayout* grid_layout = new QGridLayout;
+    grid_layout->setVerticalSpacing(10);
+    grid_layout->setContentsMargins(0, 10, 0, 10);
 
-    main_layout->addWidget(labels.routes = newLabel("0", "number"), row, 0, Qt::AlignLeft);
-    main_layout->addWidget(labels.distance = newLabel("0", "number"), row, 1, Qt::AlignLeft);
-    main_layout->addWidget(labels.hours = newLabel("0", "number"), row, 2, Qt::AlignLeft);
+    int row = 0;
+    grid_layout->addWidget(newLabel(title, "title"), row++, 0, 1, 3);
+    grid_layout->addItem(new QSpacerItem(0, 50), row++, 0, 1, 1);
 
-    main_layout->addWidget(newLabel("주행수", "unit"), row + 1, 0, Qt::AlignLeft);
-    main_layout->addWidget(labels.distance_unit = newLabel(getDistanceUnit(), "unit"), row + 1, 1, Qt::AlignLeft);
-    main_layout->addWidget(newLabel("시간", "unit"), row + 1, 2, Qt::AlignLeft);
+    grid_layout->addWidget(labels.routes = newLabel("0", "number"), row, 0, Qt::AlignLeft);
+    grid_layout->addWidget(labels.distance = newLabel("0", "number"), row, 1, Qt::AlignLeft);
+    grid_layout->addWidget(labels.hours = newLabel("0", "number"), row, 2, Qt::AlignLeft);
+
+    grid_layout->addWidget(newLabel("주행수", "unit"), row + 1, 0, Qt::AlignLeft);
+    grid_layout->addWidget(labels.distance_unit = newLabel(getDistanceUnit(), "unit"), row + 1, 1, Qt::AlignLeft);
+    grid_layout->addWidget(newLabel("시간 ", "unit"), row + 1, 2, Qt::AlignLeft);
+
+    main_layout->addLayout(grid_layout);
   };
 
-  add_stats_layouts("전체 시간", all_);
+  add_stats_layouts("전체시간", all_);
+  main_layout->addStretch();
   add_stats_layouts("지난주", week_);
 
   std::string dongle_id = Params().get("DongleId");
   if (util::is_valid_dongle_id(dongle_id)) {
-    std::string url = "https://api.retropilot.org/v1.1/devices/" + dongle_id + "/stats";
+    std::string url = "https://api.commadotai.com/v1.1/devices/" + dongle_id + "/stats";
     RequestRepeater* repeater = new RequestRepeater(this, QString::fromStdString(url), "ApiCache_DriveStats", 30);
     QObject::connect(repeater, &RequestRepeater::receivedResponse, this, &DriveStats::parseResponse);
   }
 
   setStyleSheet(R"(
-    QLabel[type="title"] { font-size: 48px; font-weight: 500; }
-    QLabel[type="number"] { font-size: 80px; font-weight: 600; }
-    QLabel[type="unit"] { font-size: 45px; font-weight: 500; }
+    DriveStats {
+      background-color: #333333;
+      border-radius: 10px;
+    }
+
+    QLabel[type="title"] { font-size: 51px; font-weight: 500; }
+    QLabel[type="number"] { font-size: 78px; font-weight: 500; }
+    QLabel[type="unit"] { font-size: 51px; font-weight: 300; color: #A0A0A0; }
   )");
 }
 
