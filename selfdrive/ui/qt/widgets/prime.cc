@@ -265,3 +265,4 @@ void SetupWidget::replyFinished(const QString &response) {
     qDebug() << "JSON Parse failed on getting pairing and prime status";
     return;
   }
+}
