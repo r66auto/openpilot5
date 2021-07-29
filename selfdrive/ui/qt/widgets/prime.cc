@@ -105,6 +105,12 @@ PrimeUserWidget::PrimeUserWidget(QWidget* parent) : QWidget(parent) {
       font-weight: 500;
     }
   )");
+  setStyleSheet(R"(
+    PrimeUserWidget {
+      background-color: #333333;
+      border-radius: 10px;
+    }
+  )");
 
   // set up API requests
   std::string dongleId = Params().get("DongleId");
@@ -145,6 +151,13 @@ PrimeAdWidget::PrimeAdWidget(QWidget* parent) : QWidget(parent) {
   hkg->setPixmap(hkgpix.scaledToWidth(430, Qt::SmoothTransformation));
   hkg->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
   main_layout->addWidget(hkg, 0, Qt::AlignCenter);
+
+  setStyleSheet(R"(
+    PrimeAdWidget {
+      background-color: #333333;
+      border-radius: 10px;
+    }
+  )");
 }
 
 
@@ -221,12 +234,13 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
 
   setStyleSheet(R"(
     SetupWidget {
-      background-color: #292929;
+      background-color: #333333;
+      border-radius: 10px;
     }
     * {
       font-size: 90px;
       font-weight: 500;
-      border-radius: 40px;
+      border-radius: 10px;
     }
   )");
 

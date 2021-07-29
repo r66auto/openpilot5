@@ -51,7 +51,7 @@ Sidebar::Sidebar(QWidget *parent) : QFrame(parent) {
   setStyleSheet("background-color: rgb(57, 57, 57);");
 }
 
-void Sidebar::mouseReleaseEvent(QMouseEvent *event) {
+void Sidebar::mousePressEvent(QMouseEvent *event) {
   if (settings_btn.contains(event->pos())) {
     QUIState::ui_state.scene.setbtn_count = QUIState::ui_state.scene.setbtn_count + 1;
     if (QUIState::ui_state.scene.setbtn_count > 1) {
