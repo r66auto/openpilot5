@@ -351,7 +351,7 @@ class PrebuiltToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  PrebuiltToggle() : ToggleControl("Prebuilt 파일 생성", "Prebuilt 파일을 생성하며 부팅속도를 단축시킵니다. UI수정을 한 경우 기능을 끄십시오.", "../assets/offroad/icon_shell.png", Params().getBool("PutPrebuiltOn")) {
+  PrebuiltToggle() : ToggleControl("Prebuilt 파일 생성", "Prebuilt 파일을 생성하며 부팅속도를 단축시킵니다. 메뉴상에서 깃풀, 깃리셋, 판다관련 코드 변경 등 적용 시 자동제거되며 재시작후 다시 생성됩니다.", "../assets/offroad/icon_shell.png", Params().getBool("PutPrebuiltOn")) {
     QObject::connect(this, &PrebuiltToggle::toggleFlipped, [=](int state) {
       char value = state ? '1' : '0';
       Params().put("PutPrebuiltOn", &value, 1);
@@ -756,13 +756,13 @@ public:
   SRBaseControl();
 
 private:
-  QPushButton btnplus;
-  QPushButton btnminus;
-  QLabel label;
+  QLineEdit sr_base_value;
   Params params;
   
   void refresh();
+  void vedit(QString str);
 };
+
 class SRMaxControl : public AbstractControl {
   Q_OBJECT
 
