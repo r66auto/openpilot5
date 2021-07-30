@@ -1146,8 +1146,8 @@ static void draw_laneless_button(UIState *s) {
     nvgStrokeColor(s->vg, nvgRGBA(0,0,0,80));
     nvgStrokeWidth(s->vg, 6);
     nvgStroke(s->vg);
-    nvgFontSize(s->vg, 45);
-
+    nvgFontSize(s->vg, 43);    
+    
     if (s->scene.laneless_mode == 0) {
       nvgStrokeColor(s->vg, nvgRGBA(0,125,0,255));
       nvgStrokeWidth(s->vg, 6);
@@ -1156,7 +1156,8 @@ static void draw_laneless_button(UIState *s) {
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);     
       nvgFillColor(s->vg, nvgRGBA(255,255,255,200));       
-      nvgText(s->vg,btn_xc1,btn_yc,"Lane",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc-20,"Lane",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc+20,"only",NULL);
     } else if (s->scene.laneless_mode == 1) {
       nvgStrokeColor(s->vg, nvgRGBA(0,100,255,255));
       nvgStrokeWidth(s->vg, 6);
@@ -1165,7 +1166,8 @@ static void draw_laneless_button(UIState *s) {
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);      
       nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
-      nvgText(s->vg,btn_xc1,btn_yc,"Kale",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc-20,"Lane",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc+20,"less",NULL);      
     } else if (s->scene.laneless_mode == 2) {
       nvgStrokeColor(s->vg, nvgRGBA(125,0,125,255));
       nvgStrokeWidth(s->vg, 6);
@@ -1175,6 +1177,7 @@ static void draw_laneless_button(UIState *s) {
       nvgFill(s->vg);
       nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
       nvgText(s->vg,btn_xc1,btn_yc,"Auto",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc,"Lane",NULL);
     }
   }
 }
