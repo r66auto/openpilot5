@@ -2255,6 +2255,9 @@ SRBaseControl::SRBaseControl() : AbstractControl("SteerRatio", "SteerRatio 기�
   hlayout->addWidget(&btndigit);
   hlayout->addWidget(&btnupdown);
   hlayout->addWidget(&btnapply);
+  btndigit.setText("0.01");
+  btnupdown.setText("↓");
+  btnapply.setText("↕");
 
   QObject::connect(&btndigit, &QPushButton::clicked, [=]() {
     digit = digit * 10;
@@ -2300,9 +2303,6 @@ void SRBaseControl::refresh() {
   float valuef = valuei * 0.01;
   QString valuefs = QString::number(valuef);
   label.setText(QString::fromStdString(valuefs.toStdString()));
-  btndigit.setText("0.01");
-  btnupdown.setText("↓");
-  btnapply.setText("↕");
 }
 
 SRMaxControl::SRMaxControl() : AbstractControl("SteerRatioMax", "SteerRatio 최대값을 설정합니다.", "../assets/offroad/icon_shell.png") {
@@ -2341,6 +2341,9 @@ SRMaxControl::SRMaxControl() : AbstractControl("SteerRatioMax", "SteerRatio 최�
   hlayout->addWidget(&btndigit);
   hlayout->addWidget(&btnupdown);
   hlayout->addWidget(&btnapply);
+  btndigit.setText("0.01");
+  btnupdown.setText("↓");
+  btnapply.setText("↕");
 
   QObject::connect(&btndigit, &QPushButton::clicked, [=]() {
     digit = digit * 10;
@@ -2386,9 +2389,6 @@ void SRMaxControl::refresh() {
   float valuef = valuei * 0.01;
   QString valuefs = QString::number(valuef);
   label.setText(QString::fromStdString(valuefs.toStdString()));
-  btndigit.setText("0.01");
-  btnupdown.setText("↓");
-  btnapply.setText("↕");
 }
 
 SteerActuatorDelay::SteerActuatorDelay() : AbstractControl("SteerActuatorDelay", "SteerActuatorDelay값을 조정합니다.", "../assets/offroad/icon_shell.png") {
