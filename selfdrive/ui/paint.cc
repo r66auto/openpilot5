@@ -1176,8 +1176,8 @@ static void draw_laneless_button(UIState *s) {
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);
       nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
-      nvgText(s->vg,btn_xc1,btn_yc,"Auto",NULL);
-      nvgText(s->vg,btn_xc1,btn_yc,"Lane",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc-20,"Auto",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc+20,"Lane",NULL);
     }
   }
 }
