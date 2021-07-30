@@ -2221,6 +2221,8 @@ void CameraOffset::refresh() {
 
 SRBaseControl::SRBaseControl() : AbstractControl("SteerRatio", "SteerRatio 기본값을 설정합니다.", "../assets/offroad/icon_shell.png") {
 
+  sr_base_value.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  sr_base_value.setStyleSheet("color: #e0e879");
   hlayout->addWidget(&sr_base_value);
 
   connect(&sr_base_value, SIGNAL(textChanged(QString)), this, SLOT(vedit(QString)));
@@ -2235,7 +2237,8 @@ void SRBaseControl::refresh() {
   sr_base_value.setText(QString::fromStdString(valuefs.toStdString()));
 }
 void SRBaseControl::vedit(QString str) {
-  int valuei = str.toFloat() * 100;
+  float valuef = str.toFloat() * 100;
+  int valuei = valuef.toInt();
   QString valuefs = QString::number(valuei);
   params.put("SteerRatioAdj", valuefs.toStdString());
   sr_base_value.setText(QString::fromStdString(str.toStdString()));
