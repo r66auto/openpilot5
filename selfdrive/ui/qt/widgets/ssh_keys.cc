@@ -2258,7 +2258,7 @@ SRBaseControl::SRBaseControl() : AbstractControl("SteerRatio", "SteerRatio 기�
 
   QObject::connect(&btndigit, &QPushButton::clicked, [=]() {
     digit = digit * 10;
-    if (digit >= 100 ) {
+    if (digit >= 11 ) {
       digit = 0.01;
     }
     QString level = QString::number(digit);
@@ -2297,9 +2297,12 @@ SRBaseControl::SRBaseControl() : AbstractControl("SteerRatio", "SteerRatio 기�
 void SRBaseControl::refresh() {
   auto strs = QString::fromStdString(params.get("SteerRatioAdj"));
   int valuei = strs.toInt();
-  float valuef = valuei * 0.1;
+  float valuef = valuei * 0.01;
   QString valuefs = QString::number(valuef);
   label.setText(QString::fromStdString(valuefs.toStdString()));
+  btndigit.setText(level);
+  btnupdown.setText("↓");
+  btnapply.setText("↕");
 }
 
 SRMaxControl::SRMaxControl() : AbstractControl("SteerRatioMax", "SteerRatio 최대값을 설정합니다.", "../assets/offroad/icon_shell.png") {
