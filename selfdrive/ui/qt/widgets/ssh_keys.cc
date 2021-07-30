@@ -2221,24 +2221,65 @@ void CameraOffset::refresh() {
 
 SRBaseControl::SRBaseControl() : AbstractControl("SteerRatio", "SteerRatio 기본값을 설정합니다.", "../assets/offroad/icon_shell.png") {
 
-  sr_base_value.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  sr_base_value.setStyleSheet("color: #e0e879");
-  hlayout->addWidget(&sr_base_value);
+  label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  label.setStyleSheet("color: #e0e879");
+  hlayout->addWidget(&label);
 
-  connect(&sr_base_value, SIGNAL(textChanged(QString)), this, SLOT(vedit(QString)));
+  btnminus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnplus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnminus.setFixedSize(150, 100);
+  btnplus.setFixedSize(150, 100);
+  hlayout->addWidget(&btnminus);
+  hlayout->addWidget(&btnplus);
+
+  QObject::connect(&btnminus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("SteerRatioAdj"));
+    int value = str.toInt();
+    value = value - 1;
+    if (value <= 80 ) {
+      value = 80;
+    }
+    QString values = QString::number(value);
+    params.put("SteerRatioAdj", values.toStdString());
+    refresh();
+  });
+  
+  QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("SteerRatioAdj"));
+    int value = str.toInt();
+    value = value + 1;
+    if (value >= 200) {
+      value = 200;
+    }
+    QString values = QString::number(value);
+    params.put("SteerRatioAdj", values.toStdString());
+    refresh();
+  });
   refresh();
 }
 
 void SRBaseControl::refresh() {
   auto strs = QString::fromStdString(params.get("SteerRatioAdj"));
   int valuei = strs.toInt();
-  float valuef = valuei * 0.01;
+  float valuef = valuei * 0.1;
   QString valuefs = QString::number(valuef);
-  sr_base_value.setText(QString::fromStdString(valuefs.toStdString()));
-}
-void SRBaseControl::vedit(QString str) {
-  params.put("SteerRatioAdj", str.toStdString());
-  sr_base_value.setText(QString::fromStdString(valuefs.toStdString()));
+  label.setText(QString::fromStdString(valuefs.toStdString()));
+  btnminus.setText("－");
+  btnplus.setText("＋");
 }
 
 SRMaxControl::SRMaxControl() : AbstractControl("SteerRatioMax", "SteerRatio 최대값을 설정합니다.", "../assets/offroad/icon_shell.png") {

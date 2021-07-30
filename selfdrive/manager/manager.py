@@ -73,7 +73,7 @@ def manager_init():
     ("PidKd", "150"),
     ("PidKf", "7"),
     ("CameraOffsetAdj", "60"),
-    ("SteerRatioAdj", "1550"),
+    ("SteerRatioAdj", "155"),
     ("SteerRatioMaxAdj", "175"),
     ("SteerActuatorDelayAdj", "20"),
     ("SteerRateCostAdj", "35"),
