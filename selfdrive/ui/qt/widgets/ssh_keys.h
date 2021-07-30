@@ -773,10 +773,13 @@ public:
   SRMaxControl();
 
 private:
-  QPushButton btnplus;
-  QPushButton btnminus;
+  QPushButton btndigit;
+  QPushButton btnupdown;
+  QPushButton btnapply;
   QLabel label;
   Params params;
+  float digit = 0.01;
+  bool updown = false;
   
   void refresh();
 };
