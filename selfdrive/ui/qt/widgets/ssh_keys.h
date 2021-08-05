@@ -757,12 +757,11 @@ public:
 
 private:
   QPushButton btndigit;
-  QPushButton btnupdown;
-  QPushButton btnapply;
+  QPushButton btnminus;
+  QPushButton btnplus;
   QLabel label;
   Params params;
   float digit = 0.01;
-  bool updown = false;
   
   void refresh();
 };
@@ -774,12 +773,11 @@ public:
 
 private:
   QPushButton btndigit;
-  QPushButton btnupdown;
-  QPushButton btnapply;
+  QPushButton btnminus;
+  QPushButton btnplus;
   QLabel label;
   Params params;
   float digit = 0.01;
-  bool updown = false;
   
   void refresh();
 };

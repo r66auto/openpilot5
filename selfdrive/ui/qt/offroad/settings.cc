@@ -26,6 +26,7 @@
 #include "selfdrive/ui/qt/widgets/toggle.h"
 #include "selfdrive/ui/ui.h"
 #include "selfdrive/ui/qt/util.h"
+#include "selfdrive/ui/qt/qt_window.h"
 
 TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
   QVBoxLayout *main_layout = new QVBoxLayout(this);
@@ -59,22 +60,22 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                   this));
 
   toggles.append(new ParamControl("UploadRaw",
-                                 "주행 로그 업로드",
-                                 "업로드 프로세스 활성화 시 모든 로그 및 풀 해상도 비디오를 업로드합니다.(WiFi 사용중에만 작동) 기능이 꺼진 경우, my.comma.ai/useradmin에 업로드를 위해 개별 로그는 기록될 수 있습니다.",
+                                  "주행 로그 업로드",
+                                  "업로드 프로세스 활성화 시 모든 로그 및 풀 해상도 비디오를 업로드합니다.(WiFi 사용중에만 작동) 기능이 꺼진 경우, my.comma.ai/useradmin에 업로드를 위해 개별 로그는 기록될 수 있습니다.",
                                  "../assets/offroad/icon_network.png",
                                  this));
 
   ParamControl *record_toggle = new ParamControl("RecordFront",
                                                  "운전자 영상 녹화 및 업로드",
                                                  "운전자 모니터링 카메라에서 데이터를 업로드하고 운전자 모니터링 알고리즘을 개선하십시오.",
-                                                 "../assets/offroad/icon_network.png",
+                                                 "../assets/offroad/icon_monitoring.png",
                                                  this);
   toggles.append(record_toggle);
   toggles.append(new ParamControl("EndToEndToggle",
-                                   "차선 비활성화 모드 (알파)",
-                                   "이 모드에서 오픈파일럿은 차선을 따라 주행하지 않고 사람이 운전하는 것 처럼 주행합니다.",
-                                   "../assets/offroad/icon_road.png",
-                                   this));
+                                  "차선 비활성화 모드 (알파)",
+                                  "이 모드에서 오픈파일럿은 차선을 따라 주행하지 않고 사람이 운전하는 것 처럼 주행합니다.",
+                                  "../assets/offroad/icon_road.png",
+                                  this));
 
 #ifdef ENABLE_MAPS
   toggles.append(new ParamControl("NavSettingTime24h",
@@ -198,7 +199,16 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
     }
   });
 
-  for (auto btn : {dcamBtn, resetCalibBtn, retrainingBtn, uninstallBtn}) {
+  ButtonControl *regulatoryBtn = nullptr;
+  if (Hardware::TICI()) {
+    regulatoryBtn = new ButtonControl("Regulatory", "VIEW", "");
+    connect(regulatoryBtn, &ButtonControl::clicked, [=]() {
+      const std::string txt = util::read_file(ASSET_PATH.toStdString() + "/offroad/fcc.html");
+      RichTextDialog::alert(QString::fromStdString(txt), this);
+    });
+  }
+
+  for (auto btn : {dcamBtn, resetCalibBtn, retrainingBtn, uninstallBtn, regulatoryBtn}) {
     if (btn) {
       main_layout->addWidget(horizontal_line());
       connect(parent, SIGNAL(offroadTransition(bool)), btn, SLOT(setEnabled(bool)));
@@ -652,6 +662,10 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
     border 1px grey solid;
     border-radius: 100px;
     background-color: #292929;
+    }
+    QPushButton:pressed {
+      background-color: #3B3B3B;
+    }
   )");
   close_btn->setFixedSize(200, 200);
   sidebar_layout->addSpacing(45);
@@ -698,6 +712,9 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
       }
       QPushButton:checked {
         color: white;
+      }
+      QPushButton:pressed {
+        color: #ADADAD;
       }
     )").arg(padding));
 
