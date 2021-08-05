@@ -2235,7 +2235,7 @@ SRBaseControl::SRBaseControl() : AbstractControl("SteerRatio", "SteerRatio ê¸°ë³
       background-color: #393939;
     }
     QPushButton:pressed {
-      background-color: #4a4a4a;
+      background-color: #ababab;
     }
   )");
   btnminus.setStyleSheet(R"(
@@ -2248,7 +2248,7 @@ SRBaseControl::SRBaseControl() : AbstractControl("SteerRatio", "SteerRatio ê¸°ë³
       background-color: #393939;
     }
     QPushButton:pressed {
-      background-color: #4a4a4a;
+      background-color: #ababab;
     }
   )");
   btnplus.setStyleSheet(R"(
@@ -2261,7 +2261,7 @@ SRBaseControl::SRBaseControl() : AbstractControl("SteerRatio", "SteerRatio ê¸°ë³
       background-color: #393939;
     }
     QPushButton:pressed {
-      background-color: #4a4a4a;
+      background-color: #ababab;
     }
   )");
   btndigit.setFixedSize(100, 100);
@@ -2333,7 +2333,7 @@ SRMaxControl::SRMaxControl() : AbstractControl("SteerRatioMax", "SteerRatio ìµœë
       background-color: #393939;
     }
     QPushButton:pressed {
-      background-color: #4a4a4a;
+      background-color: #ababab;
     }
   )");
   btnminus.setStyleSheet(R"(
@@ -2346,7 +2346,7 @@ SRMaxControl::SRMaxControl() : AbstractControl("SteerRatioMax", "SteerRatio ìµœë
       background-color: #393939;
     }
     QPushButton:pressed {
-      background-color: #4a4a4a;
+      background-color: #ababab;
     }
   )");
   btnplus.setStyleSheet(R"(
@@ -2359,7 +2359,7 @@ SRMaxControl::SRMaxControl() : AbstractControl("SteerRatioMax", "SteerRatio ìµœë
       background-color: #393939;
     }
     QPushButton:pressed {
-      background-color: #4a4a4a;
+      background-color: #ababab;
     }
   )");
   btndigit.setFixedSize(100, 100);
@@ -2389,7 +2389,7 @@ SRMaxControl::SRMaxControl() : AbstractControl("SteerRatioMax", "SteerRatio ìµœë
       value = 800;
     }
     QString values = QString::number(value);
-    params.put("SteerRatioAdj", values.toStdString());
+    params.put("SteerRatioMaxAdj", values.toStdString());
     refresh();
   });
   
@@ -2401,7 +2401,7 @@ SRMaxControl::SRMaxControl() : AbstractControl("SteerRatioMax", "SteerRatio ìµœë
       value = 2000;
     }
     QString values = QString::number(value);
-    params.put("SteerRatioAdj", values.toStdString());
+    params.put("SteerRatioMaxAdj", values.toStdString());
     refresh();
   });
   refresh();
