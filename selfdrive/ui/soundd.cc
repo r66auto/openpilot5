@@ -20,7 +20,7 @@ class Sound : public QObject {
 public:
   explicit Sound(QObject *parent = 0) {
     // TODO: merge again and add EQ in the amp config
-    const QString sound_asset_path = Hardware::TICI ? "../assets/sounds_tici/" : "../assets/sounds/";
+    const QString sound_asset_path = Hardware::TICI() ? "../assets/sounds_tici/" : "../assets/sounds/";
     std::tuple<AudibleAlert, QString, bool> sound_list[] = {
       {AudibleAlert::CHIME_DISENGAGE, sound_asset_path + "disengaged.wav", false},
       {AudibleAlert::CHIME_ENGAGE, sound_asset_path + "engaged.wav", false},
@@ -37,9 +37,10 @@ public:
       {AudibleAlert::CHIME_MODE_MAPONLY, "../assets/sounds/modemaponly.wav", false}
     };
     for (auto &[alert, fn, loops] : sound_list) {
-      sounds[alert].first.setSource(QUrl::fromLocalFile(fn));
-      sounds[alert].second = loops ? QSoundEffect::Infinite : 0;
-      QObject::connect(&sounds[alert].first, &QSoundEffect::statusChanged, this, &Sound::checkStatus);
+      QSoundEffect *s = new QSoundEffect(this);
+      QObject::connect(s, &QSoundEffect::statusChanged, this, &Sound::checkStatus);
+      s->setSource(QUrl::fromLocalFile(fn));
+      sounds[alert] = {s, loops ? QSoundEffect::Infinite : 0};
     }
 
     sm = new SubMaster({"carState", "controlsState"});
@@ -54,9 +55,8 @@ public:
 
 private slots:
   void checkStatus() {
-    for (auto &[alert, kv] : sounds) {
-      assert(kv.first.status() != QSoundEffect::Error);
-    }
+    QSoundEffect *s = qobject_cast<QSoundEffect*>(sender());
+    assert(s->status() != QSoundEffect::Error);
   }
 
   void update() {
@@ -82,26 +82,25 @@ private slots:
     if (!alert.equal(a)) {
       alert = a;
       // stop sounds
-      for (auto &kv : sounds) {
+      for (auto &[s, loops] : sounds) {
         // Only stop repeating sounds
-        auto &[sound, loops] = kv.second;
-        if (sound.loopsRemaining() == QSoundEffect::Infinite) {
-          sound.stop();
+        if (s->loopsRemaining() == QSoundEffect::Infinite) {
+          s->stop();
         }
       }
 
       // play sound
       if (alert.sound != AudibleAlert::NONE) {
-        auto &[sound, loops] = sounds[alert.sound];
-        sound.setLoopCount(loops);
+        auto &[s, loops] = sounds[alert.sound];
+        s->setLoopCount(loops);
         if ((std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01) < -0.03) {
-          sound.setVolume(0.0);
+          s->setVolume(0.0);
         } else if ((std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01) > 0.03) {
-          sound.setVolume(std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01);
+          s->setVolume(std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01);
         } else {
-          sound.setVolume(volume);
+          s->setVolume(volume);
         }
-        sound.play();
+        s->play();
       }
     }
   }
@@ -109,7 +108,7 @@ private slots:
 private:
   Alert alert;
   float volume = Hardware::MIN_VOLUME;
-  std::map<AudibleAlert, std::pair<QSoundEffect, int>> sounds;
+  QMap<AudibleAlert, QPair<QSoundEffect*, int>> sounds;
   SubMaster *sm;
 };
 
