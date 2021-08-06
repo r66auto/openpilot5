@@ -581,7 +581,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
 
 static void ui_draw_vision_cruise_speed(UIState *s) {
   float cruise_speed = s->scene.vSetDis;
-  if (!s->scene.is_metric) { cruise_speed *= 0.621371; }
+  if (!s->scene.is_metric) { cruise_speed *= 0.6225; }
   s->is_speed_over_limit = s->scene.limitSpeedCamera > 29 && ((s->scene.limitSpeedCamera+round(s->scene.limitSpeedCamera*0.01*s->scene.speed_lim_off))+1 < s->scene.car_state.getVEgo()*3.6);
   const Rect rect = {bdr_s, bdr_s, 184, 202};
 
