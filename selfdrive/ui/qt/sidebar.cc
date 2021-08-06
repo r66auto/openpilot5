@@ -69,7 +69,7 @@ void Sidebar::mousePressEvent(QMouseEvent *event) {
       if (apks_enable) {
         QProcess::execute("/data/openpilot/run_mixplorer.sh");
       } else {
-        if (ConfirmationDialog::alert("믹스플로러를 실행하기 위해서는 사용자설정에서 Apks 사용을 활성화해야 합니다(활성화 후 재부팅 필요)", this)) {}
+        if (ConfirmationDialog::alert("In order to run Mixflower, you need to enable Apks usage in user settings (requires reboot after activation))", this)) {}
       }
     }
     return;
@@ -105,11 +105,11 @@ void Sidebar::updateState(const UIState &s) {
 
   auto last_ping = deviceState.getLastAthenaPingTime();
   if (last_ping == 0) {
-    setProperty("connectStr", "오프라인");
+    setProperty("connectStr", "OFFLINE");
     setProperty("connectStatus", warning_color);
   } else {
     bool online = nanos_since_boot() - last_ping < 80e9;
-    setProperty("connectStr",  online ? "온라인" : "오류");
+    setProperty("connectStr",  online ? "ONLINE" : "ERROR");
     setProperty("connectStatus", online ? good_color : danger_color);
   }
 
@@ -123,16 +123,16 @@ void Sidebar::updateState(const UIState &s) {
   setProperty("tempStatus", tempStatus);
   setProperty("tempVal", (int)deviceState.getAmbientTempC());
 
-  QString pandaStr = "차량\n연결됨";
+  QString pandaStr = "VEHICLE\nONLINE";
   QColor pandaStatus = good_color;
   if (s.scene.pandaType == cereal::PandaState::PandaType::UNKNOWN) {
     pandaStatus = danger_color;
-    pandaStr = "차량\n연결안됨";
+    pandaStr = "NO\nPANDA";
   } else if (s.scene.started && !sm["liveLocationKalman"].getLiveLocationKalman().getGpsOK() && s.scene.gpsAccuracyUblox != 0.00) {
     pandaStatus = warning_color;
-    pandaStr = "차량연결됨\nGPS검색중";
+    pandaStr = "VEHICLE\nCONNECTED\nSEARCHING FOR GPS";
   } else if (s.scene.satelliteCount > 0) {
-  	pandaStr = QString("차량연결됨\nSAT : %1").arg(s.scene.satelliteCount);
+  	pandaStr = QString("VEHICLE\nCONNECTED\nSAT : %1").arg(s.scene.satelliteCount);
   }
   setProperty("pandaStr", pandaStr);
   setProperty("pandaStatus", pandaStatus);
@@ -174,9 +174,9 @@ void Sidebar::paintEvent(QPaintEvent *event) {
   p.drawText(r, Qt::AlignHCenter, net_type);
 
   // metrics
-  drawMetric(p, "시스템온도", QString("%1°C").arg(temp_val), temp_status, 378);
+  drawMetric(p, "TEMP", QString("%1°C").arg(temp_val), temp_status, 378);
   drawMetric(p, panda_str, "", panda_status, 558);
-  drawMetric(p, "네트워크\n" + connect_str, "", connect_status, 716);
+  drawMetric(p, "CONNECT\n" + connect_str, "", connect_status, 716);
 
   // atom - ip
   if( m_batteryPercent <= 1) return;

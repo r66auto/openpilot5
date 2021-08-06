@@ -26,7 +26,7 @@ Networking::Networking(QWidget* parent, bool show_advanced) : QFrame(parent) {
   QVBoxLayout* vlayout = new QVBoxLayout(wifiScreen);
   vlayout->setContentsMargins(20, 20, 20, 20);
   if (show_advanced) {
-    QPushButton* advancedSettings = new QPushButton("추가옵션");
+    QPushButton* advancedSettings = new QPushButton("Additional Options");
     advancedSettings->setObjectName("advancedBtn");
     advancedSettings->setStyleSheet("margin-right: 30px;");
     advancedSettings->setFixedSize(350, 100);
@@ -82,7 +82,7 @@ void Networking::connectToNetwork(const Network &n) {
     wifi->connect(n);
     wifiWidget->refresh();    
   } else if (n.security_type == SecurityType::WPA) {
-    QString pass = InputDialog::getText("\"" + n.ssid + "\"", this, "의 패스워드를 입력하세요", true, 8);
+    QString pass = InputDialog::getText("\"" + n.ssid + "\"", this, "Please enter your password", true, 8);
     if (!pass.isEmpty()) {
       wifi->connect(n, pass);
     }
@@ -92,7 +92,7 @@ void Networking::connectToNetwork(const Network &n) {
 void Networking::wrongPassword(const QString &ssid) {
   if (wifi->seenNetworks.contains(ssid)) {
     const Network &n = wifi->seenNetworks.value(ssid);
-    QString pass = InputDialog::getText("\"" + n.ssid +"\"", this, "의 패스워드가 틀렸습니다", true, 8);
+    QString pass = InputDialog::getText("\"" + n.ssid +"\"", this, "Wrong password", true, 8);
     if (!pass.isEmpty()) {
       wifi->connect(n, pass);
     }
@@ -125,15 +125,15 @@ AdvancedNetworking::AdvancedNetworking(QWidget* parent, WifiManager* wifi): QWid
   main_layout->addWidget(back, 0, Qt::AlignLeft);
 
   // Enable tethering layout
-  tetheringToggle = new ToggleControl("테더링 활성화", "", "", wifi->isTetheringEnabled());
+  tetheringToggle = new ToggleControl("Enable Tethering", "", "", wifi->isTetheringEnabled());
   main_layout->addWidget(tetheringToggle);
   QObject::connect(tetheringToggle, &ToggleControl::toggleFlipped, this, &AdvancedNetworking::toggleTethering);
   main_layout->addWidget(horizontal_line(), 0);
 
   // Change tethering password
-  ButtonControl *editPasswordButton = new ButtonControl("테더링 패스워드", "변경");
+  ButtonControl *editPasswordButton = new ButtonControl("Tethering Password", "CHANGE");
   connect(editPasswordButton, &ButtonControl::clicked, [=]() {
-    QString pass = InputDialog::getText("새로운 패스워드를 입력하세요", this, "", true, 8, wifi->getTetheringPassword());
+    QString pass = InputDialog::getText("Enter new tethering password", this, "", true, 8, wifi->getTetheringPassword());
     if (!pass.isEmpty()) {
       wifi->changeTetheringPassword(pass);
     }
@@ -142,7 +142,7 @@ AdvancedNetworking::AdvancedNetworking(QWidget* parent, WifiManager* wifi): QWid
   main_layout->addWidget(horizontal_line(), 0);
 
   // IP address
-  ipLabel = new LabelControl("IP 주소", wifi->ipv4_address);
+  ipLabel = new LabelControl("IP Address", wifi->ipv4_address);
   main_layout->addWidget(ipLabel, 0);
   main_layout->addWidget(horizontal_line(), 0);
 
@@ -181,7 +181,7 @@ WifiUI::WifiUI(QWidget *parent, WifiManager* wifi) : QWidget(parent), wifi(wifi)
   checkmark = QPixmap(ASSET_PATH + "offroad/icon_checkmark.svg").scaledToWidth(49, Qt::SmoothTransformation);
   circled_slash = QPixmap(ASSET_PATH + "img_circled_slash.svg").scaledToWidth(49, Qt::SmoothTransformation);
 
-  QLabel *scanning = new QLabel("네트워크 검색 중...");
+  QLabel *scanning = new QLabel("Searching for network...");
   scanning->setStyleSheet("font-size: 65px;");
   main_layout->addWidget(scanning, 0, Qt::AlignCenter);
 
@@ -234,7 +234,7 @@ void WifiUI::refresh() {
   clearLayout(main_layout);
 
   if (wifi->seenNetworks.size() == 0) {
-    QLabel *scanning = new QLabel("네트워크 검색중...");
+    QLabel *scanning = new QLabel("No networks found. Searching...");
     scanning->setStyleSheet("font-size: 65px;");
     main_layout->addWidget(scanning, 0, Qt::AlignCenter);
     return;
@@ -260,17 +260,17 @@ void WifiUI::refresh() {
     hlayout->addWidget(ssidLabel, network.connected == ConnectedType::CONNECTING ? 0 : 1);
 
     if (network.connected == ConnectedType::CONNECTING) {
-      QPushButton *connecting = new QPushButton("연결중...");
+      QPushButton *connecting = new QPushButton("Connecting...");
       connecting->setObjectName("connecting");
       hlayout->addWidget(connecting, 2, Qt::AlignLeft);
     }
 
     // Forget button
     if (wifi->isKnownConnection(network.ssid) && !wifi->isTetheringEnabled()) {
-      QPushButton *forgetBtn = new QPushButton("지우기");
+      QPushButton *forgetBtn = new QPushButton("Forget");
       forgetBtn->setObjectName("forgetBtn");
       QObject::connect(forgetBtn, &QPushButton::clicked, [=]() {
-        if (ConfirmationDialog::confirm(QString::fromUtf8(network.ssid) + "를 지우시겠습니까?", this)) {
+        if (ConfirmationDialog::confirm(QString::fromUtf8(network.ssid) + "Are you sure you want to forget?", this)) {
           wifi->forgetConnection(network.ssid);
         }
       });
