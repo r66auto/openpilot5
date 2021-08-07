@@ -304,7 +304,7 @@ void OffroadHome::refresh() {
   } else if (QDate::currentDate().dayOfWeek() == 7) {
     dayofweek = "Sunday";
   }
-  date->setText(QDateTime::currentDateTime().toString("dddd, MMMM d " + dayofweek));
+  date->setText(QDateTime::currentDateTime().toString("dddd, MMMM d"));
 
   bool updateAvailable = update_widget->refresh();
   int alerts = alerts_widget->refresh();
