@@ -206,7 +206,7 @@ CarRecognition::CarRecognition() : AbstractControl("Force Vehicle Recognition", 
   hlayout->addWidget(&btn);
 
   QObject::connect(&btn, &QPushButton::released, [=]() {
-    if (btn.text() == "Set" && carname.length()) {
+    if (btn.text() == "SET" && carname.length()) {
       params.put("CarModel", carname.toStdString());
       params.put("CarModelAbb", carname.toStdString());
       QProcess::execute("/data/openpilot/car_force_set.sh");
@@ -257,10 +257,10 @@ CarForceSet::CarForceSet() : AbstractControl("Force Vehicle Recognition", "If th
   hlayout->addWidget(&btnc);
 
   QObject::connect(&btnc, &QPushButton::released, [=]() {
-    if (btnc.text() == "설정") {
-      carname = InputDialog::getText("차량명은 이전메뉴 차량강제인식을 클릭하여 확인");
+    if (btnc.text() == "SET") {
+      carname = InputDialog::getText("Check the vehicle name by clicking on the previous menu");
       if (carname.length() > 0) {
-        btnc.setText("완료");
+        btnc.setText("DONE");
         btnc.setEnabled(false);
         params.put("CarModel", carname.toStdString());
         QProcess::execute("/data/openpilot/car_force_set.sh");
@@ -278,10 +278,10 @@ void CarForceSet::refreshc() {
   QString paramc = QString::fromStdString(params.get("CarModel"));
   if (paramc.length()) {
     //carname_label.setText(QString::fromStdString(params.get("CarModel")));
-    btnc.setText("제거");
+    btnc.setText("REMOVE");
   } else {
     //carname_label.setText("");
-    btnc.setText("설정");
+    btnc.setText("SET");
   }
   btnc.setEnabled(true);
 }
@@ -1895,7 +1895,7 @@ MaxSteer::MaxSteer() : AbstractControl("MAX_STEER", "Fix panda MAX_STEER value. 
   QObject::connect(&btnminus, &QPushButton::released, [=]() {
     auto str = QString::fromStdString(params.get("MaxSteer"));
     int value = str.toInt();
-    value = value - 2;
+    value = value - 1;
     if (value <= 384 ) {
       value = 384;
     }
@@ -1907,7 +1907,7 @@ MaxSteer::MaxSteer() : AbstractControl("MAX_STEER", "Fix panda MAX_STEER value. 
   QObject::connect(&btnplus, &QPushButton::released, [=]() {
     auto str = QString::fromStdString(params.get("MaxSteer"));
     int value = str.toInt();
-    value = value + 2;
+    value = value + 1;
     if (value >= 1000 ) {
       value = 1000;
     }
@@ -2195,9 +2195,9 @@ SRBaseControl::SRBaseControl() : AbstractControl("SteerRatio", "Set SteerRatio d
   QObject::connect(&btnminus, &QPushButton::released, [=]() {
     auto str = QString::fromStdString(params.get("SteerRatioAdj"));
     int value = str.toInt();
-    value = value - 1;
-    if (value <= 80 ) {
-      value = 80;
+    value = value - 1000;
+    if (value <= 80000 ) {
+      value = 80000;
     }
     QString values = QString::number(value);
     params.put("SteerRatioAdj", values.toStdString());
@@ -2207,9 +2207,9 @@ SRBaseControl::SRBaseControl() : AbstractControl("SteerRatio", "Set SteerRatio d
   QObject::connect(&btnplus, &QPushButton::released, [=]() {
     auto str = QString::fromStdString(params.get("SteerRatioAdj"));
     int value = str.toInt();
-    value = value + 1;
-    if (value >= 200) {
-      value = 200;
+    value = value + 1000;
+    if (value >= 200000) {
+      value = 200000;
     }
     QString values = QString::number(value);
     params.put("SteerRatioAdj", values.toStdString());
@@ -2221,7 +2221,7 @@ SRBaseControl::SRBaseControl() : AbstractControl("SteerRatio", "Set SteerRatio d
 void SRBaseControl::refresh() {
   auto strs = QString::fromStdString(params.get("SteerRatioAdj"));
   int valuei = strs.toInt();
-  float valuef = valuei * 0.1;
+  float valuef = valuei * 0.0001;
   QString valuefs = QString::number(valuef);
   label.setText(QString::fromStdString(valuefs.toStdString()));
   btnminus.setText("－");
@@ -2258,9 +2258,9 @@ SRMaxControl::SRMaxControl() : AbstractControl("SteerRatioMax", "Sets the SteerR
   QObject::connect(&btnminus, &QPushButton::released, [=]() {
     auto str = QString::fromStdString(params.get("SteerRatioMaxAdj"));
     int value = str.toInt();
-    value = value - 1;
-    if (value <= 100 ) {
-      value = 100;
+    value = value - 1000;
+    if (value <= 100000 ) {
+      value = 100000;
     }
     QString values = QString::number(value);
     params.put("SteerRatioMaxAdj", values.toStdString());
@@ -2270,9 +2270,9 @@ SRMaxControl::SRMaxControl() : AbstractControl("SteerRatioMax", "Sets the SteerR
   QObject::connect(&btnplus, &QPushButton::released, [=]() {
     auto str = QString::fromStdString(params.get("SteerRatioMaxAdj"));
     int value = str.toInt();
-    value = value + 1;
-    if (value >= 250 ) {
-      value = 250;
+    value = value + 1000;
+    if (value >= 250000 ) {
+      value = 250000;
     }
     QString values = QString::number(value);
     params.put("SteerRatioMaxAdj", values.toStdString());
@@ -2284,7 +2284,7 @@ SRMaxControl::SRMaxControl() : AbstractControl("SteerRatioMax", "Sets the SteerR
 void SRMaxControl::refresh() {
   auto strs = QString::fromStdString(params.get("SteerRatioMaxAdj"));
   int valuei = strs.toInt();
-  float valuef = valuei * 0.1;
+  float valuef = valuei * 0.0001;
   QString valuefs = QString::number(valuef);
   label.setText(QString::fromStdString(valuefs.toStdString()));
   btnminus.setText("－");
@@ -2573,7 +2573,7 @@ SteerMaxBase::SteerMaxBase() : AbstractControl("SteerMax Default", "Adjust the S
   QObject::connect(&btnminus, &QPushButton::released, [=]() {
     auto str = QString::fromStdString(params.get("SteerMaxBaseAdj"));
     int value = str.toInt();
-    value = value - 2;
+    value = value - 1;
     if (value <= 200 ) {
       value = 200;
     }
@@ -2585,7 +2585,7 @@ SteerMaxBase::SteerMaxBase() : AbstractControl("SteerMax Default", "Adjust the S
   QObject::connect(&btnplus, &QPushButton::released, [=]() {
     auto str = QString::fromStdString(params.get("SteerMaxBaseAdj"));
     int value = str.toInt();
-    value = value + 2;
+    value = value + 1;
     if (value >= 384 ) {
       value = 384;
     }
@@ -2632,7 +2632,7 @@ SteerMaxMax::SteerMaxMax() : AbstractControl("SteerMax Maximum", "Adjust the Ste
   QObject::connect(&btnminus, &QPushButton::released, [=]() {
     auto str = QString::fromStdString(params.get("SteerMaxAdj"));
     int value = str.toInt();
-    value = value - 2;
+    value = value - 1;
     if (value <= 254 ) {
       value = 254;
     }
@@ -2644,7 +2644,7 @@ SteerMaxMax::SteerMaxMax() : AbstractControl("SteerMax Maximum", "Adjust the Ste
   QObject::connect(&btnplus, &QPushButton::released, [=]() {
     auto str = QString::fromStdString(params.get("SteerMaxAdj"));
     int value = str.toInt();
-    value = value + 2;
+    value = value + 1;
     if (value >= 1000 ) {
       value = 1000;
     }
