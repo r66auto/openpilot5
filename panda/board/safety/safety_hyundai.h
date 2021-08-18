@@ -138,6 +138,15 @@ static int hyundai_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
       update_sample(&torque_driver, torque_driver_new);
     }
 
+    if (addr == 1056) {
+      bool cruise_main_pressed = GET_BYTES_04(to_push) & 0x1; // CRUISE MAIN on signal
+      if (cruise_main_pressed && !cruise_main_pressed_prev)
+      {
+        controls_allowed = 1;
+      }
+      cruise_main_pressed_prev = cruise_main_pressed;
+    }
+
     // enter controls on rising edge of ACC, exit controls on ACC off
     if (addr == 1057) {
       // 2 bits: 13-14
@@ -145,10 +154,18 @@ static int hyundai_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
       if (cruise_engaged && !cruise_engaged_prev) {
         controls_allowed = 1;
       }
-      if (!cruise_engaged) {
+      cruise_engaged_prev = cruise_engaged;
+    }
+
+    if (addr == 1056) {
+      // 2 bits: 13-14
+      bool cruise_main_pressed = GET_BYTES_04(to_push) & 0x1; // ACC main_on signal
+      if (cruise_main_pressed_prev != cruise_main_pressed)
+      {
+        disengageFromBrakes = false;
         controls_allowed = 0;
       }
-      cruise_engaged_prev = cruise_engaged;
+      cruise_main_pressed_prev = cruise_main_pressed;
     }
 
     // read gas pressed signal
@@ -268,6 +285,7 @@ static int hyundai_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
 }
 
 static void hyundai_init(int16_t param) {
+  disengageFromBrakes = false;
   controls_allowed = false;
   relay_malfunction_reset();
 
