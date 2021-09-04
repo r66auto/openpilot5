@@ -234,6 +234,8 @@ struct CarState {
   electGearStep @53 :Int8;
   isMph @54 :Bool;
 
+  autoHold @55 : Int32;
+  
   struct WheelSpeeds {
     # optional wheel speeds
     fl @0 :Float32;
