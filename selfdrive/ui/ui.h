@@ -24,6 +24,9 @@
 #include "selfdrive/common/util.h"
 #include "selfdrive/common/visionimg.h"
 
+#define UI_FEATURE_BRAKE 1
+#define UI_FEATURE_AUTOHOLD 1
+
 #define COLOR_BLACK nvgRGBA(0, 0, 0, 255)
 #define COLOR_BLACK_ALPHA(x) nvgRGBA(0, 0, 0, x)
 #define COLOR_WHITE nvgRGBA(255, 255, 255, 255)
@@ -85,9 +88,9 @@ const int header_h = 420;
 const int footer_h = 280;
 const Rect map_overlay_btn = {0, 465, 150, 150};
 const Rect map_return_btn = {1770, 465, 150, 150};
-const Rect map_btn = {1425, 905, 140, 140};
-const Rect rec_btn = {1745, 905, 140, 140};
-const Rect laneless_btn = {1585, 905, 140, 140};
+const Rect map_btn = {1340, 800, 200, 250};
+const Rect rec_btn = {1740, 800, 150, 250};
+const Rect laneless_btn = {1540, 800, 200, 250};
 const Rect monitoring_btn = {50, 830, 140, 140};
 const Rect ml_btn = {1265, 905, 140, 140};
 const Rect stockui_btn = {15, 15, 184, 202};
@@ -104,13 +107,17 @@ typedef enum UIStatus {
   STATUS_ENGAGED,
   STATUS_WARNING,
   STATUS_ALERT,
+  STATUS_BRAKE,
+  STATUS_CRUISE,  
 } UIStatus;
 
-const QColor bg_colors [] = {
-  [STATUS_DISENGAGED] =  QColor(0x17, 0x33, 0x49, 0xc8),
+static QColor bg_colors [] = {
+  [STATUS_DISENGAGED] = QColor(0x17, 0x33, 0x49, 0x96),
   [STATUS_ENGAGED] = QColor(0x17, 0x86, 0x44, 0x96),
   [STATUS_WARNING] = QColor(0xDA, 0x6F, 0x25, 0x96),
   [STATUS_ALERT] = QColor(0xC9, 0x22, 0x31, 0x96),
+  [STATUS_BRAKE] = QColor(0xA4, 0x32, 0x00, 0x96),
+  [STATUS_CRUISE] = QColor(0x00, 0x64, 0xC8, 0x96),
 };
 
 typedef struct {
@@ -206,6 +213,7 @@ typedef struct UIScene {
   bool live_tune_panel_enable;
   bool kr_date_show;
   bool kr_time_show;
+  bool lead_custom;
   int live_tune_panel_list = 0;
   int list_count = 3;
   int nTime, autoScreenOff, brightness, awake;
@@ -240,6 +248,7 @@ typedef struct UIScene {
   bool dm_active, engageable;
 
   // lead
+  vertex_data lead_vertices_radar[2];  
   vertex_data lead_vertices[2];
 
   float light_sensor, accel_sensor, gyro_sensor;
@@ -313,6 +322,9 @@ typedef struct UIState {
 
   float car_space_transform[6];
   bool wide_camera;
+
+  int lock_on_anim_index;
+
 } UIState;
 
 
