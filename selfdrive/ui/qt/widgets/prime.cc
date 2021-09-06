@@ -76,7 +76,7 @@ PrimeUserWidget::PrimeUserWidget(QWidget* parent) : QWidget(parent) {
   mainLayout = new QVBoxLayout(this);
   mainLayout->setMargin(30);
 
-  QLabel* commaPrime = new QLabel("오픈파일럿");
+  QLabel* commaPrime = new QLabel("OPENPILOT");
   mainLayout->addWidget(commaPrime, 0, Qt::AlignCenter);
   mainLayout->addSpacing(15);
   QPixmap hkgpix("../assets/addon/img/hkg.png");
@@ -144,7 +144,7 @@ PrimeAdWidget::PrimeAdWidget(QWidget* parent) : QFrame(parent) {
   main_layout->setMargin(30);
   main_layout->setSpacing(15);
 
-  main_layout->addWidget(new QLabel("오픈파일럿"), 1, Qt::AlignCenter);
+  main_layout->addWidget(new QLabel("OPENPILOT"), 1, Qt::AlignCenter);
 
   QPixmap hkgpix("../assets/addon/img/hkg.png");
   QLabel *hkg = new QLabel();
@@ -188,7 +188,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
 
   //finishRegistationLayout->addWidget(registrationDescription);
 
-  QPushButton* finishButton = new QPushButton("QR코드 확인");
+  QPushButton* finishButton = new QPushButton("Scan QR Code");
   //QPushButton* finishButton = new QPushButton("설정 및 완료");
   finishButton->setFixedHeight(150);
   finishButton->setStyleSheet(R"(
@@ -208,7 +208,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   QVBoxLayout* qrLayout = new QVBoxLayout(q);
 
   qrLayout->addSpacing(40);
-  QLabel* qrLabel = new QLabel("장치를 스캔하세요!");
+  QLabel* qrLabel = new QLabel("Scan the QR code to pair.");
   qrLabel->setWordWrap(true);
   qrLabel->setAlignment(Qt::AlignHCenter);
   qrLabel->setStyleSheet(R"(

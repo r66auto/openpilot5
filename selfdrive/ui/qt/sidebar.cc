@@ -96,9 +96,9 @@ void Sidebar::updateState(const UIState &s) {
   ItemStatus connectstatus;
   auto last_ping = deviceState.getLastAthenaPingTime();
   if (last_ping == 0) {
-    connectstatus = ItemStatus{"네트워크\n오프라인", warning_color};
+    connectstatus = ItemStatus{"NO\nPRIME", warning_color};
   } else {
-    connectstatus = nanos_since_boot() - last_ping < 80e9 ? ItemStatus{"네트워크\n온라인", good_color} : ItemStatus{"네트워크\n오류", danger_color};
+    connectstatus = nanos_since_boot() - last_ping < 80e9 ? ItemStatus{"CONNECT\nONLINE", good_color} : ItemStatus{"CONNECT\nERROR", danger_color};
   }
   setProperty("connectStatus", QVariant::fromValue(connectstatus));
 
@@ -111,13 +111,13 @@ void Sidebar::updateState(const UIState &s) {
   }
   setProperty("tempStatus", QVariant::fromValue(ItemStatus{QString("%1°C").arg((int)deviceState.getAmbientTempC()), tempColor}));
 
-  ItemStatus pandaStatus = {"차량\n연결됨", good_color};
+  ItemStatus pandaStatus = {"VEHICLE\nONLINE", good_color};
   if (s.scene.pandaType == cereal::PandaState::PandaType::UNKNOWN) {
-    pandaStatus = {"차량\n연결안됨", danger_color};
+    pandaStatus = {"NO\nPANDA", danger_color};
   } else if (s.scene.started && !sm["liveLocationKalman"].getLiveLocationKalman().getGpsOK() && s.scene.gpsAccuracyUblox != 0.00) {
-    pandaStatus = {"차량연결됨\nGPS검색중", warning_color};
+    pandaStatus = {"GPS\nSEARCHING", warning_color};
   } else if (s.scene.satelliteCount > 0) {
-  	pandaStatus = {QString("차량연결됨\nSAT : %1").arg(s.scene.satelliteCount), good_color};
+  	pandaStatus = {QString("VEHICLE\nONLINE\nSAT : %1").arg(s.scene.satelliteCount), good_color};
   }
   setProperty("pandaStatus", QVariant::fromValue(pandaStatus));
 
@@ -167,7 +167,7 @@ void Sidebar::paintEvent(QPaintEvent *event) {
   p.drawText(r, Qt::AlignHCenter, net_type);
 
   // metrics
-  drawMetric(p, "시스템온도", temp_status.first, temp_status.second, 378);
+  drawMetric(p, "TEMP", temp_status.first, temp_status.second, 378);
   drawMetric(p, panda_status.first, "", panda_status.second, 558);
   drawMetric(p, connect_status.first, "", connect_status.second, 716);
 

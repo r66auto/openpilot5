@@ -32,7 +32,7 @@ class SshLegacyToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  SshLegacyToggle() : ToggleControl("기존 공개KEY 사용", "SSH 접속시 기존 공개KEY(0.8.2이하)를 사용합니다.", "", Params().getBool("OpkrSSHLegacy")) {
+  SshLegacyToggle() : ToggleControl("Use Existing Public Key", "When connecting via SSH, the existing public key (0.8.2 or lower) is used.", "", Params().getBool("OpkrSSHLegacy")) {
     QObject::connect(this, &SshLegacyToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrSSHLegacy", status);
@@ -44,7 +44,7 @@ class GetoffAlertToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  GetoffAlertToggle() : ToggleControl("운행종료시 이온탈착 알림 사용", "운행종료 후 이온을 분리하라는 알림을 보냅니다.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrEnableGetoffAlert")) {
+  GetoffAlertToggle() : ToggleControl("Enable Device Notification After Get Off", "Send a notification to disconnect the device after get off.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrEnableGetoffAlert")) {
     QObject::connect(this, &GetoffAlertToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrEnableGetoffAlert", status);
@@ -56,7 +56,7 @@ class AutoResumeToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  AutoResumeToggle() : ToggleControl("자동출발 기능 사용", "SCC 사용중 정차시 자동출발 기능을 사용합니다.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrAutoResume")) {
+  AutoResumeToggle() : ToggleControl("Enable Auto Resume", "Auto Resume is used when stopping while using SCC.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrAutoResume")) {
     QObject::connect(this, &AutoResumeToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrAutoResume", status);
@@ -68,7 +68,7 @@ class VariableCruiseToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  VariableCruiseToggle() : ToggleControl("가변 크루즈 사용", "SCC 사용중 크루즈 버튼을 이용하여 가감속을 보조합니다.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrVariableCruise")) {
+  VariableCruiseToggle() : ToggleControl("Enable Variable Cruise", "Acceleration/deceleration is supported by using the cruise button while SCC is in use.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrVariableCruise")) {
     QObject::connect(this, &VariableCruiseToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrVariableCruise", status);
@@ -80,7 +80,7 @@ class CruiseGapAdjustToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  CruiseGapAdjustToggle() : ToggleControl("정차시 크루즈 갭 자동변경", "정차시 빠른 출발을 위해 크루즈갭을 1칸으로 변경하며, 출발후 일정조건에 따라 다시 원래의 크루즈갭으로 돌아갑니다.", "../assets/offroad/icon_shell.png", Params().getBool("CruiseGapAdjust")) {
+  CruiseGapAdjustToggle() : ToggleControl("Auto Set Cruise Cap When Stopped", "When stopping, the cruise gap is changed to 1 space for a quick departure. After moving from standstill, it returns to the original cruise gap according to certain conditions.", "../assets/offroad/icon_shell.png", Params().getBool("CruiseGapAdjust")) {
     QObject::connect(this, &CruiseGapAdjustToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("CruiseGapAdjust", status);
@@ -92,7 +92,7 @@ class AutoEnabledToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  AutoEnabledToggle() : ToggleControl("자동 인게이지 활성", "디스인게이지 상태에서 크루즈 버튼상태가 대기상태(CRUISE표시만 나오고 속도 지정이 안된상태)일 경우 자동 인게이지를 활성화 합니다.", "../assets/offroad/icon_shell.png", Params().getBool("AutoEnable")) {
+  AutoEnabledToggle() : ToggleControl("Enable Auto Engage", "When disengaged, if the cruise button is in the standby state (only CRUISE is displayed and the speed is not specified), auto engage is activated.", "../assets/offroad/icon_shell.png", Params().getBool("AutoEnable")) {
     QObject::connect(this, &AutoEnabledToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("AutoEnable", status);
@@ -104,7 +104,7 @@ class CruiseAutoResToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  CruiseAutoResToggle() : ToggleControl("자동RES 사용", "크루즈 사용중 브레이크를 밟아 대기모드 상태로 변한경우(CANCEL은 해당없음) 브레이크 페달 해제/가속페달조작 시 다시 이전 속도로 세팅합니다. 크루즈 속도가 세팅되어 있고 차량속도가 30km/h 이상 혹은 앞차가 인식될 경우 작동합니다.", "../assets/offroad/icon_shell.png", Params().getBool("CruiseAutoRes")) {
+  CruiseAutoResToggle() : ToggleControl("Enable Cruise Auto RES", "If brake is pressed and disengages cruise (CANCEL button not applicable), when the brake pedal is released/the gas pedal pedal is pressed, the previous set speed is set. Cruise Auto RES is enabled when cruise speed is over 30km/h or a car is recognized at the front.", "../assets/offroad/icon_shell.png", Params().getBool("CruiseAutoRes")) {
     QObject::connect(this, &CruiseAutoResToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("CruiseAutoRes", status);
@@ -116,7 +116,7 @@ class BatteryChargingControlToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  BatteryChargingControlToggle() : ToggleControl("배터리 충전 제어기능 사용", "배터리 충전제어 기능을 사용합니다.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrBatteryChargingControl")) {
+  BatteryChargingControlToggle() : ToggleControl("Enable Battery Charging Control", "Enables battery charging control.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrBatteryChargingControl")) {
     QObject::connect(this, &BatteryChargingControlToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrBatteryChargingControl", status);
@@ -128,7 +128,7 @@ class BlindSpotDetectToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  BlindSpotDetectToggle() : ToggleControl("후측방 감지 아이콘 표시", "후측방에 차가 감지되면 화면에 아이콘을 띄웁니다.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrBlindSpotDetect")) {
+  BlindSpotDetectToggle() : ToggleControl("Display Blind Spot Detection Icon", "When a car is detected at your blind spot, an icon is displayed on the screen.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrBlindSpotDetect")) {
     QObject::connect(this, &BlindSpotDetectToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrBlindSpotDetect", status);
@@ -145,7 +145,7 @@ class MadModeEnabledToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  MadModeEnabledToggle() : ToggleControl("MainSW 오픈파일럿 ON/OFF", "크루즈 MainSW를 이용하여 오파를 활성화 합니다.", "../assets/offroad/icon_shell.png", Params().getBool("MadModeEnabled")) {
+  MadModeEnabledToggle() : ToggleControl("ACC MAIN openpilot ON/OFF", "Use ACC MAIN to activate openpilot.", "../assets/offroad/icon_shell.png", Params().getBool("MadModeEnabled")) {
     QObject::connect(this, &MadModeEnabledToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("MadModeEnabled", status);
@@ -157,7 +157,7 @@ class WhitePandaSupportToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  WhitePandaSupportToggle() : ToggleControl("화이트판다 지원", "화이트판다 사용시 기능을 켜십시오", "../assets/offroad/icon_shell.png", Params().getBool("WhitePandaSupport")) {
+  WhitePandaSupportToggle() : ToggleControl("White Panda Support", "Turn on the feature when using White Panda", "../assets/offroad/icon_shell.png", Params().getBool("WhitePandaSupport")) {
     QObject::connect(this, &WhitePandaSupportToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("WhitePandaSupport", status);
@@ -169,7 +169,7 @@ class SteerWarningFixToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  SteerWarningFixToggle() : ToggleControl("조향경고 해제", "차량에서 조향에러가 발생하여 오파 실행이 불가능할 때 기능을 켜십시오(일부 차량 Only). 주행 중 정상적인 에러환경에서 발생시에는 기능을 켜지 마십시오.", "../assets/offroad/icon_shell.png", Params().getBool("SteerWarningFix")) {
+  SteerWarningFixToggle() : ToggleControl("Turn Off Steering Warning", "Turn on the feature when the vehicle has a steering error that makes it impossible to steer (only for some cars). Do not turn on the feature when it occurs in a normal error environment while driving.", "../assets/offroad/icon_shell.png", Params().getBool("SteerWarningFix")) {
     QObject::connect(this, &SteerWarningFixToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("SteerWarningFix", status);
@@ -181,7 +181,7 @@ class SteerWindDownToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  SteerWindDownToggle() : ToggleControl("Steer Wind Down", "Steer Warning 시 토크를 서서히 다운시킵니다. 일부 차량의 경우 조향각 제한등이 나타날 수 있으니 에러상관없이 최대조향각을 쓰려면 기능을 끄십시오.", "../assets/offroad/icon_shell.png", Params().getBool("SteerWindDown")) {
+  SteerWindDownToggle() : ToggleControl("Steer Wind Down", "During Steer Warning, the torque is gradually reduced. In some vehicles, the steering angle limit light may appear. Turn off the feature to use the maximum steering angle regardless of the error.", "../assets/offroad/icon_shell.png", Params().getBool("SteerWindDown")) {
     QObject::connect(this, &SteerWindDownToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("SteerWindDown", status);
@@ -193,7 +193,7 @@ class AutoScreenDimmingToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  AutoScreenDimmingToggle() : ToggleControl("주행화면 Dimming 제어", "주행시 최소한의 밝기를 유지하여 배터리 소모량 및 발열을 줄이며, 이벤트 발생 시 밝기를 높여 일시적으로 가시성을 확보합니다.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrAutoScreenDimming")) {
+  AutoScreenDimmingToggle() : ToggleControl("Auto Screen Dimming Control", "By maintaining the minimum brightness while driving, it reduces battery consumption and heat generation, and increases the brightness when an event occurs to temporarily secure visibility.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrAutoScreenDimming")) {
     QObject::connect(this, &AutoScreenDimmingToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrAutoScreenDimming", status);
@@ -205,7 +205,7 @@ class LiveSteerRatioToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  LiveSteerRatioToggle() : ToggleControl("Live SteerRatio 사용", "가변/고정 SR 대신 Live SteerRatio를 사용합니다.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrLiveSteerRatio")) {
+  LiveSteerRatioToggle() : ToggleControl("Enable Live SteerRatio", "Enables Live SteerRatio instead of variable/fixed SteerRatio.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrLiveSteerRatio")) {
     QObject::connect(this, &LiveSteerRatioToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrLiveSteerRatio", status);
@@ -217,7 +217,7 @@ class VariableSteerMaxToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  VariableSteerMaxToggle() : ToggleControl("가변 SteerMax 사용", "곡률에 따른 가변 SteerMax을 사용합니다.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrVariableSteerMax")) {
+  VariableSteerMaxToggle() : ToggleControl("Enable Variable SteerMax", "Enable variable SteerMax based on curvature.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrVariableSteerMax")) {
     QObject::connect(this, &VariableSteerMaxToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrVariableSteerMax", status);
@@ -229,7 +229,7 @@ class VariableSteerDeltaToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  VariableSteerDeltaToggle() : ToggleControl("가변 SteerDelta 사용", "곡률에 따른 가변 SteerDelta를 사용합니다.( DeltaUp ~ 5까지 변화, DeltaDown ~ 10까지 변화", "../assets/offroad/icon_shell.png", Params().getBool("OpkrVariableSteerDelta")) {
+  VariableSteerDeltaToggle() : ToggleControl("Enable Variable SteerDelta", "Enable variable SteerDelta based on curvature (change from DeltaUp to 5, change from DeltaDown to 10).", "../assets/offroad/icon_shell.png", Params().getBool("OpkrVariableSteerDelta")) {
     QObject::connect(this, &VariableSteerDeltaToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrVariableSteerDelta", status);
@@ -241,7 +241,7 @@ class ShaneFeedForward : public ToggleControl {
   Q_OBJECT
 
 public:
-  ShaneFeedForward() : ToggleControl("Shane FeedForward 사용", "Shane의 FeedForward를 사용합니다. 조향각에 따라 직선주로에서는 토크를 낮추고, 곡선주로에서는 동적으로 조정합니다.", "../assets/offroad/icon_shell.png", Params().getBool("ShaneFeedForward")) {
+  ShaneFeedForward() : ToggleControl("Enable Shane FeedForward", "Enables Shane's FeedForward. Depending on the steering angle, torque is lowered on straight roads and dynamically adjusted on curved roads.", "../assets/offroad/icon_shell.png", Params().getBool("ShaneFeedForward")) {
     QObject::connect(this, &ShaneFeedForward::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("ShaneFeedForward", status);
@@ -253,7 +253,7 @@ class DrivingRecordToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  DrivingRecordToggle() : ToggleControl("자동 화면녹화 기능 사용", "운전 중 화면 녹화/중지를 자동으로 수행합니다. 출발 후 녹화가 시작되며 차량이 정지하면 녹화가 종료됩니다.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrDrivingRecord")) {
+  DrivingRecordToggle() : ToggleControl("Enable Auto Recording", "Automatically record/stop the screen while driving. Recording starts after departure and ends when the car stops.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrDrivingRecord")) {
     QObject::connect(this, &DrivingRecordToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrDrivingRecord", status);
@@ -270,7 +270,7 @@ class TurnSteeringDisableToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  TurnSteeringDisableToggle() : ToggleControl("턴시그널 사용시 조향해제 사용", "차선변경속도 이하로 주행할 때 턴시그널을 사용시 자동조향을 일시해제 합니다.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrTurnSteeringDisable")) {
+  TurnSteeringDisableToggle() : ToggleControl("Enable Autosteer Suspension", "When turn signal is used below the lane change speed, autosteer is temporary suspended.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrTurnSteeringDisable")) {
     QObject::connect(this, &TurnSteeringDisableToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrTurnSteeringDisable", status);
@@ -282,7 +282,7 @@ class HotspotOnBootToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  HotspotOnBootToggle() : ToggleControl("부팅시 핫스팟 자동실행", "부팅 후 핫스팟을 자동으로 실행합니다.", "", Params().getBool("OpkrHotspotOnBoot")) {
+  HotspotOnBootToggle() : ToggleControl("Auto Launch Hotspot on Boot", "Automatically launch hotspot after booting.", "", Params().getBool("OpkrHotspotOnBoot")) {
     QObject::connect(this, &HotspotOnBootToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrHotspotOnBoot", status);
@@ -294,7 +294,7 @@ class CruiseOverMaxSpeedToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  CruiseOverMaxSpeedToggle() : ToggleControl("설정속도를 초과속도에 동기화", "현재속도가 설정속도를 넘어설 경우 설정속도를 현재속도에 동기화합니다.", "../assets/offroad/icon_shell.png", Params().getBool("CruiseOverMaxSpeed")) {
+  CruiseOverMaxSpeedToggle() : ToggleControl("Set Cruise Over Max Speed", "If the current speed exceeds the set speed, the set speed is synchronized with the current speed.", "../assets/offroad/icon_shell.png", Params().getBool("CruiseOverMaxSpeed")) {
     QObject::connect(this, &CruiseOverMaxSpeedToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("CruiseOverMaxSpeed", status);
@@ -340,7 +340,7 @@ class LongLogToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  LongLogToggle() : ToggleControl("LONG LOG 표시", "화면에 가변크루즈 로그 대신 롱 튜닝 디버그용 로그를 표시합니다.", "../assets/offroad/icon_shell.png", Params().getBool("LongLogDisplay")) {
+  LongLogToggle() : ToggleControl("LONG LOG View", "Instead of the variable cruise log, the long tuning debug log is displayed on the screen.", "../assets/offroad/icon_shell.png", Params().getBool("LongLogDisplay")) {
     QObject::connect(this, &LongLogToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("LongLogDisplay", status);
@@ -352,7 +352,7 @@ class PrebuiltToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  PrebuiltToggle() : ToggleControl("Prebuilt 파일 생성", "Prebuilt 파일을 생성하며 부팅속도를 단축시킵니다. UI수정을 한 경우 기능을 끄십시오.", "../assets/offroad/icon_shell.png", Params().getBool("PutPrebuiltOn")) {
+  PrebuiltToggle() : ToggleControl("Create Prebuilt File", "Shortens the boot time by creating a prebuilt file. If you have made UI modifications, turn off the feature temporarily.", "../assets/offroad/icon_shell.png", Params().getBool("PutPrebuiltOn")) {
     QObject::connect(this, &PrebuiltToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("PutPrebuiltOn", status);
@@ -364,7 +364,7 @@ class LDWSToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  LDWSToggle() : ToggleControl("LDWS 차량 설정", "", "../assets/offroad/icon_shell.png", Params().getBool("LdwsCarFix")) {
+  LDWSToggle() : ToggleControl("LDWS Car Settings", "", "../assets/offroad/icon_shell.png", Params().getBool("LdwsCarFix")) {
     QObject::connect(this, &LDWSToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("LdwsCarFix", status);
@@ -376,7 +376,7 @@ class FPTwoToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  FPTwoToggle() : ToggleControl("FingerPrint 2.0 설정", "핑거프린트2.0을 활성화 합니다. ECU인식으로 차량을 활성화 합니다.", "../assets/offroad/icon_shell.png", Params().getBool("FingerprintTwoSet")) {
+  FPTwoToggle() : ToggleControl("Enable FingerPrint 2.0", "Enable Fingerprint 2.0. The car is recognized by ECU firmware recognition.", "../assets/offroad/icon_shell.png", Params().getBool("FingerprintTwoSet")) {
     QObject::connect(this, &FPTwoToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("FingerprintTwoSet", status);
@@ -388,7 +388,7 @@ class GearDToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  GearDToggle() : ToggleControl("드라이브기어 강제인식", "기어인식문제로 인게이지가 되지 않을 때 사용합니다. 근본적으로 CABANA데이터를 분석해야 하지만, 임시적으로 해결합니다.", "../assets/offroad/icon_shell.png", Params().getBool("JustDoGearD")) {
+  GearDToggle() : ToggleControl("Gear D Force Recognition", "For use when engagement is not possible due to a gear recognition problem. It is fundamentally necessary to analyze CABANA data, but it is a temporary solution.", "../assets/offroad/icon_shell.png", Params().getBool("JustDoGearD")) {
     QObject::connect(this, &GearDToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("JustDoGearD", status);
@@ -400,7 +400,7 @@ class ComIssueToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  ComIssueToggle() : ToggleControl("프로세스간 통신오류 알람 끄기", "화이트판다 사용시 프로세스간 통신오류 알람을 끄기 위해 이옵션을 켜십시오.", "../assets/offroad/icon_shell.png", Params().getBool("ComIssueGone")) {
+  ComIssueToggle() : ToggleControl("Turn off ComIssue", "Turn on this feature to turn off Communication Error Between Processes alarm when using White Panda.", "../assets/offroad/icon_shell.png", Params().getBool("ComIssueGone")) {
     QObject::connect(this, &ComIssueToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("ComIssueGone", status);
@@ -412,7 +412,7 @@ class RunNaviOnBootToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  RunNaviOnBootToggle() : ToggleControl("네비 자동 실행", "부팅 후 주행화면 전환 시 네비게이션(맵피)을 자동 실행합니다.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrRunNaviOnBoot")) {
+  RunNaviOnBootToggle() : ToggleControl("Navi Auto Launch On Boot", "After booting, navigation (T Map) is automatically launched.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrRunNaviOnBoot")) {
     QObject::connect(this, &RunNaviOnBootToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrRunNaviOnBoot", status);
@@ -424,7 +424,7 @@ class BattLessToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  BattLessToggle() : ToggleControl("배터리리스 사용", "배터리리스 이온용 토글입니다. 관련 설정이 적용됩니다.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrBattLess")) {
+  BattLessToggle() : ToggleControl("Use Batteryless", "Toggle for batteryless device. Relevant settings will be applied.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrBattLess")) {
     QObject::connect(this, &BattLessToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrBattLess", status);
@@ -436,7 +436,7 @@ class LiveTunePanelToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  LiveTunePanelToggle() : ToggleControl("라이브튠 사용 및 UI 표시", "화면에 라이브 튜닝 관련 UI를 표시합니다. 각종 튜닝 수치를 주행화면에서 라이브로 조정가능합니다. 조정 시 파라미터에 반영되며 토글을 끈 후 재부팅 해도 값이 유지됩니다.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrLiveTunePanelEnable")) {
+  LiveTunePanelToggle() : ToggleControl("Enable LiveTune and UI", "Display the Live Tune UI. Tuning values can be set in realtime on the onroad screen. The adjustments are set in the parameters, values are maintained even after a reboot or the toggle is turned off.", "../assets/offroad/icon_shell.png", Params().getBool("OpkrLiveTunePanelEnable")) {
     QObject::connect(this, &LiveTunePanelToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OpkrLiveTunePanelEnable", status);
@@ -455,7 +455,7 @@ class KRDateToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  KRDateToggle() : ToggleControl("주행화면 날짜 표시", "주행화면에 현재 날짜를 표시합니다.", "../assets/offroad/icon_shell.png", Params().getBool("KRDateShow")) {
+  KRDateToggle() : ToggleControl("Onroad Date Display", "Display the current date on the onroad screen.", "../assets/offroad/icon_shell.png", Params().getBool("KRDateShow")) {
     QObject::connect(this, &KRDateToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("KRDateShow", status);
@@ -472,7 +472,7 @@ class KRTimeToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  KRTimeToggle() : ToggleControl("주행화면 시간 표시", "주행화면에 현재 시간을 표시합니다.", "../assets/offroad/icon_shell.png", Params().getBool("KRTimeShow")) {
+  KRTimeToggle() : ToggleControl("Onroad Time Display", "Display the current time on the onroad screen.", "../assets/offroad/icon_shell.png", Params().getBool("KRTimeShow")) {
     QObject::connect(this, &KRTimeToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("KRTimeShow", status);
@@ -489,7 +489,7 @@ class LeadCustomToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  LeadCustomToggle() : ToggleControl("선행차 인식 Custom 이미지 표시", "주행화면에 선행차 Custom 이미지를 표시합니다.", "../assets/offroad/icon_shell.png", Params().getBool("LeadCustom")) {
+  LeadCustomToggle() : ToggleControl("Display Preceding Vehicle", "Display the custom image of the preceding vehicle on the onroad screen.", "../assets/offroad/icon_shell.png", Params().getBool("LeadCustom")) {
     QObject::connect(this, &LeadCustomToggle::toggleFlipped, [=](int state) {
       char status = state ? true : false;
       Params().putBool("LeadCustom", status);
@@ -501,7 +501,7 @@ class RadarLongHelperToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  RadarLongHelperToggle() : ToggleControl("레이더 롱 보조 사용", "비전 SCC 사용 중 근거리(25m이하)에서 레이더값+콤마비전롱(보간)을 사용합니다. 비전SCC가 충분히 멈추지 못하는 상황에서 레이더 값을 이용해 확실히 멈출 수 있게 합니다. 레이더가 앞차 인식시만 사용되며, 앞차인식을 못할 시(녹색쉐브론)는 콤마비전롱으로만 감속됩니다. 이 기능을 끄면 항상 콤마 비전롱을 사용하는것을 의미합니다.(레이더인식시 앞차거리 4m 이하는 안전을 위해 레이더값을 강제로 사용함)", "../assets/offroad/icon_shell.png", Params().getBool("RadarLongHelper")) {
+  RadarLongHelperToggle() : ToggleControl("Enable Radar Long Assist", "When VOACC, radar value + comma vision long (interpolation) is used at close range (less than 25m). In situations where VOACC cannot stop sufficiently, it uses radar values to make sure the car stops. The feature is used only when the radar recognizes the car in front. When the car in front is not recognized (green chevron), the car is decelerated only with comma visoin long. When this feature is off, it means to always use comma vision long.", "../assets/offroad/icon_shell.png", Params().getBool("RadarLongHelper")) {
     QObject::connect(this, &RadarLongHelperToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("RadarLongHelper", status);
@@ -513,7 +513,7 @@ class FCATypeToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  FCATypeToggle() : ToggleControl("FCA11 사용", "전방 추돌 신호를 SCC12 대신 FCA11을 사용합니다. 인게이지 혹은 부팅시 전방충돌오류가 날 때 사용합니다. 신호가 없는차는 캔오류가 날 수 있으니 주의바랍니다.", "../assets/offroad/icon_shell.png", Params().getBool("FCAType")) {
+  FCATypeToggle() : ToggleControl("Enable FCA11", "FCA11 is used instead of SCC12 for forward collision warnings. It is used when a forward collision error occurs during engage or boot. Please note that a car without the signal may cause a CAN error.", "../assets/offroad/icon_shell.png", Params().getBool("FCAType")) {
     QObject::connect(this, &FCATypeToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("FCAType", status);
@@ -525,7 +525,7 @@ class GitPullOnBootToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  GitPullOnBootToggle() : ToggleControl("부팅 시 Git Pull 자동실행", "부탕 후 업데이트가 있는 경우에 Git Pull을 자동 실행 후 재부팅합니다.", "", Params().getBool("GitPullOnBoot")) {
+  GitPullOnBootToggle() : ToggleControl("Auto Git Pull at Boot", "If there is an update after booting, Git Pull is automatically executed and rebooted.", "", Params().getBool("GitPullOnBoot")) {
     QObject::connect(this, &GitPullOnBootToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("GitPullOnBoot", status);
@@ -537,7 +537,7 @@ class StoppingDistAdjToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  StoppingDistAdjToggle() : ToggleControl("정지거리 조정", "레이더 정지거리보다 조금 더 앞에 정지합니다. 일부 울컥거림 현상이 나타날 수 있으니 불편하신분들은 기능을 끄십시오.", "", Params().getBool("StoppingDistAdj")) {
+  StoppingDistAdjToggle() : ToggleControl("Set Stopping Distance", "The car stops slightly ahead of the radar stopping distance. Some rattles may occur, so if you are uncomfortable, disable this feature.", "", Params().getBool("StoppingDistAdj")) {
     QObject::connect(this, &StoppingDistAdjToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("StoppingDistAdj", status);
@@ -545,7 +545,7 @@ public:
   }
 };
 
-// 오픈파일럿 미리보기
+// openpilot Preview
 class OpenpilotView : public AbstractControl {
   Q_OBJECT
 
@@ -559,7 +559,7 @@ private:
   void refresh();
 };
 
-// 차량 강제등록
+// Force Car Recognition
 class CarRecognition : public AbstractControl {
   Q_OBJECT
 
@@ -591,7 +591,7 @@ private:
 };
 
 
-// UI 설정
+// UI Settings
 class AutoShutdown : public AbstractControl {
   Q_OBJECT
 
@@ -715,7 +715,7 @@ private:
 };
 
 
-// 주행 설정
+// Driving Settings
 class CruisemodeSelInit : public AbstractControl {
   Q_OBJECT
 
@@ -835,7 +835,7 @@ private:
   void refresh();
 };
 
-// 튜닝 설정
+// Tuning Settings
 class CameraOffset : public AbstractControl {
   Q_OBJECT
 
@@ -1066,7 +1066,7 @@ private:
 };
 
 
-// 제어 설정
+// Control Settings
 class LateralControl : public AbstractControl {
   Q_OBJECT
 

@@ -615,7 +615,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   ui_draw_rect(s->vg, rect, COLOR_WHITE_ALPHA(100), 10, 20.);
 
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
-  ui_draw_text(s, rect.centerX()+viz_max_o/2, bdr_s+65, "설정속도", 26 * 2.2, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
+  ui_draw_text(s, rect.centerX()+viz_max_o/2, bdr_s+65, "MAX", 26 * 2.2, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
   if (is_cruise_set) {
     const std::string maxspeed_str = std::to_string((int)std::nearbyint(maxspeed));
     ui_draw_text(s, rect.centerX()+viz_max_o/2, bdr_s+165, maxspeed_str.c_str(), 48 * 2.3, COLOR_WHITE, "sans-bold");
@@ -647,9 +647,9 @@ static void ui_draw_vision_cruise_speed(UIState *s) {
 
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
   if (s->scene.limitSpeedCamera > 29) {
-    ui_draw_text(s, rect.centerX(), bdr_s+65, "제한속도", 26 * 2.2, COLOR_WHITE_ALPHA(s->scene.cruiseAccStatus ? 200 : 100), "sans-regular");
+    ui_draw_text(s, rect.centerX(), bdr_s+65, "SPEED LIMIT", 26 * 2.2, COLOR_WHITE_ALPHA(s->scene.cruiseAccStatus ? 200 : 100), "sans-regular");
   } else {
-    ui_draw_text(s, rect.centerX(), bdr_s+65, "크루즈", 26 * 2.2, COLOR_WHITE_ALPHA(s->scene.cruiseAccStatus ? 200 : 100), "sans-regular");
+    ui_draw_text(s, rect.centerX(), bdr_s+65, "CRUISE", 26 * 2.2, COLOR_WHITE_ALPHA(s->scene.cruiseAccStatus ? 200 : 100), "sans-regular");
   }
   const std::string cruise_speed_str = std::to_string((int)std::nearbyint(cruise_speed));
   if (cruise_speed >= 30 && s->scene.controls_state.getEnabled()) {
@@ -676,7 +676,7 @@ static void ui_draw_vision_cameradist(UIState *s) {
   NVGcolor text_color = COLOR_WHITE;
 
   if (s->scene.is_speed_over_limit) {
-      if (float(int(cameradist)/s->scene.liveMapData.opkrspeedlimit) < 3.0 ){// 잔여거리가 단속속도보다 3배 이내이면
+      if (float(int(cameradist)/s->scene.liveMapData.opkrspeedlimit) < 3.0 ){// If the remaining distance is less than 3 times the speed
         box_color = nvgRGBA(180, 0, 0, 200);      
       } 
       else {
@@ -721,7 +721,7 @@ static void ui_draw_vision_speed(UIState *s) {
   // turning blinker from kegman, moving signal by OPKR
   if ((scene.leftBlinker || scene.leftBlinker) && !scene.comma_stock_ui){
     scene.blinker_blinkingrate -= 5;
-    if(scene.blinker_blinkingrate<0) scene.blinker_blinkingrate = 68; // blinker_blinkingrate 는 IG/FL 깜빡이 주기에 거의 맞춤
+    if(scene.blinker_blinkingrate<0) scene.blinker_blinkingrate = 68; // blinker_blinkingrate closely matches the IG/FL blinking cycle
 
     float progress = (68 - scene.blinker_blinkingrate) / 68.0;
     float offset = progress * (6.4 - 1.0) + 1.0;
@@ -770,9 +770,9 @@ static void ui_draw_vision_event(UIState *s) {
   const int center_y = int(bdr_s);
 
   if (!s->scene.comma_stock_ui){
-    // 버스전용차로( 246 )일 경우
+    // In case of exclusive bus lane (246)
     if (s->scene.liveMapData.opkrspeedsign == 246) {ui_draw_image(s, {center_x, center_y, 200, 200}, "bus_only", 0.8f);} 
-    // 차선변경금지( 198 || 199 || 249 )일 경우
+    // Lane change prohibited (198 || 199 || 249)
     if (s->scene.mapSign == 198 || s->scene.mapSign == 199 || s->scene.mapSign == 249) {
       ui_draw_image(s, {center_x, center_y, 200, 200}, "do_not_change_lane", 0.8f);}
     // 구간단속구간( 165 )일 경우
@@ -784,10 +784,10 @@ static void ui_draw_vision_event(UIState *s) {
       else if (s->scene.liveMapData.opkrspeedlimit < 110) {ui_draw_image(s, {center_x, center_y, 200, 200}, "section_100", 0.8f);}
       else if (s->scene.liveMapData.opkrspeedlimit < 120) {ui_draw_image(s, {center_x, center_y, 200, 200}, "section_110", 0.8f);}
     } 
-    // 일반적인 과속단속구간( 135 || 150 || 200 || 231)일 경우  
+    // In the case of general speed enforcement section (135 || 150 || 200 || 231)
     if ((s->scene.mapSign == 135 || s->scene.mapSign == 150 || s->scene.mapSign == 200 || s->scene.mapSign == 231) && s->scene.liveMapData.opkrspeedlimit > 29) {
       if (s->scene.liveMapData.opkrspeedlimit < 40) {ui_draw_image(s, {center_x, center_y, 200, 200}, "speed_30", 0.8f);
-                                                    ui_draw_image(s, {960-200, 540+100, 400, 400}, "speed_S30", 0.2f);} //중앙 스쿨존 이미지
+                                                    ui_draw_image(s, {960-200, 540+100, 400, 400}, "speed_S30", 0.2f);} // School Zone Images
       else if (s->scene.liveMapData.opkrspeedlimit < 50) {ui_draw_image(s, {center_x, center_y, 200, 200}, "speed_40", 0.8f);} 
       else if (s->scene.liveMapData.opkrspeedlimit < 60) {ui_draw_image(s, {center_x, center_y, 200, 200}, "speed_50", 0.8f);}
       else if (s->scene.liveMapData.opkrspeedlimit < 70) {ui_draw_image(s, {center_x, center_y, 200, 200}, "speed_60", 0.8f);} 
@@ -797,10 +797,10 @@ static void ui_draw_vision_event(UIState *s) {
       else if (s->scene.liveMapData.opkrspeedlimit < 110) {ui_draw_image(s, {center_x, center_y, 200, 200}, "speed_100", 0.8f);}
       else if (s->scene.liveMapData.opkrspeedlimit < 120) {ui_draw_image(s, {center_x, center_y, 200, 200}, "speed_110", 0.8f);}
     }
-    //가변구간( 195 || 197) 일 경우
+    // In case of variable interval (195 || 197)
     if (s->scene.mapSign == 195 || s->scene.mapSign == 197) {
       ui_draw_image(s, {center_x, center_y, 200, 200}, "speed_var", 0.8f); }
-    //과속방지턱( 124 ) 일 경우
+    // In case of speed bump (124)
     if (s->scene.liveMapData.opkrspeedsign == 124) {
       ui_draw_image(s, {960-200, 540+50, 400, 400}, "speed_bump", 0.2f); }
   }
@@ -900,7 +900,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
     }
     //snprintf(val_str, sizeof(val_str), "%.0fC", (round(scene.cpuTemp)));
     snprintf(uom_str, sizeof(uom_str), "%d%%", (scene.cpuPerc));
-    bb_h +=bb_ui_draw_measure(s, cpu_temp_val.c_str(), uom_str, "CPU 온도",
+    bb_h +=bb_ui_draw_measure(s, cpu_temp_val.c_str(), uom_str, "CPU TEMP",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
@@ -921,7 +921,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
     // temp is alway in C * 1000
     //snprintf(val_str, sizeof(val_str), "%.0fC", batteryTemp);
     snprintf(uom_str, sizeof(uom_str), "%d", (scene.fanSpeed)/1000);
-    bb_h +=bb_ui_draw_measure(s, device_temp_val.c_str(), uom_str, "시스템온도",
+    bb_h +=bb_ui_draw_measure(s, device_temp_val.c_str(), uom_str, "DEVICE TEMP",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
@@ -942,7 +942,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
     // temp is alway in C * 1000
     //snprintf(val_str, sizeof(val_str), "%.0fC", batteryTemp);
     snprintf(uom_str, sizeof(uom_str), "%d", (scene.fanSpeed)/1000);
-    bb_h +=bb_ui_draw_measure(s, bat_temp_val.c_str(), uom_str, "배터리온도",
+    bb_h +=bb_ui_draw_measure(s, bat_temp_val.c_str(), uom_str, "BATT. TEMP",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
@@ -955,7 +955,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
     std::string bat_level_val = std::to_string(int(scene.batPercent)) + "%";
     NVGcolor val_color = COLOR_WHITE_ALPHA(200);
     snprintf(uom_str, sizeof(uom_str), "%s", scene.deviceState.getBatteryStatus() == "Charging" ? "++" : "--");
-    bb_h +=bb_ui_draw_measure(s, bat_level_val.c_str(), uom_str, "배터리레벨",
+    bb_h +=bb_ui_draw_measure(s, bat_level_val.c_str(), uom_str, "BATT. LEVEL",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
@@ -983,7 +983,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
       snprintf(val_str, sizeof(val_str), "%.2f", (scene.gpsAccuracyUblox));
     }
     snprintf(uom_str, sizeof(uom_str), "%d", (scene.satelliteCount));
-    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "GPS 정확도",
+    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "GPS PREC.",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
@@ -996,7 +996,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
     NVGcolor val_color = COLOR_WHITE_ALPHA(200);
     snprintf(val_str, sizeof(val_str), "%.0f", (scene.altitudeUblox));
     snprintf(uom_str, sizeof(uom_str), "m");
-    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "고도",
+    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "ALTITUDE",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
@@ -1049,7 +1049,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
        snprintf(val_str, sizeof(val_str), "-");
     }
     snprintf(uom_str, sizeof(uom_str), "m");
-    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "차간거리",
+    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "REL DIST",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
@@ -1083,7 +1083,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
     } else {
       snprintf(uom_str, sizeof(uom_str), "mi/h");
     }
-    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "상대속도",
+    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "REL SPEED",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
@@ -1107,7 +1107,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
     snprintf(val_str, sizeof(val_str), "%.1f°",(scene.angleSteers));
     snprintf(uom_str, sizeof(uom_str), "   °");
 
-    bb_h +=bb_ui_draw_measure(s, val_str, uom_str, "현재조향각",
+    bb_h +=bb_ui_draw_measure(s, val_str, uom_str, "REAL STEER",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
@@ -1149,7 +1149,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
       snprintf(val_str, sizeof(val_str), "-");
       snprintf(uom_str, sizeof(uom_str), "");
     }
-    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "크루즈갭",
+    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "Steer Ratio",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
@@ -1260,11 +1260,11 @@ static void ui_draw_vision_header(UIState *s) {
                                         nvgRGBAf(0, 0, 0, 0.45), nvgRGBAf(0, 0, 0, 0));
   ui_fill_rect(s->vg, {0, 0, s->fb_w , header_h}, gradient);
 
-  ui_draw_vision_speed(s); //중앙속도 & 깜빡이
-  ui_draw_vision_event(s); //과속카메라 속도
+  ui_draw_vision_speed(s); // center speed & blinker
+  ui_draw_vision_event(s); // speed camera speed
 
   if (!s->scene.comma_stock_ui) {
-    ui_draw_vision_cameradist(s); //과속카메라 거리 
+    ui_draw_vision_cameradist(s); // speed camera distance
     ui_draw_vision_maxspeed(s);
     ui_draw_vision_cruise_speed(s);
   } else {

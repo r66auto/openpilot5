@@ -4,16 +4,16 @@
 #include "selfdrive/ui/qt/api.h"
 #include "selfdrive/ui/qt/widgets/input.h"
 
-SshControl::SshControl() : ButtonControl("SSH 키 설정", "", "경고: 이렇게 하면 GitHub 설정의 모든 공개 키에 대한 SSH 액세스 권한이 부여됩니다. 사용자 이외의 GitHub 사용자 이름을 입력하지 마십시오. 콤마 직원은 절대 GitHub 사용자 이름을 추가하라는 요청을 하지 않습니다.") {
+SshControl::SshControl() : ButtonControl("SSH Keys", "", "Warning: This grants SSH access to all public keys in your GitHub settings. Never enter a GitHub username other than your own. A comma employee will NEVER ask you to add their GitHub username.") {
   username_label.setAlignment(Qt::AlignRight | Qt::AlignVCenter);
   username_label.setStyleSheet("color: #aaaaaa");
   hlayout->insertWidget(1, &username_label);
 
   QObject::connect(this, &ButtonControl::clicked, [=]() {
-    if (text() == "설정") {
-      QString username = InputDialog::getText("GitHub 아이디를 입력하세요", this);
+    if (text() == "ADD") {
+      QString username = InputDialog::getText("Enter your GitHub username", this);
       if (username.length() > 0) {
-        setText("로딩중");
+        setText("LOADING");
         setEnabled(false);
         getUserKeys(username);
       }
@@ -36,12 +36,12 @@ void SshControl::refresh() {
     if (isUsername.length()) {
       username_label.setText(QString::fromStdString(params.get("GithubUsername")));
     } else if (legacy_stat) {
-      username_label.setText("공개KEY 사용중");
+      username_label.setText("Public Key in Use");
     }
-    setText("제거");
+    setText("REMOVE");
   } else {
     username_label.setText("");
-    setText("설정");
+    setText("ADD");
   }
   setEnabled(true);
 }
@@ -53,18 +53,18 @@ void SshControl::getUserKeys(const QString &username) {
       params.put("GithubUsername", username.toStdString());
       params.put("GithubSshKeys", resp.toStdString());
     } else {
-      ConfirmationDialog::alert(username + " 사용자에 대한 키가 GitHub에 존재하지 않습니다", this);
+      ConfirmationDialog::alert("Username '" + username + "' has no keys on GitHub", this);
     }
     refresh();
     request->deleteLater();
   });
   QObject::connect(request, &HttpRequest::failedResponse, [=] {
-    ConfirmationDialog::alert(username + " 의 GitHub아이디가 존재하지 않습니다", this);
+    ConfirmationDialog::alert("Username '" + username + "' doesn't exist on GitHub", this);
     refresh();
     request->deleteLater();
   });
   QObject::connect(request, &HttpRequest::timeoutResponse, [=] {
-    ConfirmationDialog::alert("요청된 시간이 초과되었습니다", this);
+    ConfirmationDialog::alert("Request timed out", this);
     refresh();
     request->deleteLater();
   });

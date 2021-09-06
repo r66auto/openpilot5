@@ -375,21 +375,21 @@ class CarController():
     run_speed_ctrl = self.opkr_variablecruise and CS.acc_active and (CS.out.cruiseState.modeSel > 0)
     if not run_speed_ctrl:
       if CS.out.cruiseState.modeSel == 0:
-        self.steer_mode = "오파모드"
+        self.steer_mode = "openpilot Mode"
       elif CS.out.cruiseState.modeSel == 1:
-        self.steer_mode = "차간+커브"
+        self.steer_mode = "Follow Cars + Curve"
       elif CS.out.cruiseState.modeSel == 2:
-        self.steer_mode = "차간ONLY"
+        self.steer_mode = "Follow Cars Only"
       elif CS.out.cruiseState.modeSel == 3:
-        self.steer_mode = "커브ONLY"
+        self.steer_mode = "Curves Only"
       elif CS.out.cruiseState.modeSel == 4:
-        self.steer_mode = "편도1차선"
+        self.steer_mode = "One-Way Lane"
       elif CS.out.cruiseState.modeSel == 5:
-        self.steer_mode = "맵감속ONLY"
+        self.steer_mode = "Map Decel Only"
       if CS.out.steerWarning == 0:
-        self.mdps_status = "정상"
+        self.mdps_status = "Normal"
       elif CS.out.steerWarning == 1:
-        self.mdps_status = "오류"
+        self.mdps_status = "Error"
       if CS.lkas_button_on == 0:
         self.lkas_switch = "OFF"
       elif CS.lkas_button_on == 1:
@@ -410,9 +410,9 @@ class CarController():
     if pcm_cancel_cmd and self.longcontrol:
       can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.CANCEL, clu11_speed, CS.CP.sccBus))
 
-    # 차간거리를 주행속도에 맞춰 변환하기
+    # Converting follow car distance to cruise speed
     if CS.acc_active and not CS.out.gasPressed and not CS.out.brakePressed:
-      if (CS.out.vEgo * CV.MS_TO_KPH) >= 80: # 시속 80킬로 이상 GAP_DIST 4칸 유지
+      if (CS.out.vEgo * CV.MS_TO_KPH) >= 80: # Maintain 4 GAP_DIST spaces above 80 km/h
         self.cruise_gap_auto_switch_timer += 1
         if self.cruise_gap_auto_switch_timer > 25 and (CS.cruiseGapSet != 4.0) :
           can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
@@ -420,7 +420,7 @@ class CarController():
           self.cruise_gap_auto_switch_timer = 0
         if CS.cruiseGapSet == 4.0:
           self.cruise_gap_auto_switch_timer = 0
-      elif (CS.out.vEgo * CV.MS_TO_KPH) >= 20 :# 시속 20킬로 이상 GAP_DIST 3칸 만들기
+      elif (CS.out.vEgo * CV.MS_TO_KPH) >= 20 :# Make 3 GAP_DIST spaces above 20 km/h
         self.cruise_gap_auto_switch_timer += 1
         if self.cruise_gap_auto_switch_timer > 25 and (CS.cruiseGapSet != 3.0) :
           can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
@@ -428,7 +428,7 @@ class CarController():
           self.cruise_gap_auto_switch_timer = 0
         if CS.cruiseGapSet == 3.0:
           self.cruise_gap_auto_switch_timer = 0          
-      # elif (CS.out.vEgo * CV.MS_TO_KPH) >= 10 :# 시속 10킬로 이상 GAP_DIST 2칸 만들기
+      # elif (CS.out.vEgo * CV.MS_TO_KPH) >= 10 :# Make 2 GAP_DIST spaces over 10 km/h
       #   self.cruise_gap_auto_switch_timer += 1
       #   if self.cruise_gap_auto_switch_timer > 25 and (CS.cruiseGapSet != 2.0) :
       #     can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
@@ -436,7 +436,7 @@ class CarController():
       #     self.cruise_gap_auto_switch_timer = 0
       #   if CS.cruiseGapSet == 2.0:
       #     self.cruise_gap_auto_switch_timer = 0          
-      # elif (CS.out.vEgo * CV.MS_TO_KPH) < 10 : # 시속 10킬로 미만 GAP_DIST 1칸 만들기
+      # elif (CS.out.vEgo * CV.MS_TO_KPH) < 10 : # Make 1 GAP_DIST space under 10 km/h
       #   self.cruise_gap_auto_switch_timer += 1
       #   if self.cruise_gap_auto_switch_timer > 25 and CS.cruiseGapSet != 1.0 :
       #     can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
@@ -486,7 +486,7 @@ class CarController():
         elif self.opkr_autoresume:
           self.standstill_fault_reduce_timer += 1
           self.cruise_gap_adjusting = False
-    # reset lead distnce after the car starts moving
+    # reset lead distance after the car starts moving
     elif self.last_lead_distance != 0:
       self.last_lead_distance = 0
     elif run_speed_ctrl:
