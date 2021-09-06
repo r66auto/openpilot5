@@ -37,7 +37,7 @@ def manager_init():
     ("CompletedTrainingVersion", "0"),
     ("HasAcceptedTerms", "0"),
     ("OpenpilotEnabledToggle", "1"),
-    ("IsMetric", "1"),
+    ("IsMetric", "0"),
     ("CommunityFeaturesToggle", "1"),
     ("EndToEndToggle", "1"),
     ("IsOpenpilotViewEnabled", "0"),
