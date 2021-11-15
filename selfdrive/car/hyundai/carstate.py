@@ -12,13 +12,6 @@ class CarState(CarStateBase):
     super().__init__(CP)
     can_define = CANDefine(DBC[CP.carFingerprint]["pt"])
 
-    if self.CP.carFingerprint in FEATURES["use_cluster_gears"]:
-      self.shifter_values = can_define.dv["CLU15"]["CF_Clu_Gear"]
-    elif self.CP.carFingerprint in FEATURES["use_tcu_gears"]:
-      self.shifter_values = can_define.dv["TCU12"]["CUR_GR"]
-    else:  # preferred and elect gear methods use same definition
-      self.shifter_values = can_define.dv["LVR12"]["CF_Lvr_Gear"]
-
     self.resumeAvailable = False
     self.accEnabled = False
     self.lfaEnabled = False
@@ -34,6 +27,14 @@ class CarState(CarStateBase):
 
     self.acc_main_enabled = None
     self.prev_acc_main_enabled = None
+
+    if self.CP.carFingerprint in FEATURES["use_cluster_gears"]:
+      self.shifter_values = can_define.dv["CLU15"]["CF_Clu_Gear"]
+    elif self.CP.carFingerprint in FEATURES["use_tcu_gears"]:
+      self.shifter_values = can_define.dv["TCU12"]["CUR_GR"]
+    else:  # preferred and elect gear methods use same definition
+      self.shifter_values = can_define.dv["LVR12"]["CF_Lvr_Gear"]
+
 
   def update(self, cp, cp_cam):
     ret = car.CarState.new_message()
@@ -54,6 +55,10 @@ class CarState(CarStateBase):
     ret.wheelSpeeds.rr = cp.vl["WHL_SPD11"]["WHL_SPD_RR"] * CV.KPH_TO_MS
     ret.vEgoRaw = (ret.wheelSpeeds.fl + ret.wheelSpeeds.fr + ret.wheelSpeeds.rl + ret.wheelSpeeds.rr) / 4.
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
+
+    # TODO: Find brake pressure
+    ret.brake = 0
+    ret.brakePressed = cp.vl["TCS13"]["DriverBraking"] != 0
 
     self.belowLaneChangeSpeed = ret.vEgo < (30 * CV.MPH_TO_MS)
 
@@ -142,10 +147,6 @@ class CarState(CarStateBase):
     if not self.CP.openpilotLongitudinalControl:
       speed_conv = CV.MPH_TO_MS if cp.vl["CLU11"]["CF_Clu_SPEED_UNIT"] else CV.KPH_TO_MS
       ret.cruiseState.speed = cp.vl["SCC11"]["VSetDis"] * speed_conv
-
-    # TODO: Find brake pressure
-    ret.brake = 0
-    ret.brakePressed = cp.vl["TCS13"]["DriverBraking"] != 0
 
     if self.CP.carFingerprint in (HYBRID_CAR | EV_CAR):
       if self.CP.carFingerprint in HYBRID_CAR:
