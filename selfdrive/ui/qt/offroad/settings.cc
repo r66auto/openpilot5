@@ -364,6 +364,7 @@ FeaturePanel::FeaturePanel(QWidget* parent) : QWidget(parent) {
   layout->setContentsMargins(50, 0, 50, 0);
   layout->setSpacing(30);
 
+  layout->addWidget(new MaxTimeOffroad());
   layout->addWidget(new AutoLaneChangeTimer());
 }
 

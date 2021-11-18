@@ -173,6 +173,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"LastUpdateTime", PERSISTENT},
     {"LiveParameters", PERSISTENT},
     {"MapboxToken", PERSISTENT | DONT_LOG},
+    {"MaxTimeOffroad", PERSISTENT},
     {"NavDestination", CLEAR_ON_MANAGER_START | CLEAR_ON_IGNITION_OFF},
     {"NavSettingTime24h", PERSISTENT},
     {"OpenpilotEnabledToggle", PERSISTENT},

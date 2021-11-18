@@ -156,3 +156,90 @@ void AutoLaneChangeTimer::refresh() {
   btnminus.setText("-");
   btnplus.setText("+");
 }
+
+// Max Time Offroad (Shutdown timer)
+MaxTimeOffroad::MaxTimeOffroad() : AbstractControl("Max Time Offroad", "Device is automatically turned off after a set time when the engine is turned off (off-road) after driving (on-road).", "../assets/offroad/icon_shell.png") {
+
+  label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  label.setStyleSheet("color: #e0e879");
+  hlayout->addWidget(&label);
+
+  btnminus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnplus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnminus.setFixedSize(150, 100);
+  btnplus.setFixedSize(150, 100);
+  hlayout->addWidget(&btnminus);
+  hlayout->addWidget(&btnplus);
+
+  QObject::connect(&btnminus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("MaxTimeOffroad"));
+    int value = str.toInt();
+    value = value - 1;
+    if (value <= 0 ) {
+      value = 0;
+    }
+    QString values = QString::number(value);
+    params.put("MaxTimeOffroad", values.toStdString());
+    refresh();
+  });
+
+  QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("MaxTimeOffroad"));
+    int value = str.toInt();
+    value = value + 1;
+    if (value >= 12 ) {
+      value = 12;
+    }
+    QString values = QString::number(value);
+    params.put("MaxTimeOffroad", values.toStdString());
+    refresh();
+  });
+  refresh();
+}
+
+void MaxTimeOffroad::refresh() {
+  QString option = QString::fromStdString(params.get("MaxTimeOffroad"));
+  if (option == "0") {
+    label.setText(QString::fromStdString("AlwaysOn"));
+  } else if (option == "1") {
+    label.setText(QString::fromStdString("Immediate"));
+  } else if (option == "2") {
+    label.setText(QString::fromStdString("30s"));
+  } else if (option == "3") {
+    label.setText(QString::fromStdString("1m"));
+  } else if (option == "4") {
+    label.setText(QString::fromStdString("3m"));
+  } else if (option == "5") {
+    label.setText(QString::fromStdString("5m"));
+  } else if (option == "6") {
+    label.setText(QString::fromStdString("10m"));
+  } else if (option == "7") {
+    label.setText(QString::fromStdString("30m"));
+  } else if (option == "8") {
+    label.setText(QString::fromStdString("1h"));
+  } else if (option == "9") {
+    label.setText(QString::fromStdString("3h"));
+  } else if (option == "10") {
+    label.setText(QString::fromStdString("5h"));
+  } else if (option == "11") {
+    label.setText(QString::fromStdString("10h"));
+  } else if (option == "12") {
+    label.setText(QString::fromStdString("30h"));
+  }
+  btnminus.setText("-");
+  btnplus.setText("+");
+}

@@ -21,6 +21,21 @@ signals:
   void selectedCar();
 };
 
+class MaxTimeOffroad : public AbstractControl {
+  Q_OBJECT
+
+public:
+  MaxTimeOffroad();
+
+private:
+  QPushButton btnplus;
+  QPushButton btnminus;
+  QLabel label;
+  Params params;
+
+  void refresh();
+};
+
 class AutoLaneChangeTimer : public AbstractControl {
   Q_OBJECT
 
