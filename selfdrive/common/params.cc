@@ -176,6 +176,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"MaxTimeOffroad", PERSISTENT},
     {"NavDestination", CLEAR_ON_MANAGER_START | CLEAR_ON_IGNITION_OFF},
     {"NavSettingTime24h", PERSISTENT},
+    {"OnroadScreenOff", PERSISTENT},
     {"OpenpilotEnabledToggle", PERSISTENT},
     {"PandaDongleId", CLEAR_ON_MANAGER_START | CLEAR_ON_PANDA_DISCONNECT},
     {"PandaFirmware", CLEAR_ON_MANAGER_START | CLEAR_ON_PANDA_DISCONNECT},

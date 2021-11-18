@@ -40,6 +40,7 @@ def manager_init():
     ("HasAcceptedTerms", "0"),
     ("LanelessMode", "2"),
     ("MaxTimeOffroad", "9"),
+    ("OnroadScreenOff", "0"),
     ("OpenpilotEnabledToggle", "1"),
     ("UploadRaw", "1"),
   ]

@@ -36,6 +36,21 @@ private:
   void refresh();
 };
 
+class OnroadScreenOff : public AbstractControl {
+  Q_OBJECT
+
+public:
+  OnroadScreenOff();
+
+private:
+  QPushButton btnplus;
+  QPushButton btnminus;
+  QLabel label;
+  Params params;
+
+  void refresh();
+};
+
 class AutoLaneChangeTimer : public AbstractControl {
   Q_OBJECT
 

@@ -209,8 +209,24 @@ static void update_state(UIState *s) {
 static void update_params(UIState *s) {
   const uint64_t frame = s->sm->frame;
   UIScene &scene = s->scene;
+  Params params;
   if (frame % (5*UI_FREQ) == 0) {
     scene.is_metric = Params().getBool("IsMetric");
+  }
+
+  if (!scene.read_params) {
+    scene.onroadScreenOff = std::stoi(params.get("OnroadScreenOff"));
+
+    if (scene.onroadScreenOff > 0) {
+      scene.osoTimer = scene.onroadScreenOff * 60 * UI_FREQ;
+    } else if (scene.onroadScreenOff == 0) {
+      scene.osoTimer = 30 * UI_FREQ;
+    } else if (scene.onroadScreenOff == -1) {
+      scene.osoTimer = 15 * UI_FREQ;
+    } else {
+      scene.osoTimer = -1;
+    }
+
   }
 }
 
@@ -314,11 +330,23 @@ void Device::updateBrightness(const UIState &s) {
 
   if (!s.scene.started) {
     clipped_brightness = BACKLIGHT_OFFROAD;
+  } else if (s.scene.onroadScreenOff != -2 && s.scene.touched2) {
+    sleep_time = s.scene.osoTimer;
+  } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE && s.scene.onroadScreenOff != -2) {
+    sleep_time = s.scene.osoTimer;
+  } else if (sleep_time > 0 && s.scene.onroadScreenOff != -2) {
+    sleep_time--;
+  } else if (s.scene.started && sleep_time == -1 && s.scene.onroadScreenOff != -2) {
+    sleep_time = s.scene.osoTimer;
   }
 
   int brightness = brightness_filter.update(clipped_brightness);
   if (!awake) {
     brightness = 0;
+  } else if (s.scene.started && sleep_time == 0 && s.scene.onroadScreenOff != -2) {
+    brightness = s.scene.brightness_off * 0.01 * brightness;
+  } else if( s.scene.brightness ) {
+    brightness = s.scene.brightness * 0.99;
   }
 
   if (brightness != last_brightness) {

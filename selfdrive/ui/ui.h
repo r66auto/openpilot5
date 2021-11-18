@@ -113,6 +113,9 @@ typedef struct UIScene {
 
   int laneless_mode;
   Rect laneless_btn_touch_rect;
+  bool read_params = false;
+  int onroadScreenOff, osoTimer, brightness, brightness_off, awake;
+  bool touched2 = false;
 
   cereal::CarState::Reader car_state;
   cereal::ControlsState::Reader controls_state;
@@ -208,6 +211,7 @@ private:
   FirstOrderFilter brightness_filter;
 
   QTimer *timer;
+  int sleep_time = -1;
 
   void updateBrightness(const UIState &s);
   void updateWakefulness(const UIState &s);
