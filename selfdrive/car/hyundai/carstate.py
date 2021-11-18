@@ -62,6 +62,18 @@ class CarState(CarStateBase):
 
     self.belowLaneChangeSpeed = ret.vEgo < (30 * CV.MPH_TO_MS)
 
+    if self.CP.carFingerprint in FEATURES["use_lfa_button"]:
+      self.lfa_enabled = cp.vl["BCM_PO_11"]["LFA_Pressed"] == 0
+    elif self.CP.carFingerprint not in FEATURES["use_lfa_button"]:
+      self.acc_main_enabled = cp.vl["CLU11"]["CF_Clu_CruiseSwMain"] == 0
+
+    if self.CP.carFingerprint in FEATURES["use_lfa_button"]:
+      if self.prev_lfa_enabled is None:
+        self.prev_lfa_enabled = self.lfa_enabled
+    elif self.CP.carFingerprint not in FEATURES["use_lfa_button"]:
+      if self.prev_acc_main_enabled is None:
+        self.prev_acc_main_enabled = self.acc_main_enabled
+
     ret.standstill = ret.vEgoRaw < 0.1
 
     ret.steeringAngleDeg = cp.vl["SAS11"]["SAS_Angle"]
@@ -75,18 +87,6 @@ class CarState(CarStateBase):
 
     self.leftBlinkerOn = cp.vl["CGW1"]["CF_Gway_TurnSigLh"] != 0
     self.rightBlinkerOn = cp.vl["CGW1"]["CF_Gway_TurnSigRh"] != 0
-
-    if self.CP.carFingerprint in FEATURES["use_lfa_button"]:
-      self.lfa_enabled = cp.vl["BCM_PO_11"]["LFA_Pressed"] != 0
-    elif self.CP.carFingerprint not in FEATURES["use_lfa_button"]:
-      self.acc_main_enabled = cp.vl["CLU11"]["CF_Clu_CruiseSwMain"] != 0
-
-    if self.CP.carFingerprint in FEATURES["use_lfa_button"]:
-      if self.prev_lfa_enabled is None:
-        self.prev_lfa_enabled = self.lfa_enabled
-    elif self.CP.carFingerprint not in FEATURES["use_lfa_button"]:
-      if self.prev_acc_main_enabled is None:
-        self.prev_acc_main_enabled = self.acc_main_enabled
 
     # cruise state
     if self.CP.openpilotLongitudinalControl:
@@ -109,11 +109,13 @@ class CarState(CarStateBase):
             self.accEnabled = True
 
       if self.CP.carFingerprint in FEATURES["use_lfa_button"]:
-        if self.lfa_enabled and not self.prev_lfa_enabled: #1 == not LFA button
-          self.lfaEnabled = not self.lfaEnabled
+        if self.prev_lfa_enabled != 1: #1 == not LFA button
+          if self.lfa_enabled == 1:
+            self.lfaEnabled = not self.lfaEnabled
       elif self.CP.carFingerprint not in FEATURES["use_lfa_button"]:
-        if self.acc_main_enabled and not self.prev_acc_main_enabled: #1 == not ACC Main button
-          self.accMainEnabled = not self.accMainEnabled
+        if self.prev_acc_main_enabled != 1: #1 == not ACC Main button
+          if self.acc_main_enabled == 1:
+            self.accMainEnabled = not self.accMainEnabled
     else:
       if self.CP.carFingerprint in FEATURES["use_lfa_button"]:
         self.lfaEnabled = False
