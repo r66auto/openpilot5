@@ -218,7 +218,15 @@ DevicePanel::DevicePanel(QWidget* parent) : ListWidget(parent) {
     });
   }
 
-  for (auto btn : {dcamBtn, resetCalibBtn, retrainingBtn, regulatoryBtn}) {
+  auto flashPandaBtn = new ButtonControl("Flash Panda", "RUN",
+                                            "Reflash Panda without SSH into the device. This should only be used when connected to the car (the car must be at the OFF ignition position).");
+  connect(flashPandaBtn, &ButtonControl::clicked, [=]() {
+    if (ConfirmationDialog::confirm("Panda's green LED blinks quickly during panda flashing. Never turn off or disconnect the device arbitrarily. Do you want to proceed?", this)) {
+      std::system("/data/openpilot/flash_panda.sh");
+    }
+  });
+
+  for (auto btn : {dcamBtn, resetCalibBtn, retrainingBtn, regulatoryBtn, flashPandaBtn}) {
     if (btn) {
       connect(parent, SIGNAL(offroadTransition(bool)), btn, SLOT(setEnabled(bool)));
       addItem(btn);
