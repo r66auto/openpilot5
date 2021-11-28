@@ -244,14 +244,14 @@ class CarInterface(CarInterfaceBase):
     elif candidate == CAR.GENESIS_G90:
       ret.mass = 2800
       ret.wheelbase = 3.15
-      ret.steerRatio = 16.069
-      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.3], [0.3]]
-      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.12], [0.05]]
+      ret.steerRatio = 19.069
+      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.5], [0.5]]
+      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.19], [0.3]]
 
     # these cars require a special panda safety mode due to missing counters and checksums in the messages
     if candidate in [CAR.HYUNDAI_GENESIS, CAR.IONIQ_EV_2020, CAR.IONIQ_EV_LTD, CAR.IONIQ_PHEV, CAR.IONIQ, CAR.KONA_EV, CAR.KIA_SORENTO,
                      CAR.SONATA_LF, CAR.KIA_NIRO_EV, CAR.KIA_OPTIMA, CAR.VELOSTER, CAR.KIA_STINGER,
-                     CAR.GENESIS_G70, CAR.GENESIS_G80, CAR.KIA_CEED, CAR.ELANTRA, CAR.IONIQ_HEV_2022]:
+                     CAR.GENESIS_G70, CAR.GENESIS_G80, CAR.GENESIS_G90,  CAR.KIA_CEED, CAR.ELANTRA, CAR.IONIQ_HEV_2022]:
       ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.hyundaiLegacy)]
 
     # set appropriate safety param for gas signal
