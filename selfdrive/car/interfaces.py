@@ -163,27 +163,27 @@ class CarInterfaceBase():
     # e.g. Chrysler does not spam the resume button yet, so resuming with gas is handy. FIXME!
     #if (self.disengage_on_gas and cs_out.gasPressed and (not self.CS.out.gasPressed) and cs_out.vEgo > gas_resume_speed) or \
     #   (cs_out.brakePressed and (not self.CS.out.brakePressed or not cs_out.standstill)):
-      if self.CP.carFingerprint in FEATURES["use_lfa_button"]:
-        if cs_out.lfaEnabled:
-          cs_out.disengageByBrake= True
-        if cs_out.cruiseState.enabled:
-          events.add(EventName.pedalPressed)
-        else:
-          events.add(EventName.silentPedalPressed)
-      elif self.CP.carFingerprint not in FEATURES["use_lfa_button"]:
-        if cs_out.accMainEnabled:
-          cs_out.disengageByBrake= True
-        if cs_out.cruiseState.enabled:
-          events.add(EventName.pedalPressed)
-        else:
-          events.add(EventName.silentPedalPressed)
-      elif self.CP.carFingerprint in TOYOTA_CAR or self.CP.carFingerprint in HONDA_CAR:
-        if cs_out.lkasEnabled:
-          cs_out.disengageByBrake= True
-        if cs_out.cruiseState.enabled:
-          events.add(EventName.pedalPressed)
-        else:
-          events.add(EventName.silentPedalPressed)
+    #  if self.CP.carFingerprint in FEATURES["use_lfa_button"]:
+    #    if cs_out.lfaEnabled:
+    #      cs_out.disengageByBrake= FALSE
+    #    if cs_out.cruiseState.enabled:
+    #      events.add(EventName.pedalPressed)
+    #    else:
+    #      events.add(EventName.silentPedalPressed)
+    #  elif self.CP.carFingerprint not in FEATURES["use_lfa_button"]:
+    #    if cs_out.accMainEnabled:
+    #      cs_out.disengageByBrake= FALSE
+    #    if cs_out.cruiseState.enabled:
+    #      events.add(EventName.pedalPressed)
+    #    else:
+    #      events.add(EventName.silentPedalPressed)
+    #  elif self.CP.carFingerprint in TOYOTA_CAR or self.CP.carFingerprint in HONDA_CAR:
+    #    if cs_out.lkasEnabled:
+    #      cs_out.disengageByBrake= True
+    #    if cs_out.cruiseState.enabled:
+    #      events.add(EventName.pedalPressed)
+    #    else:
+    #      events.add(EventName.silentPedalPressed)
 
 
     # we engage when pcm is active (rising edge)
