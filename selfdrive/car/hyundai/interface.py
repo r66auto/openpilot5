@@ -245,8 +245,8 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 2400
       ret.wheelbase = 3.01
       ret.steerRatio = 30.069
-      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[20.], [30.]]
-      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.30], [0.003]]
+      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[5.], [10.]]
+      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.20], [0.003]]
   
 
     # these cars require a special panda safety mode due to missing counters and checksums in the messages
