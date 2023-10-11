@@ -245,7 +245,7 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 2400
       ret.wheelbase = 3.01
       ret.steerRatio = 30.069
-      ret.lateralTuning.pid.kiBP = [0., 1., 20.], ret.lateralTuning.pid.kpBP = [[0., 1., 20.], [0., 10., 30.]]
+      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0., 1., 20.], [0., 10., 30.]]
       ret.lateralTuning.pid.kpV , ret.lateralTuning.pid.kiV = [[0.01, 0.03, 0.03], [0.001, 0.003, 0.003]]
   
 
