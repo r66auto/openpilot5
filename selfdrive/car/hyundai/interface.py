@@ -244,17 +244,10 @@ class CarInterface(CarInterfaceBase):
     elif candidate == CAR.GENESIS_G90:
       ret.mass = 2400
       ret.wheelbase = 3.15
-      ret.steerRatio = 19.069
-      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0], [0]]
+      ret.steerRatio = 30.069
+      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.1], [0.1]]
       ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.20], [0.1]]
-      ret.lateralTuning.init('indi')
-      ret.lateralTuning.indi.innerLoopGainV = [3.5]
-      ret.lateralTuning.indi.innerLoopGainBP = [0.]
-      ret.lateralTuning.indi.outerLoopGainV = [2.0]
-      ret.lateralTuning.indi.outerLoopGainBP = [0.]
-      ret.lateralTuning.indi.timeConstantV = [1.4]
-      ret.lateralTuning.indi.actuatorEffectivenessV = [2.3]
-      ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
+    
 
     # these cars require a special panda safety mode due to missing counters and checksums in the messages
     if candidate in [CAR.HYUNDAI_GENESIS, CAR.IONIQ_EV_2020, CAR.IONIQ_EV_LTD, CAR.IONIQ_PHEV, CAR.IONIQ, CAR.KONA_EV, CAR.KIA_SORENTO,
