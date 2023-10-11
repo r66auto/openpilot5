@@ -245,15 +245,9 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 2400
       ret.wheelbase = 3.01
       ret.steerRatio = 30.069
-      ret.longitudinalTuning.kfBP = [0., 5.]
-      ret.longitudinalTuning.kfV = [1., 1.]
-
-      ret.lateralTuning.pid.kiBP = [0., 1., 20.]
-      ret.lateralTuning.pid.kpV = [0.01, 0.03, 0.03]
-      ret.lateralTuning.pid.kpBP = [0., 10., 30.]
-      ret.lateralTuning.pid.kiV = [0.001, 0.003, 0.003]
-      ret.lateralTuning.pid.kfBP = [0., 10., 30.]
-      ret.lateralTuning.pid.kfV = [0.00002, 0.00003, 0.00003]
+      ret.lateralTuning.pid.kiBP = [0., 1., 20.], ret.lateralTuning.pid.kpBP = [[0., 1., 20.], [0., 10., 30.]]
+      ret.lateralTuning.pid.kpV , ret.lateralTuning.pid.kiV = [[0.01, 0.03, 0.03], [0.001, 0.003, 0.003]]
+  
 
     # these cars require a special panda safety mode due to missing counters and checksums in the messages
     if candidate in [CAR.HYUNDAI_GENESIS, CAR.IONIQ_EV_2020, CAR.IONIQ_EV_LTD, CAR.IONIQ_PHEV, CAR.IONIQ, CAR.KONA_EV, CAR.KIA_SORENTO,
