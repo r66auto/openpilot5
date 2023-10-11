@@ -32,7 +32,7 @@ class CarInterface(CarInterfaceBase):
 
     ret.pcmCruise = not ret.openpilotLongitudinalControl
 
-    ret.steerActuatorDelay = 0.6  # Default delay
+    ret.steerActuatorDelay = 0.1  # Default delay
     ret.steerRateCost = 0.1
     ret.steerLimitTimer = 6000
     tire_stiffness_factor = 1.
@@ -245,8 +245,8 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 2400
       ret.wheelbase = 3.01
       ret.steerRatio = 30.069
-      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[20.], [30.]]
-      ret.lateralTuning.pid.kpV , ret.lateralTuning.pid.kiV = [[0.03], [0.003]]
+      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.1], [0.1]]
+      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.20], [0.1]]
   
 
     # these cars require a special panda safety mode due to missing counters and checksums in the messages
